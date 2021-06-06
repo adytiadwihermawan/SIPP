@@ -10,10 +10,7 @@
 	<!-- /.card-header -->
 	<div class="card-body">
 		<div class="table-responsive">
-			<div>
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-					<i class="fa fa-edit"></i> Tambah Data Kelas</button>
-
+			
 					@if(Session::get('berhasil'))
 					<hr>
 					<div class="alert alert-success">
@@ -27,44 +24,11 @@
 							{{ Session::get('gagal')  }}
 						</div>
 					@endif
-
-				<!-- Modal -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Tambah Kelas Baru</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<form action="addkelas" method="post">
-					<div class="modal-body">
-					
-						@csrf
-							<div class="form-group">
-								<label for="">Nama Kelas</label>
-								<input type="text" class="form-control" name="nama_praktikum" >
-								<span style="color:red">@error('nama_praktikum') {{ $message }} @enderror</span>
-							</div>
-							
-							<div class="form-group">
-								<label for="">Tahun Ajaran</label>
-								<input type="text" class="form-control" name="tahun_ajaran" >
-								<span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
-							</div>
-						
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">Tambah Kelas</button>
-					</div>
-					</form>
-					</div>
-				</div>
-				</div>
-				<!-- end Modal -->
-			</div>
+			<button type="button" class="btn btn-primary" onclick="window.location.href='/tambahkelas'">
+				<i class="fa fa-edit"></i> Tambah Kelas </button>
+			<button type="button" class="btn btn-primary" onclick="window.location.href='/tambahpeserta'">
+				<i class="fa fa-user-plus"></i> Tambah Peserta Kelas </button>
+			<br>
 			<br>
 			<table id="example1" class="table table-bordered table-striped">
 				<thead>
@@ -87,9 +51,6 @@
                         <td>{{ $item->nama_praktikum }}</td>
                         <td style="text-align: center;">{{ $item->tahun_ajaran}}</td>
 						<td style="text-align: center;">
-                            <a href="" title="Edit" class="btn btn-success btn-sm">
-								<i class="fa fa-user-plus"></i>
-							</a>
 							<a href="edit/{{ $item->id_praktikum }}" title="Edit" class="btn btn-success btn-sm">
 								<i class="fa fa-edit"></i>
 							</a>

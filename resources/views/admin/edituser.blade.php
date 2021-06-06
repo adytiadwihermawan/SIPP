@@ -27,6 +27,10 @@
 					<form id="edituser" action="/update" method="post">
 					
 						@csrf
+							<div class="form-group">
+								<label for="">Id User</label>
+								<input type="text" class="form-control" name="id" value="{{ old('id', $Info->id) }}" readonly>
+							</div>
 
 							<div class="form-group">
 								<label for="">Nama</label>
@@ -43,11 +47,9 @@
 							<div class="form-group">
 								<label for="">Role</label>
 								<select id="role" name="role" value="">
-									@foreach ($list as $Info)
-                                    <option value="{{$Info->id_status}}" {{ old('role', $Info->id_status) == $Info->id ? 'selected' : null}}>{{ $Info->status}}</option>
-
-                                    @endforeach	
-                                    
+									@foreach ($list as $data)
+                                    <option value="{{$data->id_status}}" {{ old('role', $data->id_status) == $Info->id_status ? 'selected' : null}}>{{ $data->status}}</option>
+                                    @endforeach
 								</select>
 								<span style="color:red">@error('role') {{ $message }} @enderror</span>
 							</div>

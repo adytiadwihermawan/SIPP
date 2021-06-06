@@ -35,5 +35,11 @@ class adminModel extends Model
         ->get();
   }
 
+  public function Editdata()
+  {
+    return DB::table('status_user')
+    ->get();
+  }
+
 
 }

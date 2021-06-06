@@ -28,16 +28,25 @@ Route::get('datakelas', [AdminController::class, 'datakelas']);
 
 Route::post('addkelas', [AdminController::class, 'addkelas']);
 
+Route::get('peserta/{id}', [AdminController::class, 'peserta']);
+
+Route::post('addpeserta', [AdminController::class, 'addpeserta']);
+
 Route::get('datalab', [AdminController::class, 'datalab']);
 
 Route::post('addlab', [AdminController::class, 'addlab']);
 
-// Route::get('edit/{id}', [AdminController::class, 'edit']);
+Route::view('/tambahuser', 'admin.tambahuser');
+
+Route::view('/tambahkelas', 'admin.tambahkelas');
+
+Route::view('/tambahpeserta', 'admin.addpeserta');
+
+Route::get('edit/{id}', [AdminController::class, 'edit']);
 
 // Route::post('update', [AdminController::class, 'update']);
 
-// Route::get('delete/{id}', [AdminController::class, 'delete']);
-
+Route::get('delete/{id}', [AdminController::class, 'delete']);
 // ----------------------------------------- Dashboard Dosen -------------------------------------------------------------------- \\
 
 Route::get('dosen/dashboard', [App\Http\Controllers\HomeController::class, 'dsnDashboard'])->name('dsn.dashboard')->middleware('dsnMid');
@@ -60,4 +69,4 @@ Route::view('mhs/profile', 'mhs.profile');
 
 Route::view('mhs/presensi', 'mhs.presensi');
 
-
+Route::view('form-daftar-asisten', 'formdftrasisten');

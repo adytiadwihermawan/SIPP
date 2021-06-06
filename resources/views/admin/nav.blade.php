@@ -38,6 +38,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ url('visible')}}" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Buka Perekrutan Asisten
+              </p>
+            </a>
+           </li>
   </ul>
 </nav>
 <!-- /.sidebar-menu -->

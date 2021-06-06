@@ -61,7 +61,7 @@
         </ul>
       </li>
       <li class="nav-item">
-        <a href="mahasiswa-Rekrut.html" class="nav-link">
+        <a href="{{ url('form-daftar-asisten')}}" class="nav-link">
           <i class="nav-icon fas fa-user"></i>
           <p>
             Perekrutan Asisten

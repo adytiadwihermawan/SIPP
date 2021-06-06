@@ -21,7 +21,7 @@
                     <div class="image">
                       <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> </div> </div>
                       <div class="col-sm-6 mt-4">
-                      <h1>Andreyan Rizky Baskara</h1></div> 
+                      <h1>{{Auth::user()->nama_user}}</h1></div> 
                     </div>
                   </div>
 
