@@ -66,7 +66,7 @@ class LoginController extends Controller
                 return redirect()->route('mhs.dashboard');
             }
         }else{
-            return redirect()->route('login')->with('error', 'Email dan Password Salah');
+            return redirect()->route('login')->with('error', 'Username atau Password Salah');
         }
     }
 }

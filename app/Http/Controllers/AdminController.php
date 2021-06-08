@@ -69,19 +69,31 @@ class AdminController extends Controller
 
     // -------------------- Update Data User----------------------- \\
    
-    // SALAH
+        function update(Request $request){
+            $request->validate([
+                'id' => 'required',
+                'nama_user' => 'required',
+                'password' => 'required',
+                'role' => 'required'
+            ]);
 
-    // function update(Request $request, $id){
-    //     DB::table('users')
-    //     ->where('id', $id)
-    //     ->update([
-    //       'nama_user'=>$request->input('nama_user'),
-    //       'password'=> Hash::make($request->input('password')),
-    //       'id_status'=>$request->input('role')
-    //     ]);
+            $update = DB::table('users')
+                        ->where('id', $request->input('id'))
+                        ->update([
+                            'id'=>$request->input('id'),
+                            'nama_user'=>$request->input('nama_user'),
+                            'password'=>$request->input('password'),
+                            'id_status'=>$request->input('role')
+                        ]);
 
-    //     return redirect('datauser')->with('toast_success', 'Data Berhasil Diubah');
-    // }
+            if($update){
+                return redirect('datauser')->with('berhasil', 'Data Berhasil Diubah');
+            }
+            else{
+                return back()->with('gagal', 'Ada terjadi kesalahan');
+            }
+
+        }
 
     // ----------------------- Delete Data User --------------------- \\
 
@@ -124,7 +136,7 @@ class AdminController extends Controller
         ]);
     
         if($query){
-            return redirect('datauser')->with('berhasil', 'Data Berhasil Ditambahkan');
+            return redirect('datakelas')->with('berhasil', 'Data Berhasil Ditambahkan');
         }
         else{
             return back()->with('gagal', 'Ada terjadi kesalahan');
@@ -176,7 +188,57 @@ class AdminController extends Controller
 
      
      
-    // ----------------------- Edit User --------------------------\\
+    // ----------------------- Edit Kelas --------------------------\\
+
+    function editkelas($id){  
+        $edit = DB::table('praktikum')
+                ->where('id_praktikum', $id)
+                ->first();
+           
+        $data = [
+            'Info'=> $edit,
+        ];
+        return view('admin.editkelas', $data);
+    }
+
+    // -------------------- Update Data Kelas----------------------- \\
+    
+    function updatekelas(Request $request){
+        $request->validate([
+            'id' => 'required',
+            'nama_prak' => 'required',
+            'thn_ajar' => 'required'
+        ]);
+
+        $update = DB::table('praktikum')
+                    ->where('id_praktikum', $request->input('id'))
+                    ->update([
+                        'id_praktikum'=>$request->input('id'),
+                        'nama_praktikum'=>$request->input('nama_prak'),
+                        'tahun_ajaran'=>$request->input('thn_ajar')
+                    ]);
+
+        if($update){
+            return redirect('datakelas')->with('berhasil', 'Data Berhasil Diubah');
+        }
+        else{
+            return back()->with('gagal', 'Ada terjadi kesalahan');
+        }
+
+    }
+
+    // ----------------------- Delete Data Kelas --------------------- \\
+
+    function deletekelas($id){
+        $query = DB::table('praktikum')->where('id_praktikum', $id)->Delete();
+         
+         if($query){
+             return back()->with('berhasil', 'Data Berhasil Dihapus');
+         }
+         else{
+             return back()->with('gagal', 'Ada terjadi kesalahan');
+         }
+     }
 
     // ----------------------------------------- End CRUD Data Kelas ------------------------------------------------ \\
 
@@ -215,7 +277,56 @@ class AdminController extends Controller
 
     // ----------------------- Edit User --------------------------\\
 
-     
+    function editlab($id){  
+        $edit = DB::table('lab')
+                ->where('id_laboratorium', $id)
+                ->first();
+           
+        $data = [
+            'Info'=> $edit,
+            'user' => $this->adminModel->Datauserlab()
+        ];
+        return view('admin.editlab', $data);
+    }     
+
+    // -------------------- Update Data Lab----------------------- \\
+    
+    function updatelab(Request $request){
+        $request->validate([
+            'id' => 'required',
+            'nama_lab' => 'required',
+            'kepalalab' => 'required'
+        ]);
+
+        $update = DB::table('lab')
+                    ->where('id_laboratorium', $request->input('id'))
+                    ->update([
+                        'id_laboratorium'=>$request->input('id'),
+                        'nama_laboratorium'=>$request->input('nama_lab'),
+                        'id_kepalalaboratorium'=>$request->input('kepalalab')
+                    ]);
+
+        if($update){
+            return redirect('datalab')->with('berhasil', 'Data Berhasil Diubah');
+        }
+        else{
+            return back()->with('gagal', 'Ada terjadi kesalahan');
+        }
+
+    }
+
+    // ----------------------- Delete Data Lab --------------------- \\
+
+    function deletelab($id){
+        $query = DB::table('lab')->where('id_laboratorium', $id)->Delete();
+         
+         if($query){
+             return back()->with('berhasil', 'Data Berhasil Dihapus');
+         }
+         else{
+             return back()->with('gagal', 'Ada terjadi kesalahan');
+         }
+     }
     // ------------------------------------------------- End CRUD Data Lab --------------------------------------- \\
      
 

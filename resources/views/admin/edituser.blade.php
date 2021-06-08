@@ -1,5 +1,5 @@
 @extends('admin.dashboard')
-@section('title', "Edit Data")
+@section('title', "Edit Data User")
 @section('content')
 <div class="card card-info">
 	<div class="card-header">
@@ -10,13 +10,7 @@
 	<div class="card-body">
 		<div class="table-responsive">
 
-					@if(Session::get('berhasil'))
-					<hr>
-					<div class="alert alert-success">
-						{{ Session::get('berhasil')  }}
-					</div>
-					@endif
-
+					
 					@if(Session::get('gagal'))
 					<hr>
 						<div class="alert alert-danger">
@@ -25,7 +19,7 @@
 					@endif
 
 					<form id="edituser" action="/update" method="post">
-					
+						
 						@csrf
 							<div class="form-group">
 								<label for="">Id User</label>

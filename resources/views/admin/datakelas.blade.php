@@ -51,10 +51,10 @@
                         <td>{{ $item->nama_praktikum }}</td>
                         <td style="text-align: center;">{{ $item->tahun_ajaran}}</td>
 						<td style="text-align: center;">
-							<a href="edit/{{ $item->id_praktikum }}" title="Edit" class="btn btn-success btn-sm">
+							<a href="editkelas/{{ $item->id_praktikum }}" title="Edit" class="btn btn-success btn-sm">
 								<i class="fa fa-edit"></i>
 							</a>
-							<a href="delete/{{  $item->nama_praktikum }}" title="Delete" class="btn btn-danger btn-sm">
+							<a href="deletekelas/{{  $item->id_praktikum }}" title="Delete" class="btn btn-danger btn-sm">
 								<i class="fa fa-trash"></i>
 							</a>
 						</td>

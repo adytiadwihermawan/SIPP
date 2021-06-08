@@ -44,9 +44,22 @@ Route::view('/tambahpeserta', 'admin.addpeserta');
 
 Route::get('edit/{id}', [AdminController::class, 'edit']);
 
-// Route::post('update', [AdminController::class, 'update']);
+Route::post('update', [AdminController::class, 'update']);
 
 Route::get('delete/{id}', [AdminController::class, 'delete']);
+
+Route::get('editkelas/{id}', [AdminController::class, 'editkelas']);
+
+Route::post('updatekelas', [AdminController::class, 'updatekelas']);
+
+Route::get('deletekelas/{id}', [AdminController::class, 'deletekelas']);
+
+Route::get('editlab/{id}', [AdminController::class, 'editlab']);
+
+Route::post('updatelab', [AdminController::class, 'updatelab']);
+
+Route::get('deletelab/{id}', [AdminController::class, 'deletelab']);
+
 // ----------------------------------------- Dashboard Dosen -------------------------------------------------------------------- \\
 
 Route::get('dosen/dashboard', [App\Http\Controllers\HomeController::class, 'dsnDashboard'])->name('dsn.dashboard')->middleware('dsnMid');

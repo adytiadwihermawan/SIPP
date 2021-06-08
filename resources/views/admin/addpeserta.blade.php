@@ -17,13 +17,6 @@
 					</div>
 					@endif
 
-					@if(Session::get('gagal'))
-					<hr>
-						<div class="alert alert-danger">
-							{{ Session::get('gagal')  }}
-						</div>
-					@endif
-
 					<form id="addpeserta" action="addpeserta" method="post">
 					
 						@csrf

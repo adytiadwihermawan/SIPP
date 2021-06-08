@@ -30,7 +30,7 @@ class adminModel extends Model
   public function Datauserlab()
   {
     return DB::table('users')
-    ->leftJoin('status_user', 'status_user.id_status', '=', 'users.id_status')
+    ->leftJoin('lab', 'lab.id_kepalalaboratorium', '=', 'users.id')
     ->where('users.id_status', 2)
         ->get();
   }
