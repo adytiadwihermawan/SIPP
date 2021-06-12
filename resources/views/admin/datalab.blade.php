@@ -94,7 +94,7 @@
 							<a href="editlab/{{ $item->id_laboratorium }}" title="Edit" class="btn btn-success btn-sm">
 								<i class="fa fa-edit"></i>
 							</a>
-							<a href="deletelab/{{  $item->id_laboratorium }}" title="Delete" class="btn btn-danger btn-sm" onsubmit="return confirm('Hapus Data User ?')">
+							<a href="deletelab/{{  $item->id_laboratorium }}" title="Delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure to delete this data ?')">
 								<i class="fa fa-trash"></i>
 							</a>
 						</td>

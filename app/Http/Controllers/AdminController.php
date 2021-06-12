@@ -82,7 +82,7 @@ class AdminController extends Controller
                         ->update([
                             'id'=>$request->input('id'),
                             'nama_user'=>$request->input('nama_user'),
-                            'password'=>$request->input('password'),
+                            'password'=>Hash::make($request->input('password')),
                             'id_status'=>$request->input('role')
                         ]);
 
@@ -114,9 +114,14 @@ class AdminController extends Controller
     // ----------------------------------------- CRUD Data Kelas ----------------------------------------------------- \\
   
     public function datakelas(){
-        
+
+        $peserta = DB::table('users')
+        ->whereNotIn('nama_user', ['admin'])
+        ->pluck('nama_user', 'id');
+
         return view('admin.datakelas', [
-            'kelas' => $this->adminModel->Datakelas()
+            'kelas' => $this->adminModel->Datakelas(),
+            'member' => $peserta
         ]);
     }
     
@@ -143,9 +148,8 @@ class AdminController extends Controller
         }
      }
 
-    // function peserta($id){
+    // function peserta(){
     //     $datas = DB::table('praktikum')
-    //     ->where('id_praktikum', $id)
     //     ->first();
 
     //     $peserta = DB::table('users')
@@ -154,23 +158,16 @@ class AdminController extends Controller
    
     //     $data = [
     //         'Info'=> $datas,
-    //         'data' => $peserta
+    //         'member' => $peserta
     //     ];
     //     return view('admin.addpeserta', $data);
     // }
 
     function addpeserta(Request $request){
 
-        $data = DB::table('users')
-                ->get(); 
-
-        return view('admin.addpeserta', [
-            'Info' => $data
-        ]);
-
         $request->validate([
-            'id_praktikum'=>'required',
-            'id_user'=>'required'
+            'kelas'=>'required',
+            'peserta'=>'required'
         ]);
 
         $query = DB::table('proses_praktikum')->insert([

@@ -51,7 +51,7 @@
 							<a href="edit/{{ $item->id }}" title="Edit" class="btn btn-success btn-sm">
 								<i class="fa fa-edit"></i>
 							</a>
-							<a href="delete/{{  $item->id }}" title="Delete" class="btn btn-danger btn-sm" onsubmit="return confirm('Hapus Data User ?')">
+							<a href="delete/{{  $item->id }}" title="Delete" class="btn btn-danger btn-sm" onclick="return confirm('Hapus Data User ?')">
 								<i class="fa fa-trash"></i>
 							</a>
 						</td>
