@@ -6,6 +6,26 @@
 
 <div class="container">
     <div class="row justify-content-center">
+        <div id="warning-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: rgb(9, 179, 164)">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-justify">Anda lupa password login ? Silakan hubungi:</p>
+                        <ul type="circle">
+                            <li>Kepala Laboratorium, jika anda seorang <strong>Mahasiswa</strong>.</li>
+                            <li>Admin, jika anda seorang <strong>Dosen</strong>.</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-md-8">
             <div class="card">
 
@@ -54,12 +74,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Login') }}
                                 </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
+                                <a style="margin-left: 10px;" data-toggle="modal" data-target="#warning-modal">  Lupa Password ?</a>  
                             </div>
                         </div>
                     </form>
