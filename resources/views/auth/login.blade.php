@@ -44,12 +44,12 @@
     </div>
 </div>
             <div>
-                <div class="login-box">
+                <div class="login-box" style="margin-top: -30px">
                     <div class="login-logo">
                     <div class="text-center">
                         <img src="{{asset('img/logo.png')}}" style="height: 128px; width: 128px;"><br>
                         <a href="#">
-                        <b>P</b>RAKTIKUM PKL-PK
+                        <b>S</b>ISTEM PENDATAAN PRAKTIKUM
                         </a>
                     </div>
                     </div>
