@@ -1,86 +1,119 @@
-@extends('layouts.app')
-@section('title', 'SIDP')
+<!DOCTYPE html>
+<html>
 
-@section('content')
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>SIDP | Log in</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-<div class="container">
-    <div class="row justify-content-center">
-        <div id="warning-modal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header" style="background-color: rgb(9, 179, 164)">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="text-justify">Anda lupa password login ? Silakan hubungi:</p>
-                        <ul type="circle">
-                            <li>Kepala Laboratorium, jika anda seorang <strong>Mahasiswa</strong>.</li>
-                            <li>Admin, jika anda seorang <strong>Dosen</strong>.</li>
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="card">
-
-                <div class="card-header">{{ __('Login') }}</div>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="{{asset('template/plugins/fontawesome-free/css/all.min.css')}}">
+<!-- iCheck -->
+<link rel="stylesheet" href="{{asset('template/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
+<!-- Theme style -->
+<link rel="stylesheet" href="{{asset('template/dist/css/adminlte.min.css')}}">
+</head>                
                 @if(Session::get('error'))
-					<hr>
-						<div class="alert alert-danger">
-							{{ Session::get('error')  }}
-						</div>
-					@endif
-                
-                    <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="id" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="id" type="id" class="form-control @error('id') is-invalid @enderror" name="id" value="{{ old('id') }}" required autocomplete="id" autofocus>
-
-                                @error('id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                        <div class="alert alert-danger">
+                            {{ Session::get('error')  }}
                         </div>
+                @endif
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+<body class="hold-transition login-page">
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-                                <a style="margin-left: 10px;" data-toggle="modal" data-target="#warning-modal">  Lupa Password ?</a>  
-                            </div>
-                        </div>
-                    </form>
-                </div>
+    
+<div id="warning-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: rgb(9, 179, 164)">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="text-justify">Anda lupa password login ? Silakan hubungi:</p>
+                <ul type="circle">
+                    <li>Kepala Laboratorium, jika anda seorang <strong>Mahasiswa</strong>.</li>
+                    <li>Admin, jika anda seorang <strong>Dosen</strong>.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
 </div>
-@endsection
+            <div>
+                <div class="login-box">
+                    <div class="login-logo">
+                    <div class="text-center">
+                        <img src="{{asset('img/logo.png')}}" style="height: 128px; width: 128px;"><br>
+                        <a href="#">
+                        <b>P</b>RAKTIKUM PKL-PK
+                        </a>
+                    </div>
+                    </div>
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                        <i class="fas fa-sign-in-alt mr-1"></i>
+                        Sign in
+                        </h5>
+                    </div>
+                    <form method="POST" action="{{ route('login') }}">
+                    
+                        @csrf
+                        
+                        <div class="card-body">
+
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                    <div class="input-group">
+                                        <input id="username" type="text" class="form-control @error('id') is-invalid @enderror" name="id" value="{{ old('id') }}" required autocomplete="id" autofocus>
+                                
+                                @error('id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                    <div class="input-group">
+                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">
+                                {{ __('Login') }}
+                            </button>
+                            <a style="margin-left: 10px;" data-toggle="modal" data-target="#warning-modal">  Lupa Password ?</a>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+
+  <!-- Bootstrap 4 -->
+<script src="{{asset('template/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<!-- jQuery Knob Chart -->
+<script src="{{asset('template/plugins/jquery-knob/jquery.knob.min.js')}}"></script>
+<!-- AdminLTE App -->
+<script src="{{asset('template/dist/js/adminlte.js')}}"></script>
+<!-- Popper JS -->
+<script src="{{ asset('js/app.js') }}" defer></script>
+
+</body>
+</html>
+
