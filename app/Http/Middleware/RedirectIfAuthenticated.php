@@ -22,9 +22,24 @@ class RedirectIfAuthenticated
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+            // if (Auth::guard($guard)->check()) {
+            //     return redirect(RouteServiceProvider::HOME);
+            // }
+            
+            if (Auth::guard($guard)->check() && Auth::user()->id_status == 1){
+                return redirect()->route('admin.dashboard');
             }
+            elseif (Auth::guard($guard)->check() && Auth::user()->id_status == 2){
+                return redirect()->route('dsn.dashboard');
+            }
+            elseif (Auth::guard($guard)->check() && Auth::user()->id_status == 3){
+                return redirect()->route('asist.dashboard');
+            }
+            elseif (Auth::guard($guard)->check() && Auth::user()->id_status == 4){
+                return redirect()->route('mhs.dashboard');
+            }
+
+
         }
 
         return $next($request);

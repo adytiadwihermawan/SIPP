@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\asistModel;
 use Illuminate\Http\Request;
+use App\Models\Proses_praktikum;
 
 class HomeController extends Controller
 {
@@ -44,6 +45,8 @@ class HomeController extends Controller
 
     public function mhsDashboard()
     {
+        // $course = Proses_praktikum::with('course')->all();
+
         return view('mhs.home');
     }
 }

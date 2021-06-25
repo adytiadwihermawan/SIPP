@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -58,7 +59,7 @@ Route::get('deletelab/{id}', [AdminController::class, 'deletelab']);
 
 // ----------------------------------------- Dashboard Dosen -------------------------------------------------------------------- \\
 
-Route::get('dosen/dashboard', [App\Http\Controllers\HomeController::class, 'dsnDashboard'])->name('dsn.dashboard')->middleware('dsnMid');
+Route::get('dosen/dashboard', [App\Http\Controllers\UserController::class, 'dashboardDsn'])->name('dsn.dashboard')->middleware('dsnMid');
 
 Route::view('dosen/profile', 'dsn.profile');
 
@@ -72,10 +73,14 @@ Route::view('asist/presensi', 'asist.presensi');
 
 // -----------------------------------------  Dashboard Mahasiswa -------------------------------------------------------------------- \\
 
-Route::get('mhs/dashboard', [App\Http\Controllers\HomeController::class, 'mhsDashboard'])->name('mhs.dashboard')->middleware('mhsMid');
+Route::get('mhs/dashboard', [App\Http\Controllers\UserController::class, 'dashboardMhs'])->name('mhs.dashboard')->middleware('mhsMid');
 
 Route::view('mhs/profile', 'mhs.profile');
 
 Route::view('mhs/presensi', 'mhs.presensi');
 
 Route::view('form-daftar-asisten', 'formdftrasisten');
+
+Route::post('change-profile-pic', [App\Http\Controllers\UserController::class, 'updateFoto'])->name('updateFotoUser');
+
+Route::post('change-password', [\App\Http\Controllers\UserController::class, 'gantiPassword'])->name('gantiPassword');

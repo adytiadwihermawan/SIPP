@@ -40,24 +40,15 @@
           </p>
         </a>
         <ul class="nav nav-treeview">
+          {{-- @foreach ($course as $matkul)
           <li class="nav-item">
             <a href="praktikum.html" class="nav-link">
               <i class="fas fa-book-open"></i>
-              <p>Pemrograman Web</p>
+              <p>{{ $matkul->nama_praktikum }}</p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="fas fa-book-open"></i>
-              <p>Web Framework</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="fas fa-book-open"></i>
-              <p>Desain Web</p>
-            </a>
-          </li>
+          @endforeach --}}
+
         </ul>
       </li>
       <li class="nav-item">

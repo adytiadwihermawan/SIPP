@@ -3,36 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
   <title>@yield('title')</title>
 
    <!-- Font Awesome -->
    <link rel="stylesheet" href="{{asset('template/plugins/fontawesome-free/css/all.min.css')}}">
-   <!-- Ionicons -->
-   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-   <!-- Tempusdominus Bbootstrap 4 -->
-   <link rel="stylesheet" href="{{asset('template/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
-   <!-- iCheck -->
-   <link rel="stylesheet" href="{{asset('template/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
-   <!-- JQVMap -->
-   <link rel="stylesheet" href="{{asset('template/plugins/jqvmap/jqvmap.min.css')}}">
    <!-- Theme style -->
    <link rel="stylesheet" href="{{asset('template/dist/css/adminlte.min.css')}}">
    <!-- overlayScrollbars -->
    <link rel="stylesheet" href="{{asset('template/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
-   <!-- Daterange picker -->
-   <link rel="stylesheet" href="{{asset('template/plugins/daterangepicker/daterangepicker.css')}}">
-   <!-- summernote -->
-   <link rel="stylesheet" href="{{asset('template/plugins/summernote/summernote-bs4.css')}}">
    <!-- Google Font: Source Sans Pro -->
    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+   <link rel="stylesheet" href="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.css')}}">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
-
-  {{-- <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="{{asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
-  </div> --}}
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -45,7 +31,7 @@
   <ul class="navbar-nav ml-auto">
     <div class="user-panel mt-0 pb-0 mb-0 d-flex" >
       <div class="image">
-        <img src="{{asset('dist/img/defaultpic.png')}}" class="img-circle elevation-2" alt="User Image">
+        <img src="{{ Auth::user()->fotouser}}" class="img-circle elevation-2 user_picture" alt="User Image">
       </div>
     </div>
       @guest
@@ -91,7 +77,7 @@
             {{-- style="height: auto;
             width: 1rem;" --}}
             <img  style="height: auto;
-            width: 2.6rem;" src="{{asset('dist/img/defaultpic.png')}}" class="img-circle elevation-2" alt="User Image">
+            width: 2.6rem;" src="{{Auth::user()->fotouser}}" class="img-circle elevation-2 user_picture" alt="User Image">
           </div>
         <div class="info" style="white-space: normal;">
           <a href="#" >
@@ -157,29 +143,72 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="{{asset('template/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-<!-- ChartJS -->
-<script src="{{asset('template/plugins/chart.js/Chart.min.js')}}"></script>
-<!-- Sparkline -->
-<script src="{{asset('template/plugins/sparklines/sparkline.js')}}"></script>
-<!-- JQVMap -->
-<script src="{{asset('template/plugins/jqvmap/jquery.vmap.min.js')}}"></script>
-<script src="{{asset('template/plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script>
-<!-- jQuery Knob Chart -->
-<script src="{{asset('template/plugins/jquery-knob/jquery.knob.min.js')}}"></script>
-<!-- daterangepicker -->
-<script src="{{asset('template/plugins/moment/moment.min.js')}}"></script>
-<script src="{{asset('template/plugins/daterangepicker/daterangepicker.js')}}"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="{{asset('template/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
-<!-- Summernote -->
-<script src="{{asset('template/plugins/summernote/summernote-bs4.min.js')}}"></script>
 <!-- overlayScrollbars -->
 <script src="{{asset('template/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('template/dist/js/adminlte.js')}}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{asset('template/dist/js/pages/dashboard.js')}}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{asset('template/dist/js/demo.js')}}"></script>
+
+<script src="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.js')}}"></script>
+
+<script>
+
+  // $.ajaxSetup({
+  //   header:{
+  //     'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+  //   }
+  // });
+
+  $(function(){
+    
+    $(document).on('click', '#change_picture_button', function(){
+      $('#user_pic').click();
+    });
+
+    $('#user_pic').ijaboCropTool({
+          preview: '.user_picture',
+          setRatio:1,
+          allowedExtensions: ['jpg', 'jpeg','png'],
+          buttonsText:['CROP','QUIT'],
+          buttonsColor:['#30bf7d','#ee5155', -15],
+          processUrl:'{{ route("updateFotoUser") }}',
+          withCSRF:['_token','{{ csrf_token() }}'],
+          onSuccess:function(message, element, status){
+             alert(message);
+          },
+          onError:function(message, element, status){
+            alert(message);
+          }
+       });
+
+    $('#gantiPass').on('submit', function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            $('#gantiPass')[0].reset();
+            alert(data.msg);
+          }
+        }
+      });
+    });
+
+  });
+
+</script>
+
 </body>
 </html>
