@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\adminModel;
+use App\Models\User;
+use App\Models\Praktikum;
+use App\Models\Lab;
+use App\Models\Status_user;
 use Illuminate\Support\Facades\DB;
 
 
@@ -11,18 +14,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    public function __construct()
-    {
-        $this->adminModel = new adminModel();
-    }
-
     // ---------------------------------------------- CRUD Data User ------------------------------------------------- \\
 
     public function datauser(){
-        
-        return view('admin.datauser', [
-            'user' => $this->adminModel->Datauser()
-        ]);
+        $user = User::leftJoin('status_user', 'status_user.id_status', '=', 'users.id_status')
+        ->simplePaginate(5);
+        return view('admin.datauser', compact('user'));
     }
 
 

@@ -39,7 +39,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ url('visible')}}" class="nav-link">
+            <a href="/openrekrutasist" class="{{ request()->is('openrekrutasist') ? 'nav-link active' : 'nav-link' }}">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 Buka Perekrutan Asisten

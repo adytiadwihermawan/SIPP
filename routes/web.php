@@ -57,6 +57,8 @@ Route::post('updatelab', [AdminController::class, 'updatelab']);
 
 Route::get('deletelab/{id}', [AdminController::class, 'deletelab']);
 
+Route::view('/openrekrutasist', 'admin.bukapendaftaran');
+
 // ----------------------------------------- Dashboard Dosen -------------------------------------------------------------------- \\
 
 Route::get('dosen/dashboard', [App\Http\Controllers\UserController::class, 'dashboardDsn'])->name('dsn.dashboard')->middleware('dsnMid');
