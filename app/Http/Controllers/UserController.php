@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Proses_praktikum;
 use App\Models\User;
+use App\Models\Statusform;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -13,7 +14,20 @@ class UserController extends Controller
     {
         $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
 
-        return view('mhs.dashboard', compact('course'));
+        return view('mhs.home', compact('course'));
+    }
+
+    public function formdaftar()
+    {
+        $status = Statusform::select('statusform')->first();
+        if($status == 1)
+        {
+            return redirect('mhs.dashboard');
+        }
+        else
+        {
+            return redirect('mhs.formdaftar');
+        }
     }
 
     public function dashboardDsn()

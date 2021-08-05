@@ -84,7 +84,7 @@ Route::view('mhs/profile', 'mhs.profile');
 
 Route::view('mhs/presensi', 'mhs.presensi');
 
-Route::view('form-daftar-asisten', 'formdftrasisten');
+Route::view('form-daftar-asisten', [App\Http\Controllers\UserController::class, 'formdaftar']);
 
 Route::post('change-profile-pic', [App\Http\Controllers\UserController::class, 'updateFoto'])->name('updateFotoUser');
 

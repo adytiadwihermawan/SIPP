@@ -17,8 +17,8 @@ class AdminController extends Controller
     // ---------------------------------------------- CRUD Data User ------------------------------------------------- \\
 
     public function datauser(){
-        $user = User::Join('status_user', 'status_user.id_status', '=', 'users.id_status')
-                    ->simplePaginate(5);
+        $user = User::leftJoin('status_user', 'status_user.id_status', '=', 'users.id_status')
+                    ->simplePaginate(4);
         return view('admin.datauser', compact('user'));
     }
 
