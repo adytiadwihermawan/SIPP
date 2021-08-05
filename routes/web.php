@@ -67,6 +67,9 @@ Route::view('dosen/profile', 'dsn.profile');
 
 Route::view('dosen/presensi', 'dsn.presensi');
 
+Route::post('change-profile-pic', [App\Http\Controllers\UserController::class, 'updateFoto'])->name('updateFotoUser');
+
+Route::post('change-password', [\App\Http\Controllers\UserController::class, 'gantiPassword'])->name('gantiPassword');
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
 
 Route::get('asist/dashboard', [App\Http\Controllers\HomeController::class, 'asistDashboard'])->name('asist.dashboard')->middleware('asistMid');

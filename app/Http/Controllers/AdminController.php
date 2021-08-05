@@ -17,8 +17,8 @@ class AdminController extends Controller
     // ---------------------------------------------- CRUD Data User ------------------------------------------------- \\
 
     public function datauser(){
-        $user = User::leftJoin('status_user', 'status_user.id_status', '=', 'users.id_status')
-        ->simplePaginate(5);
+        $user = User::Join('status_user', 'status_user.id_status', '=', 'users.id_status')
+                    ->simplePaginate(5);
         return view('admin.datauser', compact('user'));
     }
 
@@ -35,7 +35,7 @@ class AdminController extends Controller
          'role'=>'required',
      ]);
  
-     $query = DB::table('users')->insert([
+     $query = User::insert([
           'nama_user'=>$request->input('nama_user'),
           'id'=>$request->input('id'),
           'password'=> Hash::make($request->input('password')),
@@ -53,13 +53,14 @@ class AdminController extends Controller
     // ----------------------- Edit Data User ---------------------- \\
 
     function edit($id){  
-        $edit = DB::table('users')
-                ->where('id', $id)
-                ->first();
-           
+        $edit = User::where('id', $id)
+                ->find($id);
+
+        $view = Status_User::get();
+                
         $data = [
             'Info'=> $edit,
-            'list' => $this->adminModel->Editdata()
+            'list' => $view
         ];
         return view('admin.edituser', $data);
     }
@@ -75,8 +76,7 @@ class AdminController extends Controller
                 'role' => 'required'
             ]);
 
-            $update = DB::table('users')
-                        ->where('id', $request->input('id'))
+            $update = User::where('id', $request->input('id'))
                         ->update([
                             'id'=>$request->input('id'),
                             'nama_user'=>$request->input('nama_user'),
@@ -96,7 +96,7 @@ class AdminController extends Controller
     // ----------------------- Delete Data User --------------------- \\
 
          function delete($id){
-           $query = DB::table('users')->where('id', $id)->Delete();
+           $query = User::where('id', $id)->Delete();
             
             if($query){
                 return back()->with('berhasil', 'Data Berhasil Dihapus');
@@ -113,12 +113,13 @@ class AdminController extends Controller
   
     public function datakelas(){
 
-        $peserta = DB::table('users')
-        ->whereNotIn('nama_user', ['admin'])
-        ->pluck('nama_user', 'id');
+        $peserta = User::whereNotIn('nama_user', ['admin'])
+                    ->pluck('nama_user', 'id');
+
+        $datakelas = Praktikum::simplePaginate(5);
 
         return view('admin.datakelas', [
-            'kelas' => $this->adminModel->Datakelas(),
+            'kelas' => $datakelas,
             'member' => $peserta
         ]);
     }
@@ -133,7 +134,7 @@ class AdminController extends Controller
          'tahun_ajaran'=>'required',
      ]);
  
-        $query = DB::table('praktikum')->insert([
+        $query = Praktikum::insert([
             'nama_praktikum'=>$request->input('nama_praktikum'),
             'tahun_ajaran'=>$request->input('tahun_ajaran')
         ]);
@@ -146,21 +147,6 @@ class AdminController extends Controller
         }
      }
 
-    // function peserta(){
-    //     $datas = DB::table('praktikum')
-    //     ->first();
-
-    //     $peserta = DB::table('users')
-    //     ->whereNotIn('nama_user', ['admin'])
-    //     ->pluck('nama_user', 'id');
-   
-    //     $data = [
-    //         'Info'=> $datas,
-    //         'member' => $peserta
-    //     ];
-    //     return view('admin.addpeserta', $data);
-    // }
-
     function addpeserta(Request $request){
 
         $request->validate([
@@ -168,7 +154,7 @@ class AdminController extends Controller
             'peserta'=>'required'
         ]);
 
-        $query = DB::table('proses_praktikum')->insert([
+        $query = Proses_praktikum::insert([
             'id_praktikum'=>$request->input('kelas'),
             'id_user'=>$request->input('peserta')
         ]);
@@ -186,8 +172,7 @@ class AdminController extends Controller
     // ----------------------- Edit Kelas --------------------------\\
 
     function editkelas($id){  
-        $edit = DB::table('praktikum')
-                ->where('id_praktikum', $id)
+        $edit = Praktikum::where('id_praktikum', $id)
                 ->first();
            
         $data = [
@@ -205,13 +190,12 @@ class AdminController extends Controller
             'thn_ajar' => 'required'
         ]);
 
-        $update = DB::table('praktikum')
-                    ->where('id_praktikum', $request->input('id'))
-                    ->update([
-                        'id_praktikum'=>$request->input('id'),
-                        'nama_praktikum'=>$request->input('nama_prak'),
-                        'tahun_ajaran'=>$request->input('thn_ajar')
-                    ]);
+        $update = Praktikum::where('id_praktikum', $request->input('id'))
+                            ->update([
+                            'id_praktikum'=>$request->input('id'),
+                            'nama_praktikum'=>$request->input('nama_prak'),
+                            'tahun_ajaran'=>$request->input('thn_ajar')
+                        ]);
 
         if($update){
             return redirect('datakelas')->with('berhasil', 'Data Berhasil Diubah');
@@ -225,7 +209,7 @@ class AdminController extends Controller
     // ----------------------- Delete Data Kelas --------------------- \\
 
     function deletekelas($id){
-        $query = DB::table('praktikum')->where('id_praktikum', $id)->Delete();
+        $query = Praktikum::where('id_praktikum', $id)->Delete();
          
          if($query){
              return back()->with('berhasil', 'Data Berhasil Dihapus');
@@ -240,10 +224,16 @@ class AdminController extends Controller
     // --------------------------------------------------- CRUD Data Lab ------------------------------------------- \\
       
     public function datalab(){
-        
+        $lab = Lab::leftJoin('users', 'users.id', '=', 'lab.id_kepalalaboratorium')
+                  ->simplePaginate(5);
+
+        $user = User::leftJoin('lab', 'lab.id_kepalalaboratorium', '=', 'users.id')
+                    ->where('users.id_status', 2)
+                    ->get();
+
         return view('admin.datalab', [
-            'lab' => $this->adminModel->Datalab(),
-            'user' => $this->adminModel->Datauserlab()
+            'lab' => $lab,
+            'user' => $user
         ]);
     }
 
@@ -257,7 +247,7 @@ class AdminController extends Controller
          'id'=>'required',
      ]);
             
-        $query = DB::table('lab')->insert([
+        $query = Lab::insert([
             'nama_laboratorium'=>$request->input('nama_lab'),
             'id_kepalalaboratorium'=> $request->input('id')
         ]);
@@ -273,13 +263,16 @@ class AdminController extends Controller
     // ----------------------- Edit User --------------------------\\
 
     function editlab($id){  
-        $edit = DB::table('lab')
-                ->where('id_laboratorium', $id)
+        $edit = Lab::where('id_laboratorium', $id)
                 ->first();
-           
+        
+        $user = User::leftJoin('lab', 'lab.id_kepalalaboratorium', '=', 'users.id')
+                    ->where('users.id_status', 2)
+                    ->get();
+                
         $data = [
             'Info'=> $edit,
-            'user' => $this->adminModel->Datauserlab()
+            'user' => $user
         ];
         return view('admin.editlab', $data);
     }     
@@ -293,8 +286,7 @@ class AdminController extends Controller
             'kepalalab' => 'required'
         ]);
 
-        $update = DB::table('lab')
-                    ->where('id_laboratorium', $request->input('id'))
+        $update = Lab::where('id_laboratorium', $request->input('id'))
                     ->update([
                         'id_laboratorium'=>$request->input('id'),
                         'nama_laboratorium'=>$request->input('nama_lab'),
@@ -313,7 +305,7 @@ class AdminController extends Controller
     // ----------------------- Delete Data Lab --------------------- \\
 
     function deletelab($id){
-        $query = DB::table('lab')->where('id_laboratorium', $id)->Delete();
+        $query = Lab::where('id_laboratorium', $id)->Delete();
          
          if($query){
              return back()->with('berhasil', 'Data Berhasil Dihapus');
