@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 20, 2021 at 07:38 AM
+-- Generation Time: Aug 20, 2021 at 09:00 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -64,17 +64,22 @@ INSERT INTO `lab` (`id_laboratorium`, `nama_laboratorium`, `id_kepalalaboratoriu
 CREATE TABLE `materi` (
   `id_materi` int(11) NOT NULL,
   `id_praktikum` int(11) DEFAULT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `file_path` varchar(100) NOT NULL
+  `name` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `materi`
 --
 
-INSERT INTO `materi` (`id_materi`, `id_praktikum`, `name`, `file_path`) VALUES
-(1, 3, 'PHPintro.pdf', ''),
-(2, NULL, '1629427780_62.pdf', '/fileuploads/1629427780_62.pdf');
+INSERT INTO `materi` (`id_materi`, `id_praktikum`, `name`) VALUES
+(1, 3, 'PHPintro.pdf'),
+(2, 2, '1629427780_62.pdf'),
+(3, NULL, '1.pdf'),
+(4, NULL, '1629441385_62.pdf'),
+(5, NULL, '1629441962_1.pdf'),
+(6, NULL, '1629442183_1-s2.0-S1555415520305535-main.pdf'),
+(7, NULL, '1629442232_62.pdf'),
+(8, NULL, '11-Article Text-15-2-10-20200123.pdf');
 
 -- --------------------------------------------------------
 
@@ -427,7 +432,7 @@ ALTER TABLE `lab`
 -- AUTO_INCREMENT for table `materi`
 --
 ALTER TABLE `materi`
-  MODIFY `id_materi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_materi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `nilai`

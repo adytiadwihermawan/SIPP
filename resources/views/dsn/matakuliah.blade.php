@@ -41,8 +41,9 @@
           </div>
         </div>
         <div class="card-body">
-         <a href="mahasiswa-contohmateri.pdf" target="_blank">Materi 2</a>  
-        
+         @foreach($course as $mk)
+            <p>llll{{ $mk->id_materi}}</p>  
+         @endforeach
         </div>
 
             {{-- <div class="card-body">
@@ -74,36 +75,32 @@
               <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="" method="post" enctype="multipart/form-data">
-              <h3 class="text-center mb-5">Upload File</h3>
-                @csrf
-                @if ($message = Session::get('success'))
-                <div class="alert alert-success">
-                    <strong>{{ $message }}</strong>
+              
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <form action="{{ route('fileUpload') }}" method="post" enctype="multipart/form-data">
+                      @csrf
+                      @if ($message = Session::get('success'))
+                        <div class="alert alert-success">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                      @endif
+            
+                      @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                  <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                      @endif
+                        <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
+                        <button type="submit" style="float:right; margin-bottom:15px;"class="btn btn-success">Upload</button>
+                  </div>
                 </div>
-              @endif
-    
-              @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                          <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-              @endif
-    
-                <div class="custom-file">
-                    <input type="file" name="file" class="custom-file-input" id="chooseFile">
-                    <label class="custom-file-label" for="chooseFile">Select file</label>
-                </div>
-
-                <div class="modal-footer">
-                  <button type="submit" name="submit" class="btn btn-primary btn-block mt-4">
-                    Upload Files
-                </button>
-                </div>
-            </form>
+              </div>
     
             </div>
             </div>

@@ -74,9 +74,7 @@ Route::post('change-password', [UserController::class, 'gantiPassword'])->name('
 
 Route::get('/matkul/{id}', [UserController::class, 'matkulDsn']);
 
-Route::post('/upload-image', [UserController::class, 'dropZone' ])->name('drag-drop');
-
-Route::post('/upload-file', [UserController::class, 'fileUpload'])->name('fileUpload');
+Route::post('upload', [UserController::class, 'upload'])->name('fileUpload');
 
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
 

@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Statusform;
 use App\Models\Materi;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\Helper;
 
 class UserController extends Controller
 {
@@ -82,33 +83,46 @@ class UserController extends Controller
 
     }
 
-    public  function dropZone(Request $request)  
-    {  
-        $file = $request->file('file');  
-        $fileName = time().'.'.$file->extension(); 
-        $file->move(public_path('file'),$fileName);  
-        return response()->json(['success'=>$fileName]);  
-    }
+    // public  function dropZone(Request $request)  
+    // {  
+    //     $file = $request->file('file');  
+    //     $fileName = time().'.'.$file->extension(); 
+    //     $file->move(public_path('file'),$fileName);  
+    //     return response()->json(['success'=>$fileName]);  
+    // }
 
-    public function fileUpload(Request $request){
+    public function upload(Request $request){
         $request->validate([
-        'file' => 'required|mimes:ppt,txt,xlx,xls,doc,docx,pdf|max:2048'
+        '_file' => 'required|mimes:ppt,txt,xlx,xls,doc,docx,pdf|max:2048'
         ]);
 
         $fileModel = new Materi;
 
         if($request->file()) {
-            $fileName = time().'_'.$request->file->getClientOriginalName();
-            $filePath = $request->file('file')->storeAs('uploads', $fileName, 'public');
+            $path = 'uploads/';
+            $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
+            // $fileName = time().'_'.$request->_file->getClientOriginalName();
+            // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
+            $filePath = $request->_file->move(public_path($path), $newname);
 
-            $fileModel->name = time().'_'.$request->file->getClientOriginalName();
-            $fileModel->file_path = '/file' . $filePath;
+            $fileModel->name = $request->_file->getClientOriginalName();
             $fileModel->save();
 
             return back()
-            ->with('success','File has been uploaded.')
-            ->with('file', $fileName);
+            ->with('success','File has been uploaded.');
         }
+        // $path = 'uploads/';
+        // $newname = Helper::renameFile($path, $request->file('_file')>getClientOriginalName());
+
+        // $upload = $request->_file->move(public_path($path), $newname);
+        // if($upload){
+        //     $post = new Materi();
+        //     $post->name = $newname;
+        //     $post->save();
+        //     echo 'Berhasil';
+        // }else{
+        //     echo 'Gagal';
+        // }
    }
 
     function updateFoto(Request $request)

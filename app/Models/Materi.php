@@ -9,8 +9,7 @@ class Materi extends Model
 {
     protected $table = 'materi';
     protected $fillable = [
-        'name',
-        'file_path'
+        'name'
     ];
 
     public $timestamps = false;
