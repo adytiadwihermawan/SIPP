@@ -74,7 +74,7 @@
               <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="{{route('fileUpload')}}" method="post" enctype="multipart/form-data">
+            <form action="" method="post" enctype="multipart/form-data">
               <h3 class="text-center mb-5">Upload File</h3>
                 @csrf
                 @if ($message = Session::get('success'))
