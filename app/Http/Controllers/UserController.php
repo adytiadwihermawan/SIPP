@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Proses_praktikum;
 use App\Models\User;
 use App\Models\Statusform;
+use App\Models\Materi;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -17,25 +18,98 @@ class UserController extends Controller
         return view('mhs.home', compact('course'));
     }
 
-    public function formdaftar()
+    public function mhsProfile()
     {
-        $status = Statusform::select('statusform')->first();
-        if($status == 1)
-        {
-            return redirect('mhs.dashboard');
-        }
-        else
-        {
-            return redirect('mhs.formdaftar');
-        }
+        $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+
+        return view('mhs.profile', compact('course'));
     }
 
+    public function mhsPresensi()
+    {
+       $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+
+        return view('mhs.presensi', compact('course'));
+    }
+
+
+    function matkul()
+    {
+        $course = Praktikum::get();
+
+        return view('mhs.matkullayout', compact('course'));
+    }
+
+    // public function formdaftar()
+    // {
+    //     $status = Statusform::select('statusform')->first();
+    //     if($status == 1)
+    //     {
+    //         return redirect('mhs.dashboard');
+    //     }
+    //     else
+    //     {
+    //         return redirect('mhs.formdaftar');
+    //     }
+    // }
+
+    public function dsnProfile()
+    {
+        $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+
+        return view('dsn.profile', compact('course'));
+    }
+
+    public function dsnPresensi()
+    {
+       $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+
+       return view('dsn.presensi', compact('course'));
+    }
+        
     public function dashboardDsn()
     {
         $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
 
         return view('dsn.home', compact('course'));
     }
+
+    public function matkulDsn($id)
+    {
+        $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+    
+        return view('dsn.matakuliah', compact('course'));
+
+    }
+
+    public  function dropZone(Request $request)  
+    {  
+        $file = $request->file('file');  
+        $fileName = time().'.'.$file->extension(); 
+        $file->move(public_path('file'),$fileName);  
+        return response()->json(['success'=>$fileName]);  
+    }
+
+    public function fileUpload(Request $request){
+        $request->validate([
+        'file' => 'required|mimes:ppt,txt,xlx,xls,doc,docx,pdf|max:2048'
+        ]);
+
+        $fileModel = new Materi;
+
+        if($request->file()) {
+            $fileName = time().'_'.$request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('uploads', $fileName, 'public');
+
+            $fileModel->name = time().'_'.$request->file->getClientOriginalName();
+            $fileModel->file_path = '/file' . $filePath;
+            $fileModel->save();
+
+            return back()
+            ->with('success','File has been uploaded.')
+            ->with('file', $fileName);
+        }
+   }
 
     function updateFoto(Request $request)
     {

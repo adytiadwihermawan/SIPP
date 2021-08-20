@@ -69,7 +69,7 @@
                             <div class="form-group">
                                 <label for="username">Username</label>
                                     <div class="input-group">
-                                        <input id="username" type="text" class="form-control @error('id') is-invalid @enderror" name="id" value="{{ old('id') }}" required autocomplete="id" autofocus>
+                                        <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="id" autofocus>
                                 
                                 @error('id')
                                 <span class="invalid-feedback" role="alert">

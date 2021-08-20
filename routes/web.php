@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -61,15 +62,22 @@ Route::view('/openrekrutasist', 'admin.bukapendaftaran');
 
 // ----------------------------------------- Dashboard Dosen -------------------------------------------------------------------- \\
 
-Route::get('dosen/dashboard', [App\Http\Controllers\UserController::class, 'dashboardDsn'])->name('dsn.dashboard')->middleware('dsnMid');
+Route::get('dosen/dashboard', [UserController::class, 'dashboardDsn'])->name('dsn.dashboard')->middleware('dsnMid');
 
-Route::view('dosen/profile', 'dsn.profile');
+Route::get('dosen/profile', [UserController::class, 'dsnProfile']);
 
-Route::view('dosen/presensi', 'dsn.presensi');
+Route::get('dosen/presensi', [UserController::class, 'dsnPresensi']);
 
-Route::post('change-profile-pic', [App\Http\Controllers\UserController::class, 'updateFoto'])->name('updateFotoUser');
+Route::post('change-profile-pic', [UserController::class, 'updateFoto'])->name('updateFotoUser');
 
-Route::post('change-password', [\App\Http\Controllers\UserController::class, 'gantiPassword'])->name('gantiPassword');
+Route::post('change-password', [UserController::class, 'gantiPassword'])->name('gantiPassword');
+
+Route::get('/matkul/{id}', [UserController::class, 'matkulDsn']);
+
+Route::post('/upload-image', [UserController::class, 'dropZone' ])->name('drag-drop');
+
+Route::post('/upload-file', [UserController::class, 'fileUpload'])->name('fileUpload');
+
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
 
 Route::get('asist/dashboard', [App\Http\Controllers\HomeController::class, 'asistDashboard'])->name('asist.dashboard')->middleware('asistMid');
@@ -80,9 +88,11 @@ Route::view('asist/presensi', 'asist.presensi');
 
 Route::get('mhs/dashboard', [App\Http\Controllers\UserController::class, 'dashboardMhs'])->name('mhs.dashboard')->middleware('mhsMid');
 
-Route::view('mhs/profile', 'mhs.profile');
+Route::get('mhs/profile', [App\Http\Controllers\UserController::class, 'mhsProfile']);
 
-Route::view('mhs/presensi', 'mhs.presensi');
+Route::get('mhs/presensi', [App\Http\Controllers\UserController::class, 'mhsPresensi']);
+
+Route::view('mhs/matkul', 'mhs.matkullayout');
 
 Route::view('form-daftar-asisten', [App\Http\Controllers\UserController::class, 'formdaftar']);
 

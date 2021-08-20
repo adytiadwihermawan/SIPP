@@ -61,11 +61,11 @@ class LoginController extends Controller
     {
         $input = $request->all();
         $this->validate($request,[
-            'id' => 'required',
+            'username' => 'required',
             'password' => 'required',
         ]);
           
-        if(auth()->attempt(array('id' => $input['id'], 'password' => $input['password'])))
+        if(auth()->attempt(array('username' => $input['username'], 'password' => $input['password'])))
         {
             
             if(auth()->user()->id_status == 1){

@@ -44,7 +44,7 @@
 				@foreach ($user as $item)
                     <tr>
 						<td style="text-align: center;">{{ $no }}</td>
-                        <td>{{ $item->id }}</td>
+                        <td>{{ $item->username }}</td>
                         <td>{{ $item->nama_user }}</td>
                         <td style="text-align: center;">{{ $item->status}}</td>
 						<td style="text-align: center;">

@@ -40,14 +40,14 @@
           </p>
         </a>
         <ul class="nav nav-treeview">
-          {{-- @foreach ($course as $matkul)
+          @foreach ($course as $matkul)
           <li class="nav-item">
-            <a href="praktikum.html" class="nav-link">
+            <a href="{{url('mhs/matkul')}}" class="{{ request()->is('mhs/matkul') ? 'nav-link active' : 'nav-link' }}">
               <i class="fas fa-book-open"></i>
               <p>{{ $matkul->nama_praktikum }}</p>
             </a>
           </li>
-          @endforeach --}}
+          @endforeach
 
         </ul>
       </li>

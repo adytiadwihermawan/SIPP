@@ -1,5 +1,5 @@
 @extends('mhs.dashboard')
-@section('title', {{Praktikum::->nama_praktikum->get()}})
+@section('title', "d")
 
 @section('content')
   <!-- Content Wrapper. Contains page content -->
@@ -18,7 +18,9 @@
     <!-- /.content-header -->
     <div class="card card-primary ml-2">
       <div class="card-header">
-        <h3 class="card-title">Nama Matkul</h3>
+        <h3 class="card-title">
+          Nama Praktikum
+        </h3>
       </div>
     <!-- Main content -->
     <section class="content mt-3">

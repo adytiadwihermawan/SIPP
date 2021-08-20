@@ -19,7 +19,7 @@
 				<div class="icon">
 					<i class="ion ion-stats-bars"></i>
 				</div>
-				<a href="{{url($matkul->id_praktikum)}}" class="{{ request()->is($matkul->id_praktikum) ? 'nav-link active' : 'nav-link' }}" class="small-box-footer">Selengkapnya
+			<a href="/matkul/{{$matkul->id_praktikum}}" class="small-box-footer">Selengkapnya
 					<i class="fas fa-arrow-circle-right"></i>
 				</a>
 			</div>
