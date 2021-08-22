@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\asistModel;
 use Illuminate\Http\Request;
 use App\Models\Proses_praktikum;
+use App\Models\User;
+use App\Models\Roles;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -40,13 +43,24 @@ class HomeController extends Controller
 
     public function asistDashboard()
     {
+
+        return view('auth.dashboard');
+    }
+
+    public function asistHome()
+    {
         return view('asist.home');
+    }
+
+    public function mhsHome()
+    {
+        $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+
+        return view('mhs.home', compact('course'));
     }
 
     public function mhsDashboard()
     {
-        // $course = Proses_praktikum::with('course')->all();
-
-        return view('mhs.home');
+        return view('asist.halamanawal');
     }
 }

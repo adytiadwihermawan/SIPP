@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Roles;
 
 class LoginController extends Controller
 {
@@ -39,7 +40,7 @@ class LoginController extends Controller
             elseif(auth()->user()->id_status == 2){
                 return route('dsn.dashboard');
             }
-            elseif(auth()->user()->id_status == 3)
+            elseif(auth()->user()->id_status == 3 && Roles::where('id_status', '=', 4))
             {
                 return route('asist.dashboard');
             }
@@ -74,7 +75,7 @@ class LoginController extends Controller
             elseif(auth()->user()->id_status == 2){
                 return redirect()->route('dsn.dashboard');
             }
-            elseif(auth()->user()->id_status == 3)
+            elseif(auth()->user()->id_status == 3 && Roles::where('id_status', '=', 4))
             {
                 return redirect()->route('asist.dashboard');
             }

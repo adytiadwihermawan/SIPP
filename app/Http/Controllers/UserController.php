@@ -14,9 +14,7 @@ class UserController extends Controller
 {
     public function dashboardMhs()
     {
-        $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
-
-        return view('mhs.home', compact('course'));
+        return view('auth.dashboard');
     }
 
     public function mhsProfile()

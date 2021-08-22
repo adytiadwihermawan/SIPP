@@ -78,13 +78,17 @@ Route::post('upload', [UserController::class, 'upload'])->name('fileUpload');
 
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
 
-Route::get('asist/dashboard', [App\Http\Controllers\HomeController::class, 'asistDashboard'])->name('asist.dashboard')->middleware('asistMid');
+Route::get('asist/home', [App\Http\Controllers\HomeController::class, 'asistDashboard'])->name('asist.dashboard')->middleware('asistMid');
+
+Route::get('asist/dashboard', [App\Http\Controllers\HomeController::class, 'asistHome'])->name('asist.home');
 
 Route::view('asist/presensi', 'asist.presensi');
 
 // -----------------------------------------  Dashboard Mahasiswa -------------------------------------------------------------------- \\
 
-Route::get('mhs/dashboard', [App\Http\Controllers\UserController::class, 'dashboardMhs'])->name('mhs.dashboard')->middleware('mhsMid');
+Route::get('mhs/home', [App\Http\Controllers\UserController::class, 'dashboardMhs'])->name('mhs.dashboard')->middleware('mhsMid');
+
+Route::get('mhs/dashboard', [App\Http\Controllers\HomeController::class, 'mhsHome'])->name('mhs.home');
 
 Route::get('mhs/profile', [App\Http\Controllers\UserController::class, 'mhsProfile']);
 
