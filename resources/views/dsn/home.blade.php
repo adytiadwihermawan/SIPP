@@ -19,7 +19,7 @@
 				<div class="icon">
 					<i class="ion ion-stats-bars"></i>
 				</div>
-			<a href="/matkul/{{$matkul->nama_praktikum}}" class="small-box-footer">Selengkapnya
+			<a href="/matkul/{{$matkul->id_praktikum}}" class="small-box-footer">Selengkapnya
 					<i class="fas fa-arrow-circle-right"></i>
 				</a>
 			</div>

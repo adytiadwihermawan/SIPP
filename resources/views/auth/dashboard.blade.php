@@ -90,13 +90,6 @@
       
    
     </div>
-        <!-- /.row -->
-        <!-- Main row -->
-       <!-- /.modal -->
-
-      
-        <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
     </section>
 
 <!-- jQuery -->

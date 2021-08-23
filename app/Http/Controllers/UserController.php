@@ -75,7 +75,9 @@ class UserController extends Controller
 
     public function matkulDsn($id)
     {
-        $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+        $course = Proses_praktikum::leftJoin('pertemuan', 'proses_praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
+        ->leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)
+        ->get();
     
         return view('dsn.matakuliah', compact('course'));
 
