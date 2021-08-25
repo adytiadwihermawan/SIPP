@@ -94,7 +94,7 @@
             {{-- style="height: auto;
             width: 1rem;" --}}
             <img  style="height: auto;
-            width: 2.6rem;" src="{{asset('dist/img/defaultpic.png')}}" class="img-circle elevation-2" alt="User Image">
+            width: 2.6rem;" src="{{Auth::user()->fotouser}}" class="img-circle elevation-2" alt="User Image">
           </div>
         <div class="info" style="white-space: normal;">
           <a href="#" >
@@ -103,7 +103,7 @@
         <br>
           <span class="badge badge-success" style="font-size: 12px;">
               {{-- nampilkan id user --}}
-                {{ Auth::user()->id }}
+                {{ Auth::user()->username }}
           </span>
         </div>
       </div>

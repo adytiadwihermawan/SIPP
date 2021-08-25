@@ -41,16 +41,7 @@ class HomeController extends Controller
         return view('dsn.home');
     }
 
-    public function asistDashboard()
-    {
-
-        return view('auth.dashboard');
-    }
-
-    public function asistHome()
-    {
-        return view('asist.home');
-    }
+   
 
     public function mhsHome()
     {

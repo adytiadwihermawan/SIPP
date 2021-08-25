@@ -36,31 +36,13 @@
             <div class="card">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#data_pribadi" data-toggle="tab">Data Pribadi</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#ganti_password" data-toggle="tab">Ganti Password</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="#ganti_password" data-toggle="tab">Ganti Password</a></li>
                 </ul>
               </div><!-- /.card-header -->
               <div class="card-body">
                 <div class="tab-content">
-                  <div  class="active tab-pane" id="data_pribadi">
-                    <form class="form-horizontal">
-                      @csrf
-                      <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name" value="{{Auth::user()->nama_user}}" readonly>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputName2" class="col-sm-2 col-form-label">Username</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputName2" placeholder="Username" value="{{Auth::user()->id}}" readonly>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
                   <!-- /.tab-pane -->
-                  <div  class="tab-pane" id="ganti_password">
+                  <div  class="active tab-pane" id="ganti_password">
                     <form class="form-horizontal" action="{{ route('gantiPassword') }}" method="POST" id="gantiPass">
                       @csrf
                       <div class="form-group row">

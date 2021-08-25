@@ -72,32 +72,34 @@ Route::post('change-profile-pic', [UserController::class, 'updateFoto'])->name('
 
 Route::post('change-password', [UserController::class, 'gantiPassword'])->name('gantiPassword');
 
-Route::get('/matkul/{id}', [UserController::class, 'matkulDsn']);
+Route::get('dsn/matkul/{id}', [UserController::class, 'matkulDsn']);
 
 Route::post('upload', [UserController::class, 'upload'])->name('fileUpload');
 
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
 
-Route::get('asist/home', [App\Http\Controllers\HomeController::class, 'asistDashboard'])->name('asist.dashboard')->middleware('asistMid');
+Route::get('asist/home', [UserController::class, 'asistDashboard'])->name('asist.dashboard')->middleware('asistMid');
 
-Route::get('asist/dashboard', [App\Http\Controllers\HomeController::class, 'asistHome'])->name('asist.home');
+Route::get('asist/dashboard', [UserController::class, 'asistHome'])->name('asist.home');
 
-Route::view('asist/presensi', 'asist.presensi');
+Route::get('asist/presensi', [UserController::class, 'asistPresensi']);
+
+Route::get('asist/matkul/{id}', [UserController::class, 'matkulAsisten']);
 
 // -----------------------------------------  Dashboard Mahasiswa -------------------------------------------------------------------- \\
 
-Route::get('mhs/home', [App\Http\Controllers\UserController::class, 'dashboardMhs'])->name('mhs.dashboard')->middleware('mhsMid');
+Route::get('mhs/home', [UserController::class, 'dashboardMhs'])->name('mhs.dashboard')->middleware('mhsMid');
 
 Route::get('mhs/dashboard', [App\Http\Controllers\HomeController::class, 'mhsHome'])->name('mhs.home');
 
-Route::get('mhs/profile', [App\Http\Controllers\UserController::class, 'mhsProfile']);
+Route::get('mhs/profile', [UserController::class, 'mhsProfile']);
 
-Route::get('mhs/presensi', [App\Http\Controllers\UserController::class, 'mhsPresensi']);
+Route::get('mhs/presensi', [UserController::class, 'mhsPresensi']);
 
-Route::view('mhs/matkul', 'mhs.matkullayout');
+Route::get('mhs/matkul/{id}', [UserController::class, 'matkulMhs']);
 
-Route::view('form-daftar-asisten', [App\Http\Controllers\UserController::class, 'formdaftar']);
+Route::view('form-daftar-asisten', [UserController::class, 'formdaftar']);
 
-Route::post('change-profile-pic', [App\Http\Controllers\UserController::class, 'updateFoto'])->name('updateFotoUser');
+Route::post('change-profile-pic', [UserController::class, 'updateFoto'])->name('updateFotoUser');
 
-Route::post('change-password', [\App\Http\Controllers\UserController::class, 'gantiPassword'])->name('gantiPassword');
+Route::post('change-password', [\UserController::class, 'gantiPassword'])->name('gantiPassword');

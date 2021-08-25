@@ -42,7 +42,7 @@
         <ul class="nav nav-treeview">
           @foreach ($course as $matkul)
           <li class="nav-item">
-            <a href="{{url('mhs/matkul')}}" class="{{ request()->is('mhs/matkul') ? 'nav-link active' : 'nav-link' }}">
+            <a href="/mhs/matkul/{{$matkul->id_praktikum}}" class="{{ request()->is('mhs/matkul') ? 'nav-link active' : 'nav-link' }}">
               <i class="fas fa-book-open"></i>
               <p>{{ $matkul->nama_praktikum }}</p>
             </a>

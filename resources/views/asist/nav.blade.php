@@ -30,28 +30,15 @@
         </p>
       </a>
       <ul class="nav nav-treeview">
-        <li class="nav-item">
-          <a href="praktikum.html" class="nav-link">
-            <i class="fas fa-book-open"></i>
-            <p>Pemrograman Web</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="fas fa-book-open"></i>
-            <p>Web Framework</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="fas fa-book-open"></i>
-            <p>Desain Web</p>
-          </a>
-        </li>
+         @foreach ($course as $matkul)
+          <li class="nav-item">
+            <a href="/asist/matkul/{{$matkul->id_praktikum}}" class="{{ request()->is('mhs/matkul') ? 'nav-link active' : 'nav-link' }}">
+              <i class="fas fa-book-open"></i>
+              <p>{{ $matkul->nama_praktikum }}</p>
+            </a>
+          </li>
+          @endforeach
       </ul>
-    </li>
-    
-  </ul>
 </nav>
 <!-- /.sidebar-menu -->
 </div>

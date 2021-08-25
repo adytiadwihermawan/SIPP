@@ -1,4 +1,4 @@
-@extends('dsn.dashboard')
+@extends('mhs.dashboard')
 @section('title', '')
 
 @section('content')
@@ -28,8 +28,7 @@
           <!-- Small boxes (Stat box) -->
             <!-- Default box -->
 
-        <div class="card card-lightblue"> 
-            <input type="hidden" name="id" value="{{$item->id_pertemuan}}" readonly>
+        <div class="card card-lightblue">
           <div class="card-header">
             <h3 class="card-title">{{$item->nama_pertemuan}}</h3>
             <div class="card-tools">
@@ -54,12 +53,6 @@
                   </form>
                 </div>
               </div> --}}
-            <div class="card-body">
-              <button type="button" style="float: right" class="btn btn-primary" data-toggle="modal" data-target="#addmateri">
-                Upload Materi
-              </button>
-            </div>
-              
           </div>
           <!-- Modal -->
           <div class="modal fade" id="addmateri" tabindex="-1" role="dialog" aria-labelledby="addmateriLabel" aria-hidden="true">

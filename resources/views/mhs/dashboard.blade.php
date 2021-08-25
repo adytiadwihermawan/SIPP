@@ -89,7 +89,7 @@
         <br>
           <span class="badge badge-success" style="font-size: 12px;">
               {{-- nampilkan id user --}}
-                {{ Auth::user()->id }}
+                {{ Auth::user()->username }}
           </span>
         </div>
       </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 22, 2021 at 07:02 PM
+-- Generation Time: Aug 25, 2021 at 01:21 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -64,7 +64,6 @@ INSERT INTO `lab` (`id_laboratorium`, `nama_laboratorium`, `id_kepalalaboratoriu
 CREATE TABLE `materi` (
   `id_materi` int(11) NOT NULL,
   `namafile_materi` varchar(250) DEFAULT NULL,
-  `deskripsi` varchar(10000) DEFAULT NULL,
   `id_pertemuan` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -93,6 +92,14 @@ CREATE TABLE `pertemuan` (
   `deskripsi` varchar(2500) DEFAULT NULL,
   `id_praktikum` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pertemuan`
+--
+
+INSERT INTO `pertemuan` (`id_pertemuan`, `nama_pertemuan`, `deskripsi`, `id_praktikum`) VALUES
+(1, 'Pertemuan 1', 'cek', 2),
+(4, 'Pertemuan 2', 'kk', 2);
 
 -- --------------------------------------------------------
 
@@ -144,6 +151,17 @@ CREATE TABLE `proses_praktikum` (
   `id_presensi` int(11) DEFAULT NULL,
   `id_proses` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `proses_praktikum`
+--
+
+INSERT INTO `proses_praktikum` (`id_praktikum`, `id_user`, `tgl_praktikum`, `id_presensi`, `id_proses`) VALUES
+(2, 4, NULL, NULL, 4),
+(2, 8, NULL, NULL, 5),
+(1, 8, NULL, NULL, 6),
+(2, 5, NULL, NULL, 7),
+(3, 5, NULL, NULL, 8);
 
 -- --------------------------------------------------------
 
@@ -256,13 +274,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `nama_user`, `id_status`, `password`, `fotouser`, `username`) VALUES
-(4, 'Aji Sukma Ramadhan', 3, '$2y$10$ltFnp.vlTWjmtEu5IpadKe2tKaagdVaambs/Q6v5ZvkADD5YQlYSG', NULL, '1810817210006'),
+(4, 'Aji Sukma Ramadhan', 3, '$2y$10$ltFnp.vlTWjmtEu5IpadKe2tKaagdVaambs/Q6v5ZvkADD5YQlYSG', 'User Image_20210825612620d5c4fa2.jpg', '1810817210006'),
 (5, 'Adytia Dwi Hermawan', 4, '$2y$10$GVN7Var7uPiZCq6TR9uz9O2Nt8EWftGP3VRuBtse2NSOL2lFQTts2', NULL, '1810817210007'),
 (6, 'Eka Setya Wijaya', 2, '$2y$10$1JQJbvdsUocModb9dYCeAuubvxD2VlvY7ARq8Fbi.DAXuZ8aG9lpG', NULL, '198205082008011010'),
 (7, 'Andry Fajar Zulkarnain, S.Kom., M.Kom', 2, '$2y$10$MtIN.6hBMO4tjLKclPINyeULykk6p7NryJWCipmJ.RRBWJHfLqy1u', NULL, '199007272019031018'),
 (8, 'Andreyan Rizky Baskara, S.Kom., M.Kom', 2, '$2y$10$rqnVawz.MML38FxfQ32mHu96woJ8M667SzFFUofntJjaqfTKIuC5a', NULL, '199307032019031011'),
 (9, 'Nurul Fathanah Mustamin, S.Kom., M.Kom', 2, '$2y$10$JQz2hCyR159zogyogvpEBePUNqCwIZjW6xvlji1KWPU1r6acf87bO', NULL, '199110252019032018'),
-(10, 'Admin', 1, '$2y$10$xb4chKWaJErcc8tWGoDJXuQmNsh8.MtQ1uli52QyZdqo5Lh/j4lMS', NULL, 'admin');
+(10, 'Admin', 1, '$2y$10$xb4chKWaJErcc8tWGoDJXuQmNsh8.MtQ1uli52QyZdqo5Lh/j4lMS', NULL, 'admin'),
+(11, 'tes', 4, '$2y$10$U8RHRcJBF29EU8qnDu/tc.i5kBnLv4/mewu9doDbQEUrtFLjohc0S', NULL, '123');
 
 -- --------------------------------------------------------
 
@@ -446,7 +465,7 @@ ALTER TABLE `nilai`
 -- AUTO_INCREMENT for table `pertemuan`
 --
 ALTER TABLE `pertemuan`
-  MODIFY `id_pertemuan` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pertemuan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `praktikum`
@@ -464,7 +483,7 @@ ALTER TABLE `presensi`
 -- AUTO_INCREMENT for table `proses_praktikum`
 --
 ALTER TABLE `proses_praktikum`
-  MODIFY `id_proses` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_proses` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `rekrutasisten`
@@ -500,7 +519,7 @@ ALTER TABLE `uploadtugas`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `wadahpresensi`

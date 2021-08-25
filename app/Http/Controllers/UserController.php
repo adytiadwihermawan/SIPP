@@ -32,11 +32,44 @@ class UserController extends Controller
     }
 
 
-    function matkul()
+    public function matkulMhs($id)
     {
-        $course = Praktikum::get();
+        $course = Proses_praktikum::leftJoin('pertemuan', 'proses_praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
+        ->leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)
+        ->get();
+    
+        return view('mhs.matakuliah', compact('course'));
 
-        return view('mhs.matkullayout', compact('course'));
+    }
+
+     public function asistDashboard()
+    {
+
+        return view('auth.dashboard');
+    }
+
+    public function asistHome()
+    {
+        $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+        
+        return view('asist.home', compact('course'));
+    }
+
+    public function asistPresensi()
+    {
+       $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+
+        return view('asist.presensi', compact('course'));
+    }
+
+    public function matkulAsisten($id)
+    {
+        $course = Proses_praktikum::leftJoin('pertemuan', 'proses_praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
+        ->leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)
+        ->get();
+    
+        return view('asist.matakuliah', compact('course'));
+
     }
 
     // public function formdaftar()
@@ -82,6 +115,7 @@ class UserController extends Controller
         return view('dsn.matakuliah', compact('course'));
 
     }
+    
 
     // public  function dropZone(Request $request)  
     // {  
@@ -96,33 +130,33 @@ class UserController extends Controller
         '_file' => 'required|mimes:ppt,txt,xlx,xls,doc,docx,pdf|max:2048'
         ]);
 
-        $fileModel = new Materi;
+        // $fileModel = new Materi;
 
-        if($request->file()) {
-            $path = 'uploads/';
-            $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
-            // $fileName = time().'_'.$request->_file->getClientOriginalName();
-            // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
-            $filePath = $request->_file->move(public_path($path), $newname);
+        // if($request->file()) {
+        //     $path = 'uploads/';
+        //     $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
+        //     // $fileName = time().'_'.$request->_file->getClientOriginalName();
+        //     // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
+        //     $filePath = $request->_file->move(public_path($path), $newname);
 
-            $fileModel->name = $request->_file->getClientOriginalName();
-            $fileModel->save();
+        //     $fileModel->namafile_materi= $request->_file->getClientOriginalName();
+        //     $fileModel->save();
 
-            return back()
-            ->with('success','File has been uploaded.');
-        }
-        // $path = 'uploads/';
-        // $newname = Helper::renameFile($path, $request->file('_file')>getClientOriginalName());
-
-        // $upload = $request->_file->move(public_path($path), $newname);
-        // if($upload){
-        //     $post = new Materi();
-        //     $post->name = $newname;
-        //     $post->save();
-        //     echo 'Berhasil';
-        // }else{
-        //     echo 'Gagal';
+        //     return back()
+        //     ->with('success','File has been uploaded.');
         // }
+        $path = 'uploads/';
+        $newname = Helper::renameFile($path, $request->file('_file')>getClientOriginalName());
+
+        $upload = $request->_file->move(public_path($path), $newname);
+        if($upload){
+            $post = new Materi();
+            $post->name = $newname;
+            $post->save();
+            echo 'Berhasil';
+        }else{
+            echo 'Gagal';
+        }
    }
 
     function updateFoto(Request $request)

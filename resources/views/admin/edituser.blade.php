@@ -23,7 +23,7 @@
 						@csrf
 							<div class="form-group">
 								<label for="">Id User</label>
-								<input type="text" class="form-control" name="id" value="{{ old('id', $Info->id) }}" readonly>
+								<input type="text" class="form-control" name="id" value="{{ old('id', $Info->username) }}" readonly>
 							</div>
 
 							<div class="form-group">

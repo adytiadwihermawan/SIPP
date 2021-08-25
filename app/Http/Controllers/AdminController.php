@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Praktikum;
+use App\Models\Proses_Praktikum;
 use App\Models\Lab;
 use App\Models\Status_user;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +38,7 @@ class AdminController extends Controller
  
      $query = User::insert([
           'nama_user'=>$request->input('nama_user'),
-          'id'=>$request->input('id'),
+          'username'=>$request->input('id'),
           'password'=> Hash::make($request->input('password')),
           'id_status'=>$request->input('role')
      ]);
