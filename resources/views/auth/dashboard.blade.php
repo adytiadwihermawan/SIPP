@@ -25,16 +25,23 @@
   <link rel="stylesheet" href="{{asset('template/plugins/summernote/summernote-bs4.css')}}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+  <style>
+    .callout a:hover{
+      color: #2C58AA!important;
+    }
+  </style>
+
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" style="background: #F0F0F0; color: #666A6B; font-family:Verdana, Geneva, Tahoma, sans-serif">
 <div class="wrapper">
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
  <ul class="navbar-nav ml-auto">
    <div class="user-panel mt-0 pb-0 mb-0 d-flex" >
      <div class="image">
-       <img src="{{asset('dist/img/defaultpic.png')}}" class="img-circle elevation-2" alt="User Image">
+       <img src="{{ Auth::user()->fotouser}}" class="img-circle elevation-2" alt="User Image">
      </div>
    </div>
      @guest
@@ -64,7 +71,7 @@
  <!-- /.navbar -->
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content">
+  {{-- <div class="content">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container">
@@ -91,7 +98,143 @@
    
     </div>
     </section>
+ --}}
+  <div class="content">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container">
+        
+        <div class="row mb-2 ">
+           <!--noteUI : Masukkan logo -->
+          <img class="img-fluid rounded mx-auto" style="width:8%;" src="{{asset('img/logo.png')}}" alt="Photo">
+      
+        </div>
+        <div class="row mb-2 ml-5 ">
+         
+            <h1 class="m-0 mx-auto" style="font-size: large">
+              Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat</h1>
+          
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <div class="callout callout-defau ml-3 mr-2 mx-auto" style="background-color: #FAFAFF; width:85%">
+      <h1>SELAMAT DATANG</h1>
+     
+      BERIKUT HALAMAN YANG DAPAT ANDA AKSES
 
+      <div class="col-12 mt-3" id="accordion">
+     @if (Auth::user()->id_status == 4)
+      
+      <div class="card card-primary card-outline">
+        <a class="d-block w-100" data-toggle="collapse" href="#collapseThree">
+          <div class="card-header">
+              <h4 class="card-title w-100">
+                  Mahasiswa
+              </h4>
+          </div>
+      </a>
+      <div id="collapseThree" class="collapse" data-parent="#accordion">
+        <div class="card-body" style="background-color: #F6F6FF ;">
+          <div class="row mb-3">
+            <div class="col-sm-6">
+              <img class="img-fluid" src="{{asset('img/portal.jpg')}}" alt="Photo">
+            </div>
+            <div class="col-sm-6">
+              
+                <ul>Halaman mhs dapat digunakan oleh dosen untuk menajamen proses praktikum sesuai kurikulum yang berlaku.</ul>
+                <ul>Dosen dapat membuat pertemuan, membuat absen, mengupload tugas dan proses-proses terkait praktikum lainnya. 
+                </ul> 
+         
+            <div class="mt-5 ml-5">
+              
+              <button type="button" class="btn btn-primary btn-flat mt-1"></i> Kunjungi Situs</button> 
+              <button type="button" class="btn btn-outline-info btn-flat mt-1"><i class="fa fa-book"></i> Panduan pengguna</button>
+            </div>
+            </div>
+         </div>
+    </div>
+  </div>
+ </div>
+     @elseif(Auth::roles()->id_status == 4))
+     <div class="card card-primary card-outline">
+        <a class="d-block w-100" data-toggle="collapse" href="#collapseThree">
+          <div class="card-header">
+              <h4 class="card-title w-100">
+                  Mahasiswa
+              </h4>
+          </div>
+      </a>
+      <div id="collapseThree" class="collapse" data-parent="#accordion">
+        <div class="card-body" style="background-color: #F6F6FF ;">
+          <div class="row mb-3">
+            <div class="col-sm-6">
+              <img class="img-fluid" src="{{asset('img/portal.jpg')}}" alt="Photo">
+            </div>
+            <div class="col-sm-6">
+              
+                <ul>Halaman mhs dapat digunakan oleh dosen untuk menajamen proses praktikum sesuai kurikulum yang berlaku.</ul>
+                <ul>Dosen dapat membuat pertemuan, membuat absen, mengupload tugas dan proses-proses terkait praktikum lainnya. 
+                </ul> 
+         
+            <div class="mt-5 ml-5">
+              
+              <button type="button" class="btn btn-primary btn-flat mt-1"></i> Kunjungi Situs</button> 
+              <button type="button" class="btn btn-outline-info btn-flat mt-1"><i class="fa fa-book"></i> Panduan pengguna</button>
+            </div>
+            </div>
+         </div>
+    </div>
+  </div>
+ </div>
+      <div class="card card-primary card-outline">
+        <a class="d-block w-100" data-toggle="collapse" href="#collapseTwo">
+          <div class="card-header">
+              <h4 class="card-title w-100">
+                  ASISTEN PRAKTIKUM
+              </h4>
+          </div>
+      </a>
+      <div id="collapseTwo" class="collapse" data-parent="#accordion">
+        <div class="card-body" style="background-color: #F6F6FF ;">
+          <div class="row mb-3">
+            <div class="col-sm-6">
+              <img class="img-fluid" src="{{asset('img/portal.jpg')}}" alt="Photo">
+            </div>
+            <div class="col-sm-6">
+              
+                <ul>Halaman asisten praktikum dapat digunakan mahasiswa yang menjadi asisten praktikum untuk menajamen proses praktikum berdasarkan arahan dari dosen pengampu mata kuliah.
+                </ul>
+                <ul>Asisten praktikum dapat membuat pertemuan, membuat absen, mengupload tugas dan proses-proses terkait praktikum lainnya. 
+                </ul> 
+         
+            <div class="mt-5 ml-5">
+              
+              <button type="button" class="btn btn-primary btn-flat mt-1"></i> Kunjungi Situs</button> 
+              <button type="button" class="btn btn-outline-info btn-flat mt-1"><i class="fa fa-book"></i> Panduan pengguna</button>
+            </div>
+            </div>
+         </div>
+    </div>
+  </div>
+      </div>
+@endif
+      
+      
+     
+  </div>
+    </div>
+        <!-- /.row -->
+        <!-- Main row -->
+       <!-- /.modal -->
+
+      
+        <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- /.content -->
+  </div>
 <!-- jQuery -->
 <script src="{{asset('template/plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->

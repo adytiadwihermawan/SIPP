@@ -1,7 +1,165 @@
-@extends('dsn.dashboard')
-@section('title', '')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+  <title>{{$course[0]->nama_praktikum}}</title>
 
-@section('content')
+   <!-- Font Awesome -->
+   <link rel="stylesheet" href="{{asset('template/plugins/fontawesome-free/css/all.min.css')}}">
+   <!-- Theme style -->
+   <link rel="stylesheet" href="{{asset('template/dist/css/adminlte.min.css')}}">
+   <!-- overlayScrollbars -->
+   <link rel="stylesheet" href="{{asset('template/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
+   <!-- Google Font: Source Sans Pro -->
+   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+   <link rel="stylesheet" href="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.css')}}">
+
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.min.css" rel="stylesheet">
+    
+    <style>
+        .dropzone {
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 14px;
+            margin: 60px 0 0 0;
+            background: #e3e6ff;
+            border: 1px dotted #4e4e4e;            
+        }
+
+        .container {
+            max-width: 500px;
+        }
+        dl, ol, ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+    </style>
+  </head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+     <!-- Left navbar links -->
+     <ul class="navbar-nav">
+      <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+  </ul>
+  <ul class="navbar-nav ml-auto">
+    <div class="user-panel mt-0 pb-0 mb-0 d-flex" >
+      <div class="image">
+        <img src="{{ Auth::user()->fotouser}}" class="img-circle elevation-2 user_picture" alt="User Image">
+      </div>
+    </div>
+      @guest
+      @else
+    
+          <li class="nav-item dropdown">
+              <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                  {{ Auth::user()->nama_user }}
+              </a>
+
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="{{ route('logout') }}"
+                     onclick="event.preventDefault();
+                                   document.getElementById('logout-form').submit();">
+                      {{ __('Logout') }}
+                  </a>
+
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                      @csrf
+                  </form>
+              </div>
+          </li>
+      @endguest
+  </ul>
+ 
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        
+          <!-- Brand Logo -->
+          <a href="index3.html" class="brand-link">
+            <img src="{{asset('dist/img/logoulm.png')}}" alt="logoulm" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">SIPP-TI</span>
+          </a>
+
+          <!-- Sidebar -->
+          <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+              <div class="user-panel mt-3 pb-3 mb-1 d-flex">
+                <div class="image">
+                  {{-- style="height: auto;
+                  width: 1rem;" --}}
+                  <img  style="height: auto;
+                  width: 2.6rem;" src="{{Auth::user()->fotouser}}" class="img-circle elevation-2 user_picture" alt="User Image">
+                </div>
+              <div class="info" style="white-space: normal;">
+                <a href="#" >
+                  {{Auth::user()->nama_user}}
+                </a>
+              <br>
+                <span class="badge badge-success" style="font-size: 12px;">
+                    {{-- nampilkan id user --}}
+                      {{ Auth::user()->username }}
+                </span>
+              </div>
+            </div>
+          
+            <!-- Sidebar Menu -->
+            <nav class="mt-4">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+                with font-awesome or any other icon font library -->
+
+                <li class="nav-item">
+                  <a href="{{ url('dosen/dashboard') }}" class="{{ request()->is('dosen/dashboard') ? 'nav-link active' : 'nav-link' }}">
+                    <i class="nav-icon fas fa-book-open"></i>
+                    <p> {{$course[0]->nama_praktikum}}</p>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a href="{{url('dosen/profile')}}" class="{{ request()->is('dosen/profile') ? 'nav-link active' : 'nav-link' }}">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>
+                      Participants
+                    </p>
+                  </a>
+                </li>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+      </aside>
+     <!-- /.sidebar-menu -->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h5 class="m-0 text-dark">@yield('Judul')</h5>
+          </div><!-- /.col -->
+        
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="container-fluid">
+      
   <!-- Content Wrapper. Contains page content -->
   <div class="content">
     <!-- Content Header (Page header) -->
@@ -12,24 +170,26 @@
     <div class="card card-primary ml-2">
       <div class="card-header">
         <h3 class="card-title">
-          @forelse ($course as $item)
-            {{$item->nama_praktikum}}
-            @break
-            @empty
-            <p>s</p>
-          @endforelse
+            {{$course[0]->nama_praktikum}}
         </h3>
       </div>
-      @for($i = 0; $i<$item->id_praktikum; $i++)   
-      @if ($item->id_praktikum != null)
+    </div>
+    <?php $count = 0; ?>
+      @foreach($course as $item)  
+    <?php 
+      $total = $item->where('id_praktikum', '=', $item->id_praktikum)->count();
+      if($count == $total) 
+        break; 
+    ?>
+      @if ($item->id_praktikum)
       <!-- Main content -->
+    <div class="card card-primary ml-2">
       <section class="content mt-3">
         <div class="container-fluid">
           <!-- Small boxes (Stat box) -->
             <!-- Default box -->
 
         <div class="card card-lightblue"> 
-            <input type="hidden" name="id" value="{{$item->id_pertemuan}}" readonly>
           <div class="card-header">
             <h3 class="card-title">{{$item->nama_pertemuan}}</h3>
             <div class="card-tools">
@@ -41,19 +201,6 @@
           <div class="card-body">
               <p>llll{{ $item->id_materi}}</p>
           </div>
-
-              {{-- <div class="card-body">
-                <div id="dropzone">
-                  <form class="dropzone needsclick" id="demo-upload" action="" enctype="multipart/form-data">
-                  @csrf
-                    <div class="dz-message needsclick">    
-                      Drop files here or click to upload.<br>
-                      <span class="note needsclick">(This is just a demo dropzone. Selected 
-                      files are <strong>not</strong> actually uploaded.)</span>
-                    </div>
-                  </form>
-                </div>
-              </div> --}}
             <div class="card-body">
               <button type="button" style="float: right" class="btn btn-primary" data-toggle="modal" data-target="#addmateri">
                 Upload Materi
@@ -102,28 +249,46 @@
               </div>
             </div>
             </div>
-            <!-- end Modal -->
-          <!-- /.card-body -->
           <div class="card-footer">
             {{$item->deskripsi}}
           </div>
-          <!-- /.card-footer-->
         </div>
-        <!-- /.card -->
-            <!-- ./col -->
+        <?php $count++; ?>
+        @endif
+        @endforeach
     </div>
-          <!-- /.row -->
-          <!-- Main row -->
-        <!-- /.modal -->
-
-        
-          <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
       </section>
-      @else
 <!-- /.content -->
-      @endif  
-      @endfor
   </div>
   <!-- /.content-wrapper -->
-@endsection
+    </div>
+  </div>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="{{asset('template/plugins/jquery/jquery.min.js')}}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{{asset('template/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="{{asset('template/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<!-- overlayScrollbars -->
+<script src="{{asset('template/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
+<!-- AdminLTE App -->
+<script src="{{asset('template/dist/js/adminlte.js')}}"></script>
+
+<script src="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.js')}}"></script>
+
+</body>
+</html>

@@ -8,6 +8,7 @@ use App\Models\Praktikum;
 use App\Models\Proses_Praktikum;
 use App\Models\Lab;
 use App\Models\Status_user;
+use App\Models\Roles;
 use Illuminate\Support\Facades\DB;
 
 
@@ -125,7 +126,34 @@ class AdminController extends Controller
         ]);
     }
     
-    // ----------------------- Add Kelas dan Peserta Kelas --------------------------\\
+    
+    // ----------------------- Add Kelas, Asisten dan Peserta Kelas --------------------------\\
+
+    public function pesertakelas(){
+
+        $peserta = User::whereNotIn('nama_user', ['admin'])
+                    ->pluck('nama_user', 'id');
+
+        $datakelas = Praktikum::get();
+
+        return view('admin.addpesertakelas', [
+            'kelas' => $datakelas,
+            'member' => $peserta
+        ]);
+    }
+
+    public function asistenkelas(){
+
+        $peserta = User::whereNotIn('nama_user', ['admin'])
+                    ->pluck('nama_user', 'id');
+
+        $datakelas = Praktikum::get();
+
+        return view('admin.addasistenkelas', [
+            'kelas' => $datakelas,
+            'member' => $peserta
+        ]);
+    }
 
     function addkelas(Request $request){
 
@@ -148,11 +176,33 @@ class AdminController extends Controller
         }
      }
 
+     function addasisten(Request $request){
+
+        $request->validate([
+            'kelas'=>'required',
+            'peserta'=>'required|unique:roles,id_user',
+            'role' => 'required',
+        ]);
+
+        $query = Roles::insert([
+            'id_praktikum'=>$request->input('kelas'),
+            'id_user'=>$request->input('peserta'),
+            'id_status'=>$request->input('role')
+        ]);
+
+        if($query){
+            return redirect('datakelas')->with('berhasil', 'Peserta Kelas Berhasil Ditambahkan');
+        }
+        else{
+            return back()->with('gagal', 'Ada terjadi kesalahan');
+        }
+    }
+
     function addpeserta(Request $request){
 
         $request->validate([
             'kelas'=>'required',
-            'peserta'=>'required'
+            'peserta'=>'required|unique:proses_praktikum,id_user'
         ]);
 
         $query = Proses_praktikum::insert([

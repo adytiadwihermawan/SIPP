@@ -39,14 +39,21 @@
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
+        <?php $count = 0; ?>
         <ul class="nav nav-treeview">
           @foreach ($course as $matkul)
+          <?php 
+            $total = $matkul->where('id_praktikum', '=', $matkul->id_praktikum)->count();
+            if($count == $total) 
+              break; 
+          ?>
           <li class="nav-item">
             <a href="/dsn/matkul/{{$matkul->id_praktikum}}" class="nav-link">
               <i class="fas fa-book-open"></i>
               <p>{{ $matkul->nama_praktikum }}</p>
             </a>
           </li>
+        <?php $count++; ?>
           @endforeach
 
         </ul>

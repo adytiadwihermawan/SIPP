@@ -8,14 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Proses_praktikum extends Model
 {
+    protected $fillable = [
+        'id_user',
+        'id_presensi',
+        'id_praktikum'
+    ];
+
     protected $table = 'proses_praktikum';
     
     public function praktikum()
     {
-        return $this->belongsTo('App\Praktikum');
-    }
-    public function peserta()
-    {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(Praktikum::class);
     }
 }

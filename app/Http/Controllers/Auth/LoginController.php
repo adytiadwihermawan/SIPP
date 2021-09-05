@@ -35,12 +35,12 @@ class LoginController extends Controller
 
         protected function redirectTo(){
             if(auth()->user()->id_status == 1){
-                return Sroute('admin.dashboard');
+                return route('admin.dashboard');
             }
             elseif(auth()->user()->id_status == 2){
                 return route('dsn.dashboard');
             }
-            elseif(auth()->user()->id_status == 3 && Roles::where('id_status', '=', 4))
+            elseif(auth()->user()->id_status == 4 && Roles::where('id_status', '=', 3))
             {
                 return route('asist.dashboard');
             }
@@ -75,7 +75,7 @@ class LoginController extends Controller
             elseif(auth()->user()->id_status == 2){
                 return redirect()->route('dsn.dashboard');
             }
-            elseif(auth()->user()->id_status == 3 && Roles::where('id_status', '=', 4))
+            elseif(auth()->user()->id_status == 4 && Roles::where('id_status', '=', 3))
             {
                 return redirect()->route('asist.dashboard');
             }

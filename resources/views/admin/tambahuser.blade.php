@@ -44,7 +44,6 @@
 									<option value="" selected></option>
 									<option value="1">admin</option>
 									<option value="2">dosen</option>
-									<option value="3">asisten</option>
 									<option value="4">mahasiswa</option>
 								</select>
 								<span style="color:red">@error('role') {{ $message }} @enderror</span>

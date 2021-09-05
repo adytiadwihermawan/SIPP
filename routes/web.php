@@ -32,6 +32,8 @@ Route::post('addkelas', [AdminController::class, 'addkelas']);
 
 Route::post('addpeserta', [AdminController::class, 'addpeserta']);
 
+Route::post('addasisten', [AdminController::class, 'addasisten']);
+
 Route::get('datalab', [AdminController::class, 'datalab']);
 
 Route::post('addlab', [AdminController::class, 'addlab']);
@@ -39,6 +41,10 @@ Route::post('addlab', [AdminController::class, 'addlab']);
 Route::view('/tambahuser', 'admin.tambahuser');
 
 Route::view('/tambahkelas', 'admin.tambahkelas');
+
+Route::get('/tambahpeserta', [AdminController::class, 'pesertakelas']);
+
+Route::get('/tambahasisten', [AdminController::class, 'asistenkelas']);
 
 Route::get('edit/{id}', [AdminController::class, 'edit']);
 

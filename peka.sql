@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 25, 2021 at 01:21 PM
+-- Generation Time: Sep 06, 2021 at 12:27 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `pklpkdatabase`
+-- Database: `peka`
 --
 
 -- --------------------------------------------------------
@@ -98,8 +98,12 @@ CREATE TABLE `pertemuan` (
 --
 
 INSERT INTO `pertemuan` (`id_pertemuan`, `nama_pertemuan`, `deskripsi`, `id_praktikum`) VALUES
-(1, 'Pertemuan 1', 'cek', 2),
-(4, 'Pertemuan 2', 'kk', 2);
+(1, 'Pertemuan 1', 'Ini merupakan deskripsi untuk pertemuan pertama matkul algoritma', 2),
+(4, 'Pertemuan 2', 'Deskripsi pertemuuan kedua matkul ini', 2),
+(6, 'Pertemuan 1', 'Pertemuan pertama mata kuliah basis data halo', 1),
+(8, 'Pertemuan 3', 'Ini merupakan deskipsi untuk pertemuan 3', 2),
+(9, 'Pertemuan 2', 'Pertemuan kedua basis data', 1),
+(10, 'Pertemuan 3', 'Merupakan pertemuan 3 basis data', 1);
 
 -- --------------------------------------------------------
 
@@ -161,7 +165,9 @@ INSERT INTO `proses_praktikum` (`id_praktikum`, `id_user`, `tgl_praktikum`, `id_
 (2, 8, NULL, NULL, 5),
 (1, 8, NULL, NULL, 6),
 (2, 5, NULL, NULL, 7),
-(3, 5, NULL, NULL, 8);
+(3, 5, NULL, NULL, 8),
+(1, 6, NULL, NULL, 9),
+(2, 9, NULL, NULL, 10);
 
 -- --------------------------------------------------------
 
@@ -190,15 +196,17 @@ CREATE TABLE `rekrutasisten` (
 CREATE TABLE `roles` (
   `id_user` int(11) DEFAULT NULL,
   `id_role` int(11) NOT NULL,
-  `id_status` int(11) DEFAULT NULL
+  `id_status` int(11) DEFAULT NULL,
+  `id_praktikum` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `roles`
 --
 
-INSERT INTO `roles` (`id_user`, `id_role`, `id_status`) VALUES
-(4, 1, 4);
+INSERT INTO `roles` (`id_user`, `id_role`, `id_status`, `id_praktikum`) VALUES
+(4, 1, 3, 1),
+(5, 2, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -274,14 +282,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `nama_user`, `id_status`, `password`, `fotouser`, `username`) VALUES
-(4, 'Aji Sukma Ramadhan', 3, '$2y$10$ltFnp.vlTWjmtEu5IpadKe2tKaagdVaambs/Q6v5ZvkADD5YQlYSG', 'User Image_20210825612620d5c4fa2.jpg', '1810817210006'),
+(4, 'Aji Sukma Ramadhan', 4, '$2y$10$ltFnp.vlTWjmtEu5IpadKe2tKaagdVaambs/Q6v5ZvkADD5YQlYSG', 'User Image_20210825612620d5c4fa2.jpg', '1810817210006'),
 (5, 'Adytia Dwi Hermawan', 4, '$2y$10$GVN7Var7uPiZCq6TR9uz9O2Nt8EWftGP3VRuBtse2NSOL2lFQTts2', NULL, '1810817210007'),
 (6, 'Eka Setya Wijaya', 2, '$2y$10$1JQJbvdsUocModb9dYCeAuubvxD2VlvY7ARq8Fbi.DAXuZ8aG9lpG', NULL, '198205082008011010'),
 (7, 'Andry Fajar Zulkarnain, S.Kom., M.Kom', 2, '$2y$10$MtIN.6hBMO4tjLKclPINyeULykk6p7NryJWCipmJ.RRBWJHfLqy1u', NULL, '199007272019031018'),
 (8, 'Andreyan Rizky Baskara, S.Kom., M.Kom', 2, '$2y$10$rqnVawz.MML38FxfQ32mHu96woJ8M667SzFFUofntJjaqfTKIuC5a', NULL, '199307032019031011'),
 (9, 'Nurul Fathanah Mustamin, S.Kom., M.Kom', 2, '$2y$10$JQz2hCyR159zogyogvpEBePUNqCwIZjW6xvlji1KWPU1r6acf87bO', NULL, '199110252019032018'),
 (10, 'Admin', 1, '$2y$10$xb4chKWaJErcc8tWGoDJXuQmNsh8.MtQ1uli52QyZdqo5Lh/j4lMS', NULL, 'admin'),
-(11, 'tes', 4, '$2y$10$U8RHRcJBF29EU8qnDu/tc.i5kBnLv4/mewu9doDbQEUrtFLjohc0S', NULL, '123');
+(12, 'trial 1', 4, '$2y$10$MzF96RWb0dK3Opb1o6upUOu0CynQAIa0iH8jGYIMnXH2SWdP5NSSm', NULL, '12');
 
 -- --------------------------------------------------------
 
@@ -389,7 +397,8 @@ ALTER TABLE `rekrutasisten`
 ALTER TABLE `roles`
   ADD PRIMARY KEY (`id_role`),
   ADD KEY `userroll` (`id_user`),
-  ADD KEY `statusrole` (`id_status`);
+  ADD KEY `statusrole` (`id_status`),
+  ADD KEY `id_praktikum` (`id_praktikum`);
 
 --
 -- Indexes for table `statusform`
@@ -465,7 +474,7 @@ ALTER TABLE `nilai`
 -- AUTO_INCREMENT for table `pertemuan`
 --
 ALTER TABLE `pertemuan`
-  MODIFY `id_pertemuan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_pertemuan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `praktikum`
@@ -483,7 +492,7 @@ ALTER TABLE `presensi`
 -- AUTO_INCREMENT for table `proses_praktikum`
 --
 ALTER TABLE `proses_praktikum`
-  MODIFY `id_proses` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_proses` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `rekrutasisten`
@@ -495,7 +504,7 @@ ALTER TABLE `rekrutasisten`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `statusform`
@@ -519,7 +528,7 @@ ALTER TABLE `uploadtugas`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `wadahpresensi`
@@ -600,6 +609,7 @@ ALTER TABLE `rekrutasisten`
 -- Constraints for table `roles`
 --
 ALTER TABLE `roles`
+  ADD CONSTRAINT `roles_ibfk_1` FOREIGN KEY (`id_praktikum`) REFERENCES `praktikum` (`id_praktikum`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `statusrole` FOREIGN KEY (`id_status`) REFERENCES `status_user` (`id_status`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `userroll` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Praktikum;
+use App\Models\Pertemuan;
 use App\Models\Proses_praktikum;
 use App\Models\User;
 use App\Models\Statusform;
@@ -108,10 +110,15 @@ class UserController extends Controller
 
     public function matkulDsn($id)
     {
-        $course = Proses_praktikum::leftJoin('pertemuan', 'proses_praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
-        ->leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)
+        $course = Proses_praktikum::join('pertemuan', 'proses_praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
+        ->join('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('pertemuan.id_praktikum', $id)
         ->get();
-    
+        
+        // $course = Proses_praktikum::with(relations: 'praktikum')->
+        //                             get();
+
+        // dd($course);
+        
         return view('dsn.matakuliah', compact('course'));
 
     }
