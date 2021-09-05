@@ -1,0 +1,9 @@
+yang kukerjakan
+1. Buat perulangan mata kuliah biar gk double dan sebagainya
+2. Membuat ulang layout add peserta sama asisten biar gk pake modal (ada yg mau kudiskusikan juga kena)
+3. add peserta kelas dh bisa
+4. add asisten kelas dh bisa
+5. kuminta buatkan layout buat nampilkan participants
+6. login nya bisa tapi gk bisa baca kondisi ke table roles, makanya hndk kudiskusikan kena
+7. upload file gagal jdi kd kucoba dulu dripada stuck disitu
+8. aku bikin sidebar sendiri kaya simari saat memilih matkul(perlu didiskusikan ulg lgi kayanya)
