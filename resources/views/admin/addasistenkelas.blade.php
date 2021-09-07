@@ -12,34 +12,40 @@
 
 					<form id="addasisten" action="addasisten" method="post">
 						@csrf
-                        <div class="form-group">
-							<label for="">Kelas</label> 
-							<select id="kelas" name="kelas" value="{{ old('kelas')}}">
+
+						<table>
+
+						<tr>
+
+							<td><label for="">Kelas</label> </td>
+							<td><select id="kelas" name="kelas" value="{{ old('kelas')}}" class="ml-5">
 								<option value="" selected></option>
 								@foreach ($kelas as $value)
 								<option value="{{$value->id_praktikum}}" >{{$value->nama_praktikum}}</option>
 								@endforeach
-							</select>
-						</div>
+							</select> </td>
+						</tr>
 						
-						<div class="form-group">
-							<label for="">Peserta Kelas</label>
-							<select id="peserta" name="peserta" value="{{ old('peserta')}}">
+						<tr>
+							<td><label for="">Peserta Kelas</label> </td>
+							<td><select id="peserta" name="peserta" value="{{ old('peserta')}}" class="ml-5">
 								<option value="" selected></option>
 								@foreach ($member as $id => $name)
 								<option value="{{$id}}" >{{ $name}}</option>
 								@endforeach
-							</select>
+							</select> </td>
 							<span style="color:red">@error('peserta') {{ $message }} @enderror</span>
-						</div>		
+						</tr>
                     
-						<div class="form-group">
-							<label for="">Role</label>
-							<select id="role" name="role" value="{{ old('role') }}">
+						<tr>
+							<td><label for="">Role</label></td>
+							<td><select id="role" name="role" value="{{ old('role') }}" class="ml-5">
 								<option value="3" selected>asisten</option>
-							</select>
+							</select> </td>
 							<span style="color:red">@error('role') {{ $message }} @enderror</span>
-						</div>					
+						</tr>	
+						</table>
+						
 						
 		</div>
 					<div class="modal-footer">
