@@ -12,26 +12,28 @@
 
 					<form id="addpeserta" action="addpeserta" method="post">
 						@csrf
-                        <div class="form-group">
-							<label for="">Kelas</label> 
-							<select id="kelas" name="kelas" value="{{ old('kelas')}}">
+                        
+						<table>
+
+						<tr>
+							<td><label for="">Kelas</label>  </td>
+							<td><select id="kelas" name="kelas" value="{{ old('kelas')}}" class="ml-5" style="width: 25vw;"></div>
 								<option value="" selected></option>
 								@foreach ($kelas as $value)
 								<option value="{{$value->id_praktikum}}" >{{$value->nama_praktikum}}</option>
 								@endforeach
-							</select>
-						</div>
+							</select> </td>
+						</tr>
 						
-						<div class="form-group">
-							<label for="">Peserta Kelas</label>
-							<select id="peserta" name="peserta" value="{{ old('peserta')}}">
+							<td><label for="">Peserta Kelas</label> </td>
+							 <td><select id="peserta" name="peserta" value="{{ old('peserta')}}" class="ml-5" style="width: 25vw;">
 								<option value="" selected></option>
 								@foreach ($member as $id => $name)
 								<option value="{{$id}}" >{{ $name}}</option>
 								@endforeach
 							</select>
-							<span style="color:red">@error('peserta') {{ $message }} @enderror</span>
-						</div>							
+							<span style="color:red">@error('peserta') {{ $message }} @enderror</span> </td>
+						</table>				
 						
 					</div>
 					<div class="modal-footer">
