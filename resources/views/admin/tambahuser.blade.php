@@ -16,31 +16,31 @@
 					{{ Session::get('gagal')  }}
 				</div>
 			@endif
-					<form id="edituser" action="adduser" method="post">
+					<form id="adduser" action="adduser" method="post">
 					
 						@csrf
 
 							<div class="form-group">
 								<label for="">Nama</label>
-								<input type="text" class="form-control" name="nama_user" value="{{ old('nama_user') }}">
+								<input type="text" class="form-control" name="nama_user">
 								<span style="color:red">@error('nama_user') {{ $message }} @enderror</span>
 							</div>
 							
                             <div class="form-group">
 								<label for="">Id User</label>
-								<input type="text" class="form-control" name="id" value="{{ old('id') }}">
+								<input type="text" class="form-control" name="id">
 								<span style="color:red">@error('id') {{ $message }} @enderror</span>
 							</div>
 
 							<div class="form-group">
 								<label for="">Password</label>
-								<input type="password" class="form-control" name="password" value="{{ old('password') }}">
+								<input type="password" class="form-control" name="password">
 								<span style="color:red">@error('password') {{ $message }} @enderror</span>
 							</div>
 
 							<div class="form-group">
 								<label for="">Role</label>
-								<select id="role" name="role" value="{{ old('role') }}">
+								<select id="role" name="role">
 									<option value="" selected></option>
 									<option value="1">admin</option>
 									<option value="2">dosen</option>
