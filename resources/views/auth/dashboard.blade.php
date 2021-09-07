@@ -156,7 +156,7 @@
     </div>
   </div>
  </div>
-     @elseif(Auth::roles()->id_status == 4))
+     @elseif(Auth::roles()->id_status == ))
      <div class="card card-primary card-outline">
         <a class="d-block w-100" data-toggle="collapse" href="#collapseThree">
           <div class="card-header">
