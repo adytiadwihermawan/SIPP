@@ -18,7 +18,7 @@
 						<tr>
 
 							<td><label for="">Kelas</label> </td>
-							<td><select id="kelas" name="kelas" value="{{ old('kelas')}}" class="ml-5">
+							<td><select id="kelas" name="kelas" value="{{ old('kelas')}}" class="ml-5"  style="width: 25vw;">
 								<option value="" selected></option>
 								@foreach ($kelas as $value)
 								<option value="{{$value->id_praktikum}}" >{{$value->nama_praktikum}}</option>
@@ -28,7 +28,7 @@
 						
 						<tr>
 							<td><label for="">Peserta Kelas</label> </td>
-							<td><select id="peserta" name="peserta" value="{{ old('peserta')}}" class="ml-5">
+							<td><select id="peserta" name="peserta" value="{{ old('peserta')}}" class="ml-5"  style="width: 25vw;">
 								<option value="" selected></option>
 								@foreach ($member as $id => $name)
 								<option value="{{$id}}" >{{ $name}}</option>
@@ -39,7 +39,7 @@
                     
 						<tr>
 							<td><label for="">Role</label></td>
-							<td><select id="role" name="role" value="{{ old('role') }}" class="ml-5">
+							<td><select id="role" name="role" value="{{ old('role') }}" class="ml-5"  style="width: 25vw;">
 								<option value="3" selected>asisten</option>
 							</select> </td>
 							<span style="color:red">@error('role') {{ $message }} @enderror</span>
