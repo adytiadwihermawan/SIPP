@@ -4,7 +4,7 @@
 <div class="card card-info">
 	<div class="card-header">
 		<h3 class="card-title">
-			<i class="fa fa-table"></i> Tambah Data User ku</h3>
+			<i class="fa fa-table"></i> Tambah Data User</h3>
 	</div>
 	<!-- /.card-header -->
 	<div class="card-body">
