@@ -38,30 +38,24 @@
 					</tr>
 				</thead>
 				<tbody>
-				<?php 
-					$no = 1;
-				?>
-				@foreach ($user as $item)
+				@foreach ($user as $item => $data)
+				
                     <tr>
-						<td style="text-align: center;">{{ $no }}</td>
-                        <td>{{ $item->username }}</td>
-                        <td>{{ $item->nama_user }}</td>
-                        <td style="text-align: center;">{{ $item->status}}</td>
+						<td style="text-align: center;">{{ $user->firstItem() + $item }}</td>
+                        <td>{{ $data->username }}</td>
+                        <td>{{ $data->nama_user }}</td>
+                        <td style="text-align: center;">{{ $data->status}}</td>
 						<td style="text-align: center;">
-							<a href="edit/{{ $item->id }}" title="Edit" class="btn btn-success btn-sm">
+							<a href="edit/{{ $data->id }}" title="Edit" class="btn btn-success btn-sm">
 								<i class="fa fa-edit"></i>
 							</a>
-							<a href="delete/{{  $item->id }}" title="Delete" class="btn btn-danger btn-sm" onclick="return confirm('Hapus Data User ?')">
+							<a href="delete/{{  $data->id }}" title="Delete" class="btn btn-danger btn-sm" onclick="return confirm('Hapus Data User ?')">
 								<i class="fa fa-trash"></i>
 							</a>
 						</td>
                     </tr>
-				<?php
-					$no++;
-				?>
-                </tbody>
                 @endforeach
+                </tbody>
 			</table>
-
 			{{ $user->links() }}
 @endsection

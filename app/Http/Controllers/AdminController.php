@@ -20,7 +20,7 @@ class AdminController extends Controller
 
     public function datauser(){
         $user = User::leftJoin('status_user', 'status_user.id_status', '=', 'users.id_status')
-                    ->simplePaginate(4);
+                    ->orderBy('users.id_status', 'asc')->simplePaginate(10);
         return view('admin.datauser', compact('user'));
     }
 
