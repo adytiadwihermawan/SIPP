@@ -23,15 +23,22 @@
 						</div>
 					@endif
 
+			
+					<div class="row mb-5 mx-auto">
+					<div class="col-sm">
 			<button type="button" class="btn btn-primary" onclick="window.location.href='/tambahuser'">
-				<i class="fa fa-edit"></i> Tambah User </button>
-			<br>
-			<br>
+				<i class="fa fa-edit"></i> Tambah User </button> </div>
+			
+				<div class="col-sm">
 			<form action="{{ route('search') }}" method="GET">
-				<input type="text" name="search" placeholder="Search"/>
-				<button type="submit">Search</button>
-				<button type="submit" onclick="window.location.href='/datauser'">Refresh</button>
+				<input type="text" name="search" placeholder="Search"  class="form-control form-control-border" /> </div>
+				<div class="col-sm">
+				<button type="submit" class="btn btn-success"><i class="fa fa-search"></i></button> 
+				<button type="submit"  class="btn btn-secondary" onclick="window.location.href='/datauser'"><i class="fas fa-redo"></i></button>
 			</form>
+				</div>
+
+					</div>
 			<table id="example1" class="table table-bordered table-striped">
 				<thead>
 					<tr style="text-align: center;">
