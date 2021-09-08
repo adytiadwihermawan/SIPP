@@ -37,7 +37,7 @@
 						
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal"><a style="color: white;" href="/datakelas">Back</a></button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal"><a style="color: white;" href="/datakelas">Kembali</a></button>
 						<button type="submit" class="btn btn-primary">Tambah Peserta Kelas</button>
 					</div>
 					</form>

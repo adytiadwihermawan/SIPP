@@ -18,7 +18,7 @@
 						</div>
 					@endif
 
-					<form id="edituser" action="/update" method="post">
+					<form id="edituser" action="{{route('update')}}" method="post">
 						
 						@csrf
 							<div class="form-group">
@@ -49,7 +49,7 @@
 							</div>
 						
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal"><a style="color: white;" href="/datauser">Back</a></button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal"><a style="color: white;" href="/datauser">Kembali</a></button>
 						<button type="submit" class="btn btn-primary">Edit Data User</button>
 					</div>
 					</form>

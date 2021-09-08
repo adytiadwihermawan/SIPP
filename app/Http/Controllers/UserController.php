@@ -226,12 +226,12 @@ class UserController extends Controller
                 'cnew_password.required'=>"ReEnter your new password",
                 'cnew_password.same'=>"New Password dan Confirm New Password Harus Sama"
         ]);
-
+        
         if( $validator->passes()){
             $update = User::find(Auth::user()->id)->update(['password'=>\Hash::make($request->new_password)]);
 
             if( !$update ){
-                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to update password in db']);
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to update password in database']);
             }else{
                 return response()->json(['status'=>1,'msg'=>'Your password has been changed successfully']);
             }

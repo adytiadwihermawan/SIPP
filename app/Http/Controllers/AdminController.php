@@ -32,34 +32,66 @@ class AdminController extends Controller
 
     // ----------------------- Add User --------------------------\\
 
-    function adduser(Request $request){
+    public function adduser(Request $request){
 
         //return $request->input();
-        $request->validate([
-         'nama_user'=>'required',
-         'id'=>'required|unique:users|min:0|not_in:0',
-         'password'=>'required',
-         'role'=>'required',
-     ]);
- 
-     $query = User::insert([
-          'nama_user'=>$request->input('nama_user'),
-          'username'=>$request->input('id'),
-          'password'=> Hash::make($request->input('password')),
-          'id_status'=>$request->input('role')
-     ]);
- 
-        if($query){
-            return redirect('datauser')->with('berhasil', 'Data Berhasil Ditambahkan');
+    //     $request->validate([
+    //      'nama_user'=>'required',
+    //      'id'=>'required|unique:users|min:0|not_in:0',
+    //      'password'=>'required',
+    //      'role'=>'required',
+    //  ]);
+
+     $rules = [
+         'nama_user' => 'required',
+         'id' => [
+             'required',
+             'unique:users,username',
+             'min:8',
+             'not_in:0'
+            ],
+         'password' => [
+             'required',
+             'min:8',           // must be at least 8 characters in length
+             'alpha_dash'      // can't contain space
+         ],
+         'role' => 'required'
+        ];
+
+    $validator = \Validator::make($request->all(), $rules, [
+            'nama_user.required' => "Masukkan Nama Pengguna",
+            'id.unique' => "Id User Sudah Terdaftar",
+            'id.required' => "Masukkan Id User",
+            'id.min' => "Id User Minimal 8 Karakter",
+            'password.required' => "Masukkan Password",
+            'password.min' => "Password Minimal 8 Karakter",
+            'password.alpha_dash' => "Password Tidak Boleh Ada Spasi",
+            'role.required' => "Pilih Role Pengguna"
+    ]);
+    
+    if( $validator->passes()){
+           
+        $query = User::insert([
+                'nama_user'=>$request->input('nama_user'),
+                'username'=>$request->input('id'),
+                'password'=> Hash::make($request->input('password')),
+                'id_status'=>$request->input('role')
+            ]);
+               if( !$query ){
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to update password in database']);
+            }else{
+                return response()->json(['status'=>1,'msg'=>'Data Berhasil Ditambahkan']);
+            }
+        }       
+        else{          
+            return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
         }
-        else{
-            return back()->with('gagal', 'Ada terjadi kesalahan');
-        }
-     }
+    }
+     
 
     // ----------------------- Edit Data User ---------------------- \\
 
-    function edit($id){  
+    public function edit($id){  
         $edit = User::where('id', $id)
                 ->find($id);
 
@@ -75,7 +107,7 @@ class AdminController extends Controller
 
     // -------------------- Update Data User----------------------- \\
    
-        function update(Request $request){
+    public function update(Request $request){
             $request->validate([
                 'id' => 'required',
                 'nama_user' => 'required',
@@ -83,14 +115,14 @@ class AdminController extends Controller
                 'role' => 'required'
             ]);
 
-            $update = User::where('id', $request->input('id'))
+            $update = User::where('username', $request->input('id'))
                         ->update([
-                            'id'=>$request->input('id'),
+                            'username'=>$request->input('id'),
                             'nama_user'=>$request->input('nama_user'),
                             'password'=>Hash::make($request->input('password')),
                             'id_status'=>$request->input('role')
                         ]);
-
+            
             if($update){
                 return redirect('datauser')->with('berhasil', 'Data Berhasil Diubah');
             }
@@ -102,8 +134,8 @@ class AdminController extends Controller
 
     // ----------------------- Delete Data User --------------------- \\
 
-         function delete($id){
-           $query = User::where('id', $id)->Delete();
+    public function delete($id){
+           $query = User::where('id', $id)->delete();
             
             if($query){
                 return back()->with('berhasil', 'Data Berhasil Dihapus');
@@ -168,7 +200,7 @@ class AdminController extends Controller
         ]);
     }
 
-    function addkelas(Request $request){
+    public function addkelas(Request $request){
 
         //return $request->input();
         $request->validate([
@@ -189,7 +221,7 @@ class AdminController extends Controller
         }
      }
 
-     function addasisten(Request $request){
+     public function addasisten(Request $request){
 
         $request->validate([
             'kelas'=>'required',
@@ -211,7 +243,7 @@ class AdminController extends Controller
         }
     }
 
-    function addpeserta(Request $request){
+    public function addpeserta(Request $request){
 
         $request->validate([
             'kelas'=>'required',
@@ -235,7 +267,7 @@ class AdminController extends Controller
      
     // ----------------------- Edit Kelas --------------------------\\
 
-    function editkelas($id){  
+    public function editkelas($id){  
         $edit = Praktikum::where('id_praktikum', $id)
                 ->first();
            
@@ -247,7 +279,7 @@ class AdminController extends Controller
 
     // -------------------- Update Data Kelas----------------------- \\
     
-    function updatekelas(Request $request){
+    public function updatekelas(Request $request){
         $request->validate([
             'id' => 'required',
             'nama_prak' => 'required',
@@ -272,7 +304,7 @@ class AdminController extends Controller
 
     // ----------------------- Delete Data Kelas --------------------- \\
 
-    function deletekelas($id){
+    public function deletekelas($id){
         $query = Praktikum::where('id_praktikum', $id)->Delete();
          
          if($query){
@@ -291,19 +323,19 @@ class AdminController extends Controller
         $lab = Lab::leftJoin('users', 'users.id', '=', 'lab.id_kepalalaboratorium')
                   ->simplePaginate(5);
 
+        return view('admin.datalab', compact('lab'));
+    }
+
+    public function lab(){
         $user = User::leftJoin('lab', 'lab.id_kepalalaboratorium', '=', 'users.id')
                     ->where('users.id_status', 2)
                     ->get();
-
-        return view('admin.datalab', [
-            'lab' => $lab,
-            'user' => $user
-        ]);
+        return view('admin.tambahlab', compact('user'));
     }
 
     // ----------------------- Add User --------------------------\\
 
-    function addlab(Request $request){
+    public function addlab(Request $request){
 
         //return $request->input();
         $request->validate([
@@ -317,7 +349,7 @@ class AdminController extends Controller
         ]);
     
         if($query){
-            return back()->with('berhasil', 'Data Berhasil Ditambahkan');
+            return redirect('datalab')->with('berhasil', 'Data Berhasil Ditambahkan');
         }
         else{
             return back()->with('gagal', 'Ada terjadi kesalahan');
@@ -326,7 +358,7 @@ class AdminController extends Controller
 
     // ----------------------- Edit User --------------------------\\
 
-    function editlab($id){  
+    public function editlab($id){  
         $edit = Lab::where('id_laboratorium', $id)
                 ->first();
         
@@ -343,7 +375,7 @@ class AdminController extends Controller
 
     // -------------------- Update Data Lab----------------------- \\
     
-    function updatelab(Request $request){
+    public function updatelab(Request $request){
         $request->validate([
             'id' => 'required',
             'nama_lab' => 'required',
@@ -368,7 +400,7 @@ class AdminController extends Controller
 
     // ----------------------- Delete Data Lab --------------------- \\
 
-    function deletelab($id){
+    public function deletelab($id){
         $query = Lab::where('id_laboratorium', $id)->Delete();
          
          if($query){
@@ -379,6 +411,4 @@ class AdminController extends Controller
          }
      }
     // ------------------------------------------------- End CRUD Data Lab --------------------------------------- \\
-     
-
 }

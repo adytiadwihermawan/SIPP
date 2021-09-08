@@ -24,7 +24,7 @@ Route::get('admin/dashboard', [App\Http\Controllers\HomeController::class, 'admi
 
 Route::get('datauser', [AdminController::class, 'datauser'])->name('search');
 
-Route::post('adduser', [AdminController::class, 'adduser']);
+Route::post('adduser', [AdminController::class, 'adduser'])->name('tambahpengguna');
 
 Route::get('datakelas', [AdminController::class, 'datakelas']);
 
@@ -46,9 +46,11 @@ Route::get('/tambahpeserta', [AdminController::class, 'pesertakelas']);
 
 Route::get('/tambahasisten', [AdminController::class, 'asistenkelas']);
 
+Route::get('/tambahlab', [AdminController::class, 'lab']);
+
 Route::get('edit/{id}', [AdminController::class, 'edit']);
 
-Route::post('update', [AdminController::class, 'update']);
+Route::post('update', [AdminController::class, 'update'])->name('update');
 
 Route::get('delete/{id}', [AdminController::class, 'delete']);
 
@@ -108,4 +110,4 @@ Route::view('form-daftar-asisten', [UserController::class, 'formdaftar']);
 
 Route::post('change-profile-pic', [UserController::class, 'updateFoto'])->name('updateFotoUser');
 
-Route::post('change-password', [\UserController::class, 'gantiPassword'])->name('gantiPassword');
+Route::post('change-password', [UserController::class, 'gantiPassword'])->name('gantiPassword');
