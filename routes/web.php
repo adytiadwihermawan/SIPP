@@ -22,7 +22,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 // ----------------------------------------- Admin Dashboard -------------------------------------------------------------------- \\
 Route::get('admin/dashboard', [App\Http\Controllers\HomeController::class, 'adminDashboard'])->name('admin.dashboard')->middleware('adminMid');
 
-Route::get('datauser', [AdminController::class, 'datauser']);
+Route::get('datauser', [AdminController::class, 'datauser'])->name('search');
 
 Route::post('adduser', [AdminController::class, 'adduser']);
 

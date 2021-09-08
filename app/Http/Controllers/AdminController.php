@@ -18,9 +18,14 @@ class AdminController extends Controller
 {
     // ---------------------------------------------- CRUD Data User ------------------------------------------------- \\
 
-    public function datauser(){
+    public function datauser(Request $request){
+        $search = $request->input('search');
         $user = User::leftJoin('status_user', 'status_user.id_status', '=', 'users.id_status')
-                    ->orderBy('users.id_status', 'asc')->simplePaginate(10);
+                    ->where('username', 'Like', "%{$search}%")
+                    ->orWhere('nama_user', 'Like', "%{$search}%")
+                    ->orWhere('status_user.status', 'Like', "%{$search}%")
+                    ->orderBy('users.id_status', 'asc')
+                    ->simplePaginate(10);
         return view('admin.datauser', compact('user'));
     }
 
@@ -134,11 +139,19 @@ class AdminController extends Controller
         $peserta = User::whereNotIn('nama_user', ['admin'])
                     ->pluck('nama_user', 'id');
 
-        $datakelas = Praktikum::get();
+        $kelas = Praktikum::get();
+
+        $datakelas = Proses_praktikum::join('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')
+                    ->join('users', 'proses_praktikum.id_user', '=', 'users.id')
+                    ->where('id_status', '!=', 3)
+                    ->orderBy('proses_praktikum.id_praktikum', 'asc')
+                    ->simplePaginate(10);
+
 
         return view('admin.addpesertakelas', [
-            'kelas' => $datakelas,
-            'member' => $peserta
+            'kelas' => $kelas,
+            'member' => $peserta,
+            'data' => $datakelas
         ]);
     }
 

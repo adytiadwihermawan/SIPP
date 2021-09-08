@@ -41,7 +41,37 @@
 						<button type="submit" class="btn btn-primary">Tambah Peserta Kelas</button>
 					</div>
 					</form>
-			</div>
 </div>
+			<table id="pesertakelas" class="table table-bordered table-striped">
+				<thead>
+					<tr style="text-align: center;">
+					<th>No</th>
+                    <th>Id User</th>
+                    <th>Nama</th>
+                    <th>Praktikum</th>
+					<th>Aksi</th>
+					</tr>
+				</thead>
+				<tbody>
+				@foreach ($data as $user => $kelas)
+				
+                    <tr>
+						<td style="text-align: center;">{{ $data->firstItem() + $user }}</td>
+                        <td>{{ $kelas->username }}</td>
+                        <td style="text-align: center;">{{ $kelas->nama_user }}</td>
+                        <td style="text-align: center;">{{ $kelas->nama_praktikum}}</td>
+						<td style="text-align: center;">
+							<a href="edit/{{ $kelas->id }}" title="Edit" class="btn btn-success btn-sm">
+								<i class="fa fa-edit"></i>
+							</a>
+							<a href="delete/{{  $kelas->id }}" title="Delete" class="btn btn-danger btn-sm" onclick="return confirm('Hapus Data User ?')">
+								<i class="fa fa-trash"></i>
+							</a>
+						</td>
+                    </tr>
+                @endforeach
+                </tbody>
+			</table>
+			{{ $data->links() }}
 
 @endsection

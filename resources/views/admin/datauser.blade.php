@@ -27,6 +27,11 @@
 				<i class="fa fa-edit"></i> Tambah User </button>
 			<br>
 			<br>
+			<form action="{{ route('search') }}" method="GET">
+				<input type="text" name="search" placeholder="Search"/>
+				<button type="submit">Search</button>
+				<button type="submit" onclick="window.location.href='/datauser'">Refresh</button>
+			</form>
 			<table id="example1" class="table table-bordered table-striped">
 				<thead>
 					<tr style="text-align: center;">
