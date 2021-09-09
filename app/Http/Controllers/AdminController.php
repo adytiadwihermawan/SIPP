@@ -122,12 +122,12 @@ class AdminController extends Controller
                             'password'=>Hash::make($request->input('password')),
                             'id_status'=>$request->input('role')
                         ]);
-            
+
             if($update){
                 return redirect('datauser')->with('berhasil', 'Data Berhasil Diubah');
             }
             else{
-                return back()->with('gagal', 'Ada terjadi kesalahan');
+                return back()->with('gagal', 'Tidak Ada Perubahan Data yang Dilakukan');
             }
 
         }
@@ -288,16 +288,16 @@ class AdminController extends Controller
 
         $update = Praktikum::where('id_praktikum', $request->input('id'))
                             ->update([
-                            'id_praktikum'=>$request->input('id'),
-                            'nama_praktikum'=>$request->input('nama_prak'),
-                            'tahun_ajaran'=>$request->input('thn_ajar')
+                                'id_praktikum'=>$request->input('id'),
+                                'nama_praktikum'=>$request->input('nama_prak'),
+                                'tahun_ajaran'=>$request->input('thn_ajar')
                         ]);
-
+        // dd($update);
         if($update){
             return redirect('datakelas')->with('berhasil', 'Data Berhasil Diubah');
         }
         else{
-            return back()->with('gagal', 'Ada terjadi kesalahan');
+            return back()->with('gagal', 'Tidak Ada Perubahan Data yang Dilakukan');
         }
 
     }
@@ -360,7 +360,7 @@ class AdminController extends Controller
 
     public function editlab($id){  
         $edit = Lab::where('id_laboratorium', $id)
-                ->first();
+                ->get();
         
         $user = User::leftJoin('lab', 'lab.id_kepalalaboratorium', '=', 'users.id')
                     ->where('users.id_status', 2)
@@ -370,6 +370,7 @@ class AdminController extends Controller
             'Info'=> $edit,
             'user' => $user
         ];
+        dd($data);
         return view('admin.editlab', $data);
     }     
 
@@ -381,19 +382,19 @@ class AdminController extends Controller
             'nama_lab' => 'required',
             'kepalalab' => 'required'
         ]);
-
+        // dd($request);
         $update = Lab::where('id_laboratorium', $request->input('id'))
                     ->update([
                         'id_laboratorium'=>$request->input('id'),
                         'nama_laboratorium'=>$request->input('nama_lab'),
                         'id_kepalalaboratorium'=>$request->input('kepalalab')
                     ]);
-
+        // dd($update);
         if($update){
             return redirect('datalab')->with('berhasil', 'Data Berhasil Diubah');
         }
         else{
-            return back()->with('gagal', 'Ada terjadi kesalahan');
+            return back()->with('gagal', 'Tidak Ada Perubahan Data yang Dilakukan');
         }
 
     }

@@ -23,12 +23,12 @@
 						@csrf
 							<div class="form-group">
 								<label for="">Id Laboratorium</label>
-								<input type="text" class="form-control" name="id" value="{{ old('id', $Info->id_laboratorium) }}" readonly>
+								<input type="text" class="form-control" name="id" value="{{ old('id', $Info[0]->id_laboratorium) }}" readonly>
 							</div>
 
 							<div class="form-group">
 								<label for="">Nama Laboratorium</label>
-								<input type="text" class="form-control" name="nama_lab" value="{{ old('nama_lab', $Info->nama_laboratorium) }}">
+								<input type="text" class="form-control" name="nama_lab" value="{{ old('nama_lab', $Info[0]->nama_laboratorium) }}">
 								<span style="color:red">@error('nama_lab') {{ $message }} @enderror</span>
 							</div>
 							
@@ -36,7 +36,7 @@
 								<label for="">Kepala Laboratorium</label>
 								<select id="id_kepala" name="kepalalab" value="">                              
 									@foreach ($user as $item)
-                                    <option value="{{ $item->id}}" {{ old('kepalalab', $item->id) == $item->id_kepalalaboratorium ? 'selected' : null}}>{{ $item->nama_user }}</option>
+                                    <option value="{{ $item->id}}" {{ $Info[0]->id_kepalalaboratorium == $item->id ? 'selected' : ''}}>{{ $item->nama_user }}</option>
                                     @endforeach
 								</select>
 								<span style="color:red">@error('kepalalab') {{ $message }} @enderror</span>
