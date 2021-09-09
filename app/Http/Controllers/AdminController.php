@@ -65,7 +65,7 @@ class AdminController extends Controller
             'id.min' => "Id User Minimal 8 Karakter",
             'password.required' => "Masukkan Password",
             'password.min' => "Password Minimal 8 Karakter",
-            'password.alpha_dash' => "Password Tidak Boleh Ada Spasi",
+            'password.alpha_dash' => "Password Tidak Boleh Memuat Spasi",
             'role.required' => "Pilih Role Pengguna"
     ]);
     
