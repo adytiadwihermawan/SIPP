@@ -80,7 +80,7 @@ Route::post('change-profile-pic', [UserController::class, 'updateFoto'])->name('
 
 Route::post('change-password', [UserController::class, 'gantiPassword'])->name('gantiPassword');
 
-Route::get('dsn/matkul/{id}', [UserController::class, 'matkulDsn']);
+Route::get('dsn/matkul/{id}', [UserController::class, 'matkulDsn'])->name('matkulDsn');
 
 Route::post('upload', [UserController::class, 'upload'])->name('fileUpload');
 

@@ -38,6 +38,32 @@
             padding: 0;
             list-style: none;
         }
+
+        .hijau{
+    background-color:#85bf31;
+    color: white;
+        }
+        .hijau2{
+            background-color:#51c035;
+            color: white;
+        }
+        .hijau3{
+            background-color:#31bf67;
+            color: white;
+        }
+        .biru{
+            background-color: #1988e1;
+            color: #cfe2f1;
+        }
+
+        .hijau:hover, .hijau2:hover, .hijau3:hover{
+            background-color:#4b6e19;
+            color: white;
+        }
+
+        .panjang2{
+            width: 20vw;
+        }
     </style>
   </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -121,7 +147,7 @@
                 with font-awesome or any other icon font library -->
 
                 <li class="nav-item">
-                  <a href="{{ url('dosen/dashboard') }}" class="{{ request()->is('dosen/dashboard') ? 'nav-link active' : 'nav-link' }}">
+                  <a href="{{ url('dosen/matku') }}" class="{{ request()->is('dosen/matkul') ? 'nav-link active' : 'nav-link' }}">
                     <i class="nav-icon fas fa-book-open"></i>
                     <p> {{$course[0]->nama_praktikum}}</p>
                   </a>
@@ -199,13 +225,23 @@
             </div>
           </div>
           <div class="card-body">
+              <div class="row mb-5 mx-auto">
+                <div class="col-sm">
+                  <button type="button" class="btn hijau panjang2 "> <i class="fas fa-plus"></i> Tambah Materi </button>
+      
+                </div>
+                <div class="col-sm">
+                  <button type="button" class="btn hijau2 panjang2 "> <i class="fas fa-plus"></i> Tambah Quiz </button>
+                </div>
+                <div class="col-sm">
+                  <button type="button" class="btn hijau3 panjang2 "> <i class="fas fa-plus"></i> Tambah Presensi </button>
+                </div>
+              </div>
+            </div>
+          <div class="card-body">
               <p>llll{{ $item->id_materi}}</p>
           </div>
-            <div class="card-body">
-              <button type="button" style="float: right" class="btn btn-primary" data-toggle="modal" data-target="#addmateri">
-                Upload Materi
-              </button>
-            </div>
+            
               
           </div>
           <!-- Modal -->
