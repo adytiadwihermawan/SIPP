@@ -364,13 +364,15 @@ class AdminController extends Controller
         
         $user = User::leftJoin('lab', 'lab.id_kepalalaboratorium', '=', 'users.id')
                     ->where('users.id_status', 2)
+                    ->select('users.id', 'nama_user')
+                    ->distinct()
                     ->get();
                 
         $data = [
             'Info'=> $edit,
             'user' => $user
         ];
-        dd($data);
+        // dd($data);
         return view('admin.editlab', $data);
     }     
 
