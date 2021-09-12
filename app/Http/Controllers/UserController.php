@@ -111,6 +111,7 @@ class UserController extends Controller
     public function matkulDsn($id)
     {
         $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+                            // ->join('materi', 'pertemuan.id_pertemuan', '=', 'materi.id_pertemuan')
                             ->where('pertemuan.id_praktikum', $id)
                             ->get();
         
@@ -134,36 +135,40 @@ class UserController extends Controller
 
     public function upload(Request $request){
         $request->validate([
-        '_file' => 'required|mimes:ppt,txt,xlx,xls,doc,docx,pdf|max:2048'
+        'id',
+        '_file' => 'required|mimes:ppt,txt,xlx,xls,doc,docx,pdf,ppsx'
         ]);
 
-        // $fileModel = new Materi;
+        $fileModel = new Materi;
 
-        // if($request->file()) {
-        //     $path = 'uploads/';
-        //     $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
-        //     // $fileName = time().'_'.$request->_file->getClientOriginalName();
-        //     // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
-        //     $filePath = $request->_file->move(public_path($path), $newname);
+        if($request->file()) {
+            $path = 'uploads/';
+            $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
+            // $fileName = time().'_'.$request->_file->getClientOriginalName();
+            // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
+            $filePath = $request->_file->move(public_path($path), $newname);
 
-        //     $fileModel->namafile_materi= $request->_file->getClientOriginalName();
-        //     $fileModel->save();
+            $fileModel->namafile_materi= $request->_file->getClientOriginalName();
+            $fileModel->save();
 
-        //     return back()
-        //     ->with('success','File has been uploaded.');
+            return back()
+            ->with('success','File has been uploaded.');}
+        // // }
+        // $path = 'uploads/';
+        // $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
+        // $id = $request->input('id');
+        // $upload = $request->_file->move(public_path($path), $newname);
+         
+        // if($upload){
+        //     $post = new Materi();
+        //     $post->nama = $newname;
+        //     $post->id_pertemuan = $id;
+        //     dd($post);
+        //     $post->save();
+        //     echo 'Berhasil';
+        // }else{
+        //     echo 'Gagal';
         // }
-        $path = 'uploads/';
-        $newname = Helper::renameFile($path, $request->file('_file')>getClientOriginalName());
-
-        $upload = $request->_file->move(public_path($path), $newname);
-        if($upload){
-            $post = new Materi();
-            $post->name = $newname;
-            $post->save();
-            echo 'Berhasil';
-        }else{
-            echo 'Gagal';
-        }
    }
 
     function updateFoto(Request $request)

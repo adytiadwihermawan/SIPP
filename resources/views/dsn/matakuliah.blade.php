@@ -226,20 +226,11 @@
           <div class="card-body">
               <div class="row mb-5 mx-auto">
                 <div class="col-sm">
-                  <button type="button" class="btn hijau panjang2 "> <i class="fas fa-plus"></i> Tambah Materi </button>
-      
+                  <button type="button" class="btn hijau panjang2 " data-toggle="modal" data-target="#addmateri"> <i class="fas fa-plus"></i> Tambah Materi </button>
                 </div>
-                <div class="col-sm">
-                  <button type="button" class="btn hijau3 panjang2 " style="float: right"> <i class="fas fa-plus"></i> Buat Presensi </button>
-                </div>
-              </div>
-            </div>
-          <div class="card-body">
-              <p></p>
-          </div> 
-        </div>
-          {{-- <!-- Modal -->
-          <div class="modal fade" id="addmateri" tabindex="-1" role="dialog" aria-labelledby="addmateriLabel" aria-hidden="true">
+                
+      <!-- Modal -->
+          <div class="modal fade" id="addmateri">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
               <div class="modal-header">
@@ -269,6 +260,7 @@
                               </ul>
                           </div>
                         @endif
+                          <input type="text" class="form-control" name="id_pertemuan" value="{{ old('id', $item->id_pertemuan)}}" readonly>
                           <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
                           <button type="submit" style="float:right; margin-bottom:15px;"class="btn btn-success">Upload</button>
                     </div>
@@ -277,7 +269,76 @@
 
               </div>
               </div>
-            </div> --}}
+            </div>
+
+
+
+       <div class="modal fade" id="modal-presensi">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Buat Pertemuan</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form action="addkelas" method="post">
+					<div class="modal-body">
+					
+						@csrf
+							<div class="form-group">
+								<label for="">Pertemuan</label>
+								<input type="number" class="form-control" name="id" >
+								<span style="color:red">@error('nama_praktikum') {{ $message }} @enderror</span>
+							</div>
+							
+							<div class="form-group">
+								<label for="">Tanggal</label>
+								<input type="date" class="form-control" name="tahun_ajaran" >
+								<span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
+							</div>
+
+                            <div class="form-group">
+								<label for="">Materi</label>
+								<input type="text" class="form-control" name="tahun_ajaran" >
+								<span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
+							</div>
+
+                            <div class="form-group">
+								<label for="">Waktu Mulai Presensi</label>
+								<input type="time" class="form-control" name="tahun_ajaran" >
+								<span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
+							</div>
+						
+                            <div class="form-group">
+								<label for="">Waktu Akhir Presensi</label>
+								<input type="Time" class="form-control" name="tahun_ajaran" >
+								<span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
+							</div>
+					</div>
+                        
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Buat Presensi</button>
+					</div>
+					</form>
+             </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+                <div class="col-sm">
+                  <button type="button" class="btn hijau3 panjang2 " style="float: right" data-toggle="modal" data-target="#modal-presensi"> <i class="fas fa-plus"></i> Buat Presensi </button>
+                </div>
+              </div>
+            </div>
+          <div class="card-body">
+              <p></p>
+          </div> 
+        </div>
+          
             </div>
           <div class="card-footer">
             {{$item->deskripsi}}
@@ -287,6 +348,28 @@
         @endforeach
     </div>
         </div>
+
+      {{-- <div class="modal fade" id="addmateri">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Upload Materi</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+      <div class="modal-body">
+        <form action= "{{ route('fileUpload') }}" method="POST" enctype="multipart/form-data">
+          @csrf
+               <input type="hidden" class="form-control" name="id" value="{{$course[0]->id_pertemuan}}" readonly>
+               <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
+              <button type="submit" style="float:right; margin-bottom:15px;"class="btn btn-success">Upload</button>
+				</form>
+      </div>
+          </div>
+        </div>
+      </div> --}}
+
       <div class="modal fade" id="modal-pertemuan">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
