@@ -110,9 +110,9 @@ class UserController extends Controller
 
     public function matkulDsn($id)
     {
-        $course = Proses_praktikum::join('pertemuan', 'proses_praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
-        ->join('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('pertemuan.id_praktikum', $id)
-        ->get();
+        $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+                            ->where('pertemuan.id_praktikum', $id)
+                            ->get();
         
         // $course = Proses_praktikum::with(relations: 'praktikum')->
         //                             get();
@@ -239,4 +239,28 @@ class UserController extends Controller
             return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
         }
     }
+
+    public function buatPertemuan(Request $request)
+        {
+            $request->validate([
+                    'id'=>'required',
+                    'nama_pertemuan'=>'required',
+                    'deskripsi'=>'required',
+                ]);
+                dd($request->all);
+            $query = Pertemuan::insert([
+                        'id_praktikum'=>$request->input('id'),
+                        'nama_pertemuan'=>$request->input('nama_pertemuan'),
+                        'deskripsi'=>$request->input('deskripsi')
+                    ]);
+       dd($query);
+            if($query){
+                return redirect('dsn.matakuliah')->with('berhasil', 'Data Berhasil Ditambahkan');
+            }                
+            else{
+                return back()->with('gagal', 'Ada terjadi kesalahan');
+            }
+        }
+
+
 }

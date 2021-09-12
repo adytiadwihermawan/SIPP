@@ -147,7 +147,7 @@
                 with font-awesome or any other icon font library -->
 
                 <li class="nav-item">
-                  <a href="{{ url('dosen/matku') }}" class="{{ request()->is('dosen/matkul') ? 'nav-link active' : 'nav-link' }}">
+                  <a href="{{ url('dosen/matkul') }}" class="{{ request()->is('dosen/matkul') ? 'nav-link active' : 'nav-link' }}">
                     <i class="nav-icon fas fa-book-open"></i>
                     <p> {{$course[0]->nama_praktikum}}</p>
                   </a>
@@ -198,16 +198,15 @@
         <h3 class="card-title">
             {{$course[0]->nama_praktikum}}
         </h3>
+        <button type="button" class="btn btn-primary" style="float:right; padding:1px 4px;" title="Buat Pertemuan" data-toggle="modal" data-target="#modal-pertemuan">
+				<i class="fa fa-plus"></i> </button>
       </div>
     </div>
-    <?php $count = 0; ?>
       @foreach($course as $item)  
     <?php 
-      $total = $item->where('id_praktikum', '=', $item->id_praktikum)->count();
-      if($count == $total) 
-        break; 
+      $total = $item->where('id_praktikum', '=', $item->id_praktikum)->get();
     ?>
-      @if ($item->id_praktikum)
+      {{-- @if ($total) --}}
       <!-- Main content -->
     <div class="card card-primary ml-2">
       <section class="content mt-3">
@@ -231,10 +230,7 @@
       
                 </div>
                 <div class="col-sm">
-                  <button type="button" class="btn hijau2 panjang2 "> <i class="fas fa-plus"></i> Tambah Quiz </button>
-                </div>
-                <div class="col-sm">
-                  <button type="button" class="btn hijau3 panjang2 "> <i class="fas fa-plus"></i> Tambah Presensi </button>
+                  <button type="button" class="btn hijau3 panjang2 " style="float: right"> <i class="fas fa-plus"></i> Buat Presensi </button>
                 </div>
               </div>
             </div>
@@ -289,13 +285,55 @@
             {{$item->deskripsi}}
           </div>
         </div>
-        <?php $count++; ?>
-        @endif
+        {{-- @endif --}}
         @endforeach
     </div>
         </div>
-      </section>
+      <div class="modal fade" id="modal-pertemuan">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Buat Pertemuan</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+      <div class="modal-body">
+        <form action= "{{ route('buatPertemuan') }}" method="post">
+						
+          @csrf
+              <div class="form-group">
+								<label for="">Mata Kuliah</label>
+								<input type="text" class="form-control" name="id" value="{{$course[0]->id_praktikum}}" readonly>
+								<span style="color:red">@error('id') {{ $message }} @enderror</span>
+							</div>
+
+							<div class="form-group">
+								<label for="">Pertemuan Ke</label>
+								<input type="text" class="form-control" placeholder="Contoh: Pertemuan 1" name="nama_pertemuan" required>
+								<span style="color:red">@error('nama_pertemuan') {{ $message }} @enderror</span>
+							</div>
+							
+							<div class="form-group">
+								<label for="">Materi Pembahasan</label>
+								<input type="text" class="form-control" placeholder="Contoh: Cara Menggunakan Framework Laravel" name="deskripsi" required>
+								<span style="color:red">@error('deskripsi') {{ $message }} @enderror</span>
+							</div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Buat Pertemuan</button>
+              </div>
+              {{-- <?php dd(); ?> --}}
+				</form>
+      </div>
+              
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
 <!-- /.content -->
+      </section>
   </div>
   <!-- /.content-wrapper -->
     </div>

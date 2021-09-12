@@ -33,7 +33,7 @@
 
 							<div class="form-group">
 								<label for="">Password</label>
-								<input type="password" class="form-control" name="password" maxlength="30">
+								<input type="text" class="form-control" name="password" maxlength="30">
 								<span class="text-danger error-text password_error"></span>
 							</div>
 
