@@ -147,7 +147,7 @@
                 with font-awesome or any other icon font library -->
 
                 <li class="nav-item">
-                  <a href="{{ url('dosen/matkul') }}" class="{{ request()->is('dosen/matkul') ? 'nav-link active' : 'nav-link' }}">
+                  <a href="{{ route('matkulDsn', [$course[0]->id_praktikum]) }}" class="{{ request()->routeIs('matkulDsn', [$course[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
                     <i class="nav-icon fas fa-book-open"></i>
                     <p> {{$course[0]->nama_praktikum}}</p>
                   </a>
@@ -235,12 +235,10 @@
               </div>
             </div>
           <div class="card-body">
-              <p>llll{{ $item->id_materi}}</p>
-          </div>
-            
-              
-          </div>
-          <!-- Modal -->
+              <p></p>
+          </div> 
+        </div>
+          {{-- <!-- Modal -->
           <div class="modal fade" id="addmateri" tabindex="-1" role="dialog" aria-labelledby="addmateriLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -279,7 +277,7 @@
 
               </div>
               </div>
-            </div>
+            </div> --}}
             </div>
           <div class="card-footer">
             {{$item->deskripsi}}
@@ -299,8 +297,7 @@
               </button>
             </div>
       <div class="modal-body">
-        <form action= "{{ route('buatPertemuan') }}" method="post">
-						
+        <form action= "{{ route('pertemuan') }}" method="POST">
           @csrf
               <div class="form-group">
 								<label for="">Mata Kuliah</label>
@@ -322,9 +319,8 @@
 
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Buat Pertemuan</button>
+                <button type="submit" class="btn btn-primary" >Buat Pertemuan</button>
               </div>
-              {{-- <?php dd(); ?> --}}
 				</form>
       </div>
               

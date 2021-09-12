@@ -240,22 +240,22 @@ class UserController extends Controller
         }
     }
 
-    public function buatPertemuan(Request $request)
+  function buatPertemuan(Request $request)
         {
             $request->validate([
                     'id'=>'required',
                     'nama_pertemuan'=>'required',
                     'deskripsi'=>'required',
                 ]);
-                dd($request->all);
+        // dd($request->all());
             $query = Pertemuan::insert([
                         'id_praktikum'=>$request->input('id'),
                         'nama_pertemuan'=>$request->input('nama_pertemuan'),
                         'deskripsi'=>$request->input('deskripsi')
                     ]);
-       dd($query);
+    //    dd($query);
             if($query){
-                return redirect('dsn.matakuliah')->with('berhasil', 'Data Berhasil Ditambahkan');
+                return redirect()->route('matkulDsn', [$request->input('id')])->with('berhasil', 'Data Berhasil Ditambahkan');
             }                
             else{
                 return back()->with('gagal', 'Ada terjadi kesalahan');
