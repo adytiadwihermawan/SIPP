@@ -8,7 +8,7 @@
 	</div>
 	<!-- /.card-header -->
 	<div class="card-body">
-		<div class="table-responsive">
+		<div class="table table-borderless">
 
 					<form id="addpeserta" action="addpeserta" method="post">
 						@csrf
@@ -17,22 +17,26 @@
 
 						<tr>
 							<td><label for="">Kelas</label>  </td>
-							<td><select id="kelas" name="kelas" value="{{ old('kelas')}}" class="ml-5" style="width: 25vw;"></div>
+							<td class="ml-5"> :</td>
+							<td><select class="selectpicker ml-2" data-live-search="true" id="kelas" name="kelas" value="{{ old('kelas')}}" style="width: 25vw;"></div>
 								<option value="" selected></option>
 								@foreach ($kelas as $value)
 								<option value="{{$value->id_praktikum}}" >{{$value->nama_praktikum}}</option>
 								@endforeach
 							</select> </td>
 						</tr>
-						
+						<tr>
 							<td><label for="">Peserta Kelas</label> </td>
-							 <td><select id="peserta" name="peserta" value="{{ old('peserta')}}" class="ml-5" style="width: 25vw;">
+							<td  class="ml-5"> :</td>
+							 <td><select  class="selectpicker ml-2" data-live-search="true" id="peserta" name="peserta" value="{{ old('peserta')}}" style="width: 25vw;">
 								<option value="" selected></option>
 								@foreach ($member as $id => $name)
 								<option value="{{$id}}" >{{ $name}}</option>
 								@endforeach
 							</select>
-							<span style="color:red">@error('peserta') {{ $message }} @enderror</span> </td>
+							<span style="color:red">@error('peserta') {{ $message }} @enderror</span>						
+						</td>
+						</tr>
 						</table>				
 						
 					</div>
