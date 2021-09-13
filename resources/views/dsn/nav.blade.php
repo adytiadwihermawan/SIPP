@@ -21,16 +21,6 @@
             </a>
            </li>
 
-
-           <li class="nav-item">
-            <a href="{{url('dosen/presensi')}}" class="{{ request()->is('dosen/presensi') ? 'nav-link active' : 'nav-link' }}">
-              <i class="nav-icon fas fa-tasks"></i>
-              <p>
-                Presensi
-              </p>
-            </a>
-           </li>
-
             <li class="nav-item menu mb-5">
         <a href="#" class="nav-link">
           <i class="nav-icon fas fa-book"></i>

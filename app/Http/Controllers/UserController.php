@@ -11,6 +11,7 @@ use App\Models\Statusform;
 use App\Models\Materi;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
+use DataTables;
 
 class UserController extends Controller
 {
@@ -114,10 +115,7 @@ class UserController extends Controller
                             // ->join('materi', 'pertemuan.id_pertemuan', '=', 'materi.id_pertemuan')
                             ->where('pertemuan.id_praktikum', $id)
                             ->get();
-        
-        // $course = Proses_praktikum::with(relations: 'praktikum')->
-        //                             get();
-
+      
         // dd($course);
         
         return view('dsn.matakuliah', compact('course'));
@@ -267,5 +265,30 @@ class UserController extends Controller
             }
         }
 
+        public function dataTable($id)
+        {
+            $data = User::join('proses_praktikum', 'users.id', '=', 'proses_praktikum.id_user')
+                         ->join('status_user', 'users.id_status', 'status_user.id_status') 
+                         ->where('proses_praktikum.id_praktikum', $id)
+                         ->get();
+
+            $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+                            // ->join('materi', 'pertemuan.id_pertemuan', '=', 'materi.id_pertemuan')
+                                ->where('pertemuan.id_praktikum', $id)
+                                ->get();
+            // dd($data);
+            if(request()->ajax()){
+                return datatables()->of($data)
+                ->addColumn('Aksi', function($data)
+                {
+                    $button = "<button class='edit btn btn-danger' style='text-align: center' id='".$data->id."'>Edit</button>";
+                    $button .= "<button class='delete btn btn-danger' style='text-align: center' id='".$data->id."'>Delete</button>";
+                    return $button;
+                })
+                ->rawColumns(['Aksi'])
+                ->make(true);
+            }
+            return view('dsn.participants', compact('course'));
+        }
 
 }

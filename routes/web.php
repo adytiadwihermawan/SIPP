@@ -86,15 +86,16 @@ Route::post('upload', [UserController::class, 'upload'])->name('fileUpload');
 
 Route::post('pertemuan', [UserController::class, 'buatPertemuan'])->name('pertemuan');
 
+Route::get('dsn/partisipan/{id}', [UserController::class, 'dataTable'])->name('data');
+
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
 
 Route::get('asist/home', [UserController::class, 'asistDashboard'])->name('asist.dashboard')->middleware('asistMid');
 
 Route::get('asist/dashboard', [UserController::class, 'asistHome'])->name('asist.home');
 
-Route::get('asist/presensi', [UserController::class, 'asistPresensi']);
-
 Route::get('asist/matkul/{id}', [UserController::class, 'matkulAsisten']);
+
 
 // -----------------------------------------  Dashboard Mahasiswa -------------------------------------------------------------------- \\
 
