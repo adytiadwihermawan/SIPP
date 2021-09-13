@@ -182,9 +182,6 @@
             columnDefs: [
                         {"className": "dt-center", "targets": [0,2,3]}
                     ],
-            button: [
-                padding: 5px;
-            ],
             columns:[
                 {
                     "data": null, "sortable": false,
