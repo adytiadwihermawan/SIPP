@@ -16,6 +16,7 @@
    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
    <link rel="stylesheet" href="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.css')}}">
+   <link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
 
    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.min.css" rel="stylesheet">
     
@@ -39,31 +40,7 @@
             list-style: none;
         }
 
-        .hijau{
-    background-color:#85bf31;
-    color: white;
-        }
-        .hijau2{
-            background-color:#51c035;
-            color: white;
-        }
-        .hijau3{
-            background-color:#31bf67;
-            color: white;
-        }
-        .biru{
-            background-color: #1988e1;
-            color: #cfe2f1;
-        }
-
-        .hijau:hover, .hijau2:hover, .hijau3:hover{
-            background-color:#4b6e19;
-            color: white;
-        }
-
-        .panjang2{
-            width: 20vw;
-        }
+    
     </style>
   </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -145,7 +122,14 @@
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
-
+                <li class="nav-item">
+                  <a href="{{url('dosen/profile')}}" class="{{ request()->is('dosen/profile') ? 'nav-link active' : 'nav-link' }}">
+                    <i class="nav-icon fas fa-home"></i>
+                    <p>
+                      Dashboard
+                    </p>
+                  </a>
+                </li>
                 <li class="nav-item">
                   <a href="{{ route('matkulDsn', [$course[0]->id_praktikum]) }}" class="{{ request()->routeIs('matkulDsn', [$course[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
                     <i class="nav-icon fas fa-book-open"></i>
@@ -198,8 +182,8 @@
         <h3 class="card-title">
             {{$course[0]->nama_praktikum}}
         </h3>
-        <button type="button" class="btn btn-primary" style="float:right; padding:1px 4px;" title="Buat Pertemuan" data-toggle="modal" data-target="#modal-pertemuan">
-				<i class="fa fa-plus"></i> </button>
+        <button type="button" class="btn hijau float-right" style="float:right; padding:1px 4px;" title="Buat Pertemuan" data-toggle="modal" data-target="#modal-pertemuan">
+				<i class="fa fa-plus"></i> Tambah Pertemuan</button>
       </div>
     </div>
       @foreach($course as $item)  
@@ -330,7 +314,11 @@
         <!-- /.modal-dialog -->
       </div>
                 <div class="col-sm">
-                  <button type="button" class="btn hijau3 panjang2 " style="float: right" data-toggle="modal" data-target="#modal-presensi"> <i class="fas fa-plus"></i> Buat Presensi </button>
+                  <button type="button" class="btn hijau2 panjang2 " data-toggle="modal" data-target="#modal-presensi"> <i class="fas fa-plus"></i> Buat Presensi </button>
+                </div>
+
+                <div class="col-sm">
+                  <button type="button" class="btn hijau3 panjang2 " data-toggle="modal" data-target="#"> <i class="fas fa-plus"></i> Edit Pertemuan </button>
                 </div>
               </div>
             </div>

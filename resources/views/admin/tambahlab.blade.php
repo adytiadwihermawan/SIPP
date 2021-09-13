@@ -22,7 +22,7 @@
 						</tr>
                         <tr>
 							<td><label for="">Nama Kepala Laboratorium</label></td>
-							<td><select id="id" name="id" value="{{ old('id') }}" class="ml-5" style="width: 25vw;">
+							<td><select id="id" name="id" value="{{ old('id') }}" class="form-control ml-5" style="width: 25vw;">
                                     <option value="" selected></option>                                
 									@foreach ($user as $item)
                                     <option value="{{ $item->id }}">{{ $item->nama_user }}</option>
