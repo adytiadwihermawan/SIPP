@@ -110,9 +110,10 @@ class UserController extends Controller
 
     public function matkulDsn($id)
     {
-        $course = Proses_praktikum::join('pertemuan', 'proses_praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
-        ->join('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('pertemuan.id_praktikum', $id)
-        ->get();
+        $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+                            // ->join('materi', 'pertemuan.id_pertemuan', '=', 'materi.id_pertemuan')
+                            ->where('pertemuan.id_praktikum', $id)
+                            ->get();
         
         // $course = Proses_praktikum::with(relations: 'praktikum')->
         //                             get();
@@ -134,36 +135,40 @@ class UserController extends Controller
 
     public function upload(Request $request){
         $request->validate([
-        '_file' => 'required|mimes:ppt,txt,xlx,xls,doc,docx,pdf|max:2048'
+        'id',
+        '_file' => 'required|mimes:ppt,txt,xlx,xls,doc,docx,pdf,ppsx'
         ]);
 
-        // $fileModel = new Materi;
+        $fileModel = new Materi;
 
-        // if($request->file()) {
-        //     $path = 'uploads/';
-        //     $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
-        //     // $fileName = time().'_'.$request->_file->getClientOriginalName();
-        //     // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
-        //     $filePath = $request->_file->move(public_path($path), $newname);
+        if($request->file()) {
+            $path = 'uploads/';
+            $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
+            // $fileName = time().'_'.$request->_file->getClientOriginalName();
+            // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
+            $filePath = $request->_file->move(public_path($path), $newname);
 
-        //     $fileModel->namafile_materi= $request->_file->getClientOriginalName();
-        //     $fileModel->save();
+            $fileModel->namafile_materi= $request->_file->getClientOriginalName();
+            $fileModel->save();
 
-        //     return back()
-        //     ->with('success','File has been uploaded.');
+            return back()
+            ->with('success','File has been uploaded.');}
+        // // }
+        // $path = 'uploads/';
+        // $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
+        // $id = $request->input('id');
+        // $upload = $request->_file->move(public_path($path), $newname);
+         
+        // if($upload){
+        //     $post = new Materi();
+        //     $post->nama = $newname;
+        //     $post->id_pertemuan = $id;
+        //     dd($post);
+        //     $post->save();
+        //     echo 'Berhasil';
+        // }else{
+        //     echo 'Gagal';
         // }
-        $path = 'uploads/';
-        $newname = Helper::renameFile($path, $request->file('_file')>getClientOriginalName());
-
-        $upload = $request->_file->move(public_path($path), $newname);
-        if($upload){
-            $post = new Materi();
-            $post->name = $newname;
-            $post->save();
-            echo 'Berhasil';
-        }else{
-            echo 'Gagal';
-        }
    }
 
     function updateFoto(Request $request)
@@ -226,12 +231,12 @@ class UserController extends Controller
                 'cnew_password.required'=>"ReEnter your new password",
                 'cnew_password.same'=>"New Password dan Confirm New Password Harus Sama"
         ]);
-
+        
         if( $validator->passes()){
             $update = User::find(Auth::user()->id)->update(['password'=>\Hash::make($request->new_password)]);
 
             if( !$update ){
-                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to update password in db']);
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to update password in database']);
             }else{
                 return response()->json(['status'=>1,'msg'=>'Your password has been changed successfully']);
             }
@@ -239,4 +244,28 @@ class UserController extends Controller
             return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
         }
     }
+
+  function buatPertemuan(Request $request)
+        {
+            $request->validate([
+                    'id'=>'required',
+                    'nama_pertemuan'=>'required',
+                    'deskripsi'=>'required',
+                ]);
+        // dd($request->all());
+            $query = Pertemuan::insert([
+                        'id_praktikum'=>$request->input('id'),
+                        'nama_pertemuan'=>$request->input('nama_pertemuan'),
+                        'deskripsi'=>$request->input('deskripsi')
+                    ]);
+    //    dd($query);
+            if($query){
+                return redirect()->route('matkulDsn', [$request->input('id')])->with('berhasil', 'Data Berhasil Ditambahkan');
+            }                
+            else{
+                return back()->with('gagal', 'Ada terjadi kesalahan');
+            }
+        }
+
+
 }

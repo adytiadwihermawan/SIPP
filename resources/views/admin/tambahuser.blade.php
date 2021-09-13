@@ -16,44 +16,43 @@
 					{{ Session::get('gagal')  }}
 				</div>
 			@endif
-					<form id="edituser" action="adduser" method="post">
+					<form id="adduser" action="{{route('tambahpengguna')}}" method="POST">
 					
 						@csrf
-
 							<div class="form-group">
 								<label for="">Nama</label>
-								<input type="text" class="form-control" name="nama_user" value="{{ old('nama_user') }}">
-								<span style="color:red">@error('nama_user') {{ $message }} @enderror</span>
+								<input type="text" class="form-control" name="nama_user" maxlength="250">
+								<span class="text-danger error-text nama_user_error"></span>
 							</div>
 							
                             <div class="form-group">
 								<label for="">Id User</label>
-								<input type="text" class="form-control" name="id" value="{{ old('id') }}">
-								<span style="color:red">@error('id') {{ $message }} @enderror</span>
+								<input type="text" class="form-control" name="id" maxlength="25">
+								<span class="text-danger error-text id_error"></span>
 							</div>
 
 							<div class="form-group">
 								<label for="">Password</label>
-								<input type="password" class="form-control" name="password" value="{{ old('password') }}">
-								<span style="color:red">@error('password') {{ $message }} @enderror</span>
+								<input type="text" class="form-control" name="password" maxlength="30">
+								<span class="text-danger error-text password_error"></span>
 							</div>
 
 							<div class="form-group">
 								<label for="">Role</label>
-								<select id="role" name="role" value="{{ old('role') }}">
+								<select id="role" name="role" class="form-control">
 									<option value="" selected></option>
 									<option value="1">admin</option>
 									<option value="2">dosen</option>
 									<option value="4">mahasiswa</option>
 								</select>
-								<span style="color:red">@error('role') {{ $message }} @enderror</span>
+								<span class="text-danger error-text role_error"></span>
 							</div>
 						
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal"><a style="color: white;" href="/datauser">Back</a></button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal"><a style="color: white;" href="/datauser">Kembali</a></button>
 						<button type="submit" class="btn btn-primary">Tambah Data User</button>
 					</div>
-					</form>
-			</div>
+				</form>
+		</div>
 
 @endsection

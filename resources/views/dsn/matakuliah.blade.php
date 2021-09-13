@@ -16,6 +16,7 @@
    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
    <link rel="stylesheet" href="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.css')}}">
+   <link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
 
    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.min.css" rel="stylesheet">
     
@@ -38,6 +39,8 @@
             padding: 0;
             list-style: none;
         }
+
+    
     </style>
   </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -119,9 +122,16 @@
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
-
                 <li class="nav-item">
-                  <a href="{{ url('dosen/dashboard') }}" class="{{ request()->is('dosen/dashboard') ? 'nav-link active' : 'nav-link' }}">
+                  <a href="{{url('dosen/profile')}}" class="{{ request()->is('dosen/profile') ? 'nav-link active' : 'nav-link' }}">
+                    <i class="nav-icon fas fa-home"></i>
+                    <p>
+                      Dashboard
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('matkulDsn', [$course[0]->id_praktikum]) }}" class="{{ request()->routeIs('matkulDsn', [$course[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
                     <i class="nav-icon fas fa-book-open"></i>
                     <p> {{$course[0]->nama_praktikum}}</p>
                   </a>
@@ -172,16 +182,15 @@
         <h3 class="card-title">
             {{$course[0]->nama_praktikum}}
         </h3>
+        <button type="button" class="btn hijau float-right" style="float:right; padding:1px 4px;" title="Buat Pertemuan" data-toggle="modal" data-target="#modal-pertemuan">
+				<i class="fa fa-plus"></i> Tambah Pertemuan</button>
       </div>
     </div>
-    <?php $count = 0; ?>
       @foreach($course as $item)  
     <?php 
-      $total = $item->where('id_praktikum', '=', $item->id_praktikum)->count();
-      if($count == $total) 
-        break; 
+      $total = $item->where('id_praktikum', '=', $item->id_praktikum)->get();
     ?>
-      @if ($item->id_praktikum)
+      {{-- @if ($total) --}}
       <!-- Main content -->
     <div class="card card-primary ml-2">
       <section class="content mt-3">
@@ -199,17 +208,13 @@
             </div>
           </div>
           <div class="card-body">
-              <p>llll{{ $item->id_materi}}</p>
-          </div>
-            <div class="card-body">
-              <button type="button" style="float: right" class="btn btn-primary" data-toggle="modal" data-target="#addmateri">
-                Upload Materi
-              </button>
-            </div>
-              
-          </div>
-          <!-- Modal -->
-          <div class="modal fade" id="addmateri" tabindex="-1" role="dialog" aria-labelledby="addmateriLabel" aria-hidden="true">
+              <div class="row mb-5 mx-auto">
+                <div class="col-sm">
+                  <button type="button" class="btn hijau panjang2 " data-toggle="modal" data-target="#addmateri"> <i class="fas fa-plus"></i> Tambah Materi </button>
+                </div>
+                
+      <!-- Modal -->
+          <div class="modal fade" id="addmateri">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
               <div class="modal-header">
@@ -239,6 +244,7 @@
                               </ul>
                           </div>
                         @endif
+                          <input type="text" class="form-control" name="id_pertemuan" value="{{ old('id', $item->id_pertemuan)}}" readonly>
                           <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
                           <button type="submit" style="float:right; margin-bottom:15px;"class="btn btn-success">Upload</button>
                     </div>
@@ -248,18 +254,153 @@
               </div>
               </div>
             </div>
+
+
+
+       <div class="modal fade" id="modal-presensi">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Buat Pertemuan</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form action="addkelas" method="post">
+					<div class="modal-body">
+					
+						@csrf
+							<div class="form-group">
+								<label for="">Pertemuan</label>
+								<input type="number" class="form-control" name="id" >
+								<span style="color:red">@error('nama_praktikum') {{ $message }} @enderror</span>
+							</div>
+							
+							<div class="form-group">
+								<label for="">Tanggal</label>
+								<input type="date" class="form-control" name="tahun_ajaran" >
+								<span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
+							</div>
+
+                            <div class="form-group">
+								<label for="">Materi</label>
+								<input type="text" class="form-control" name="tahun_ajaran" >
+								<span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
+							</div>
+
+                            <div class="form-group">
+								<label for="">Waktu Mulai Presensi</label>
+								<input type="time" class="form-control" name="tahun_ajaran" >
+								<span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
+							</div>
+						
+                            <div class="form-group">
+								<label for="">Waktu Akhir Presensi</label>
+								<input type="Time" class="form-control" name="tahun_ajaran" >
+								<span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
+							</div>
+					</div>
+                        
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Buat Presensi</button>
+					</div>
+					</form>
+             </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+                <div class="col-sm">
+                  <button type="button" class="btn hijau2 panjang2 " data-toggle="modal" data-target="#modal-presensi"> <i class="fas fa-plus"></i> Buat Presensi </button>
+                </div>
+
+                <div class="col-sm">
+                  <button type="button" class="btn hijau3 panjang2 " data-toggle="modal" data-target="#"> <i class="fas fa-plus"></i> Edit Pertemuan </button>
+                </div>
+              </div>
+            </div>
+          <div class="card-body">
+              <p></p>
+          </div> 
+        </div>
+          
             </div>
           <div class="card-footer">
             {{$item->deskripsi}}
           </div>
         </div>
-        <?php $count++; ?>
-        @endif
+        {{-- @endif --}}
         @endforeach
     </div>
         </div>
-      </section>
+
+      {{-- <div class="modal fade" id="addmateri">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Upload Materi</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+      <div class="modal-body">
+        <form action= "{{ route('fileUpload') }}" method="POST" enctype="multipart/form-data">
+          @csrf
+               <input type="hidden" class="form-control" name="id" value="{{$course[0]->id_pertemuan}}" readonly>
+               <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
+              <button type="submit" style="float:right; margin-bottom:15px;"class="btn btn-success">Upload</button>
+				</form>
+      </div>
+          </div>
+        </div>
+      </div> --}}
+
+      <div class="modal fade" id="modal-pertemuan">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Buat Pertemuan</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+      <div class="modal-body">
+        <form action= "{{ route('pertemuan') }}" method="POST">
+          @csrf
+              <div class="form-group">
+								<label for="">Mata Kuliah</label>
+								<input type="text" class="form-control" name="id" value="{{$course[0]->id_praktikum}}" readonly>
+								<span style="color:red">@error('id') {{ $message }} @enderror</span>
+							</div>
+
+							<div class="form-group">
+								<label for="">Pertemuan Ke</label>
+								<input type="text" class="form-control" placeholder="Contoh: Pertemuan 1" name="nama_pertemuan" required>
+								<span style="color:red">@error('nama_pertemuan') {{ $message }} @enderror</span>
+							</div>
+							
+							<div class="form-group">
+								<label for="">Materi Pembahasan</label>
+								<input type="text" class="form-control" placeholder="Contoh: Cara Menggunakan Framework Laravel" name="deskripsi" required>
+								<span style="color:red">@error('deskripsi') {{ $message }} @enderror</span>
+							</div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" >Buat Pertemuan</button>
+              </div>
+				</form>
+      </div>
+              
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
 <!-- /.content -->
+      </section>
   </div>
   <!-- /.content-wrapper -->
     </div>

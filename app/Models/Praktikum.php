@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 class Praktikum extends Model
 {
     protected $table = 'praktikum';
-
-    public function praktikum()
-    {
-        return $this->hasManyThrough(Praktikum::class, Pertemuan::class);
-    }
+    
+    public $timestamps = false;
+    
+    protected $fillable = [
+        'id_praktikum', 'tahun_ajaran', 'nama_praktikum'
+    ];
+    
 }

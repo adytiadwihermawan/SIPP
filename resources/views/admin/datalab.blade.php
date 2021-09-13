@@ -11,7 +11,7 @@
 	<div class="card-body">
 		<div class="table-responsive">
 			<div>
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#adduser">
+				<button type="button" class="btn btn-primary" onclick="window.location.href='/tambahlab'">
 					<i class="fa fa-edit"></i> Tambah Data</button>
 
 					@if(Session::get('berhasil'))
@@ -27,49 +27,6 @@
 							{{ Session::get('gagal')  }}
 						</div>
 					@endif
-
-				<!-- Modal -->
-				<div class="modal fade" id="adduser" tabindex="-1" role="dialog" aria-labelledby="adduserLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="adduserLabel">Tambah Laboratorium</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<form id="addlab" action="addlab" method="post">
-					<div class="modal-body">
-					
-						@csrf
-							<div class="form-group">
-								<label for="">Nama Laboratorium</label>
-								<input type="text" class="form-control" name="nama_lab" value="{{ old('nama_lab') }}">
-								<span style="color:red">@error('nama_lab') {{ $message }} @enderror</span>
-							</div>
-							
-							<div class="form-group">
-								<label for="">Nama Kepala Laboratorium</label>
-								<select id="id" name="id" value="{{ old('id') }}">
-                                    <option value="" selected></option>                                
-									@foreach ($user as $item)
-                                    <option value="{{ $item->id }}">{{ $item->nama_user }}</option>
-                                    @endforeach
-								</select>
-								<span style="color:red">@error('id') {{ $message }} @enderror</span>
-							</div>
-							
-						
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">Tambah Laboratorium</button>
-					</div>
-					</form>
-					</div>
-				</div>
-				</div>
-				<!-- end Modal -->
 			</div>
 			<br>
 			<table id="example1" class="table table-bordered table-striped">

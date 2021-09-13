@@ -13,10 +13,7 @@
 			<div>
 				<button type="button" class="btn btn-primary" onclick="window.location.href='/tambahkelas'">
 					<i class="fa fa-edit"></i> Tambah Kelas </button>
-				<button type="button" class="btn btn-primary" onclick="window.location.href='/tambahpeserta'">
-					<i class="fa fa-edit"></i> Tambah Peserta Kelas </button>
-				<button type="button" class="btn btn-primary" onclick="window.location.href='/tambahasisten'">
-					<i class="fa fa-edit"></i> Tambah Asisten Kelas </button>
+				
 					@if(Session::get('berhasil'))
 					<hr>
 					<div class="alert alert-success">
@@ -53,11 +50,17 @@
                         <td>{{ $item->nama_praktikum }}</td>
                         <td style="text-align: center;">{{ $item->tahun_ajaran}}</td>
 						<td style="text-align: center;">
-							<a href="editkelas/{{ $item->id_praktikum }}" title="Edit" class="btn btn-success btn-sm">
-								<i class="fa fa-edit"></i>
+							
+					<button type="button" class="btn btn-primary" onclick="window.location.href='/tambahpeserta'">
+					<i class="fa fa-plus"></i> Peserta Kelas </button>
+					<button type="button" class="btn btn-info" onclick="window.location.href='/tambahasisten'">
+					<i class="fa fa-plus"></i> Asisten Kelas </button>
+					
+					<a href="editkelas/{{ $item->id_praktikum }}" title="Edit" class="btn btn-success btn">
+								<i class="fa fa-edit"></i> Edit 
 							</a>
-							<a href="deletekelas/{{  $item->id_praktikum }}" title="Delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure to delete this data ?')">
-								<i class="fa fa-trash"></i>
+							<a href="deletekelas/{{  $item->id_praktikum }}" title="Delete" class="btn btn-danger btn" onclick="return confirm('Are you sure to delete this data ?')">
+								<i class="fa fa-trash"></i> Hapus
 							</a>
 						</td>
                     </tr>

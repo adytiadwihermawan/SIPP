@@ -14,15 +14,8 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="{{asset('template/dist/css/adminlte.min.css')}}">
 </head>                
-                @if(Session::get('error'))
-                        <div class="alert alert-danger">
-                            {{ Session::get('error')  }}
-                        </div>
-                @endif
-
 <body class="hold-transition login-page">
 
-    
 <div id="warning-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -53,6 +46,11 @@
                         </a>
                     </div>
                     </div>
+                    @if(Session::get('error'))
+                        <div class="alert alert-danger">
+                            {{ Session::get('error')  }}
+                        </div>
+                    @endif
                     <div class="card card-primary">
                     <div class="card-header">
                         <h5 class="card-title">
@@ -61,6 +59,7 @@
                         </h5>
                     </div>
                     <form method="POST" action="{{ route('login') }}">
+                   
                     
                         @csrf
                         

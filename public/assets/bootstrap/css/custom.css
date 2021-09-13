@@ -1,0 +1,25 @@
+.hijau{
+    background-color:#85bf31;
+    color: white;
+}
+.hijau2{
+    background-color:#51c035;
+    color: white;
+}
+.hijau3{
+    background-color:#31bf67;
+    color: white;
+}
+.biru{
+    background-color: #1988e1;
+    color: #cfe2f1;
+}
+
+.hijau:hover, .hijau2:hover, .hijau3:hover{
+    background-color:#4b6e19;
+    color: white;
+}
+
+.panjang2{
+    width: 20vw;
+}
