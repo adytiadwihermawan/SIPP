@@ -155,7 +155,19 @@
               </div>
             </div>
           <div class="card-body">
-              <p></p>
+            @foreach($datas as $data)
+              @if($data->id_pertemuan == $item->id_pertemuan)
+              <h6>
+                <a href="{{route('download', $data->namafile_materi)}}" style="color:coral">{{$data->namafile_materi}}</a>
+              </h6>
+                
+                  @if($data->desc != null)
+                    <div class="card-footer"><p>{{$data->desc}}</p>
+                    </div>
+              @endif
+
+              @endif
+            @endforeach
           </div> 
         </div>
           

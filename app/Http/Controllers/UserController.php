@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Stroage;
 use App\Models\Praktikum;
 use App\Models\Pertemuan;
 use App\Models\Proses_praktikum;
@@ -111,14 +112,36 @@ class UserController extends Controller
 
     public function matkulDsn($id)
     {
-        $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+        $praktikum = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
                             // ->join('materi', 'pertemuan.id_pertemuan', '=', 'materi.id_pertemuan')
                             ->where('pertemuan.id_praktikum', $id)
                             ->get();
       
-        // dd($course);
+        $data = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
+                        ->where('pertemuan.id_praktikum', $id)
+                        ->get();
+
+        $icons = [
+                'pdf' => 'pdf',
+                'doc' => 'word',
+                'docx' => 'word',
+                'xls' => 'excel',
+                'xlsx' => 'excel',
+                'ppt' => 'powerpoint',
+                'pptx' => 'powerpoint',
+                'txt' => 'text',
+                'png' => 'image',
+                'jpg' => 'image',
+                'jpeg' => 'image',
+            ];
+        // dd($icons);
+        $course = [
+            'course'=>$praktikum,
+            'datas'=>$data,
+            'icon'=>$icons
+        ];
         
-        return view('dsn.matakuliah', compact('course'));
+        return view('dsn.matakuliah', $course);
 
     }
     
@@ -169,7 +192,14 @@ class UserController extends Controller
         // }
    }
 
-    function updateFoto(Request $request)
+   public function downloadFile(Request $request, $file)
+   {
+        $path = 'uploads/'.$file;
+        // dd($path);
+        return response()->download(public_path($path));
+   }
+
+   public function updateFoto(Request $request)
     {
         $path = 'users/images/';
         $file = $request->file('user_pic');

@@ -84,6 +84,8 @@ Route::get('dsn/matkul/{id}', [UserController::class, 'matkulDsn'])->name('matku
 
 Route::post('upload', [UserController::class, 'upload'])->name('fileUpload');
 
+Route::get('downloadfile{file}', [UserController::class, 'downloadFile'])->name('download');
+
 Route::post('pertemuan', [UserController::class, 'buatPertemuan'])->name('pertemuan');
 
 Route::get('dsn/partisipan/{id}', [UserController::class, 'dataTable'])->name('data');

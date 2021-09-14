@@ -2,7 +2,7 @@
 @section('title', "Partisipan Kelas")
 @section('content')
         
-<table class="table table-striped" id="partisipan">
+<table style="width: 100%" class="table table-striped hover" id="partisipan">
             <thead>
                 <tr style="text-align: center">
                     <th>No</th>
