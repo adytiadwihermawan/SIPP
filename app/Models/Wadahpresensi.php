@@ -9,10 +9,11 @@ class Wadahpresensi extends Model
 {
     protected $fillable = [
         'id_pertemuan',
-        'urutanpertemuan',
         'keterangan',
         'waktu_mulai',
-        'waktu_berakhir'
+        'waktu_berakhir',
+        'tanggal',
+        'urutanpertemuan'
     ];
 
     protected $table = 'wadahpresensi';

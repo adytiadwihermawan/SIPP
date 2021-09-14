@@ -10,6 +10,7 @@ use App\Models\Proses_praktikum;
 use App\Models\User;
 use App\Models\Statusform;
 use App\Models\Materi;
+use App\Models\Wadahpresensi;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
 use DataTables;
@@ -157,7 +158,7 @@ class UserController extends Controller
     public function upload(Request $request){
         $request->validate([
         'id',
-        '_file' => 'required|mimes:ppt,txt,xlx,xls,doc,docx,pdf,ppsx'
+        '_file' => 'required|mimes:pptx,txt,xlx,xls,doc,docx,pdf,ppsx'
         ]);
 
         $fileModel = new Materi;
@@ -320,5 +321,30 @@ class UserController extends Controller
             }
             return view('dsn.participants', compact('course'));
         }
+
+    public function buatAbsen(Request $request)
+    {
+        $request->validate([
+                    'id',
+                    'tanggal'=>'required',
+                    'materi'=>'required',
+                    'wmp'=>'required',
+                    'wap'=>'required'
+                ]);
+        //  dd($request->all());
+        $query = Wadahpresensi::insert([
+                        'id_pertemuan'=>$request->input('id'),
+                        'keterangan'=>$request->input('materi'),
+                        'waktu_mulai'=>$request->input('wmp'),
+                        'waktu_berakhir'=>$request->input('wap'),
+                        'tanggal'=>$request->input('tanggal')
+                    ]);
+        // dd($query);
+        if($query)
+        {
+            return back()
+            ->with('success','data has been uploaded.');
+        }
+    }
 
 }

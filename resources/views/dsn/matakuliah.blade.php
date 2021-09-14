@@ -79,6 +79,7 @@
                           <input type="text" class="form-control" name="id_pertemuan" value="{{ old('id', $item->id_pertemuan)}}" readonly>
                           <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
                           <button type="submit" style="float:right; margin-bottom:15px;"class="btn btn-success">Upload</button>
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -87,68 +88,79 @@
               </div>
             </div>
 
-
+        <div class="col-sm">
+          <button type="button" class="btn hijau2 panjang2 " data-toggle="modal" data-target="#modal-presensi"> <i class="fas fa-plus"></i> Buat Presensi </button>
+        </div>
 
        <div class="modal fade" id="modal-presensi">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Buat Pertemuan</h4>
+              <h4 class="modal-title">Buat Absen</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-                <form action="addkelas" method="post">
-					<div class="modal-body">
-					
+        <form action=" {{ route('absen') }}" method="POST">					
 						@csrf
+
+             @if ($message = Session::get('success'))
+                          <div class="alert alert-success">
+                              <strong>{{ $message }}</strong>
+                          </div>
+                        @endif
+              
+                        @if (count($errors) > 0)
+                          <div class="alert alert-danger">
+                              <ul>
+                                  @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                  @endforeach
+                              </ul>
+                          </div>
+                        @endif
 							<div class="form-group">
 								<label for="">Pertemuan</label>
 								<input type="number" class="form-control" name="id" >
-								<span style="color:red">@error('nama_praktikum') {{ $message }} @enderror</span>
+								<span style="color:red">@error('id') {{ $message }} @enderror</span>
 							</div>
 							
 							<div class="form-group">
 								<label for="">Tanggal</label>
-								<input type="date" class="form-control" name="tahun_ajaran" >
-								<span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
+								<input type="date" class="form-control" name="tanggal" >
+								<span style="color:red">@error('tanggal') {{ $message }} @enderror</span>
 							</div>
 
-                            <div class="form-group">
+              <div class="form-group">
 								<label for="">Materi</label>
-								<input type="text" class="form-control" name="tahun_ajaran" >
-								<span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
+								<input type="text" class="form-control" name="materi" >
+								<span style="color:red">@error('materi') {{ $message }} @enderror</span>
 							</div>
 
-                            <div class="form-group">
+              <div class="form-group">
 								<label for="">Waktu Mulai Presensi</label>
-								<input type="time" class="form-control" name="tahun_ajaran" >
-								<span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
+								<input type="datetime-local" class="form-control" name="wmp" >
+								<span style="color:red">@error('wmp') {{ $message }} @enderror</span>
 							</div>
 						
-                            <div class="form-group">
+            <div class="form-group">
 								<label for="">Waktu Akhir Presensi</label>
-								<input type="Time" class="form-control" name="tahun_ajaran" >
-								<span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
-							</div>
-					</div>
-                        
+								<input type="datetime-local" class="form-control" name="wap" >
+								<span style="color:red">@error('wap') {{ $message }} @enderror</span>
+						</div>
+          
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 						<button type="submit" class="btn btn-primary">Buat Presensi</button>
-					</div>
-					</form>
+          </div>
+        </form>
              </div>
           </div>
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
       </div>
-                <div class="col-sm">
-                  <button type="button" class="btn hijau2 panjang2 " data-toggle="modal" data-target="#modal-presensi"> <i class="fas fa-plus"></i> Buat Presensi </button>
-                </div>
-
                 <div class="col-sm">
                   <button type="button" class="btn hijau3 panjang2 " data-toggle="modal" data-target="#"> <i class="fas fa-plus"></i> Edit Pertemuan </button>
                 </div>
@@ -161,11 +173,10 @@
                 <a href="{{route('download', $data->namafile_materi)}}" style="color:coral">{{$data->namafile_materi}}</a>
               </h6>
                 
-                  @if($data->desc != null)
-                    <div class="card-footer"><p>{{$data->desc}}</p>
+                  @if($data->deskripsi_file != null)
+                    <div class="card-footer"><p>{{$data->deskripsi_file}}</p>
                     </div>
-              @endif
-
+                  @endif
               @endif
             @endforeach
           </div> 
@@ -176,10 +187,8 @@
             {{$item->deskripsi}}
           </div>
         </div>
-        {{-- @endif --}}
         @endforeach
     </div>
-        </div>
 
       <div class="modal fade" id="modal-pertemuan">
         <div class="modal-dialog modal-lg">

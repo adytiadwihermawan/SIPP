@@ -88,6 +88,8 @@ Route::get('downloadfile{file}', [UserController::class, 'downloadFile'])->name(
 
 Route::post('pertemuan', [UserController::class, 'buatPertemuan'])->name('pertemuan');
 
+Route::post('absen', [UserController::class, 'buatAbsen'])->name('absen');
+
 Route::get('dsn/partisipan/{id}', [UserController::class, 'dataTable'])->name('data');
 
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
