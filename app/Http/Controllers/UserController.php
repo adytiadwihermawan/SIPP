@@ -21,10 +21,10 @@ class UserController extends Controller
     public function dashboardMhs()
     {
         $mk = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')
-                                    ->join('roles', 'proses_praktikum.id_user', '=', 'roles.id_user')
                                     ->where('proses_praktikum.id_user', Auth::user()->id)->get();
         
-        $data = Roles::where('id_status', '=', 3)
+        $data = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')
+                    ->where('id_status', '=', 3)
                     ->Where('id_user', '=', Auth::user()->id)
                     ->first();
         // dd($course);
@@ -52,11 +52,20 @@ class UserController extends Controller
 
     public function matkulMhs($id)
     {
-        $course = Proses_praktikum::leftJoin('pertemuan', 'proses_praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
-        ->leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)
-        ->get();
-        
-        return view('mhs.matakuliah', compact('course'));
+        $praktikum = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+                            ->where('pertemuan.id_praktikum', $id)
+                            ->get();
+      
+        $data = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
+                        ->where('pertemuan.id_praktikum', $id)
+                        ->get();
+
+        $course = [
+            'course'=>$praktikum,
+            'data'=>$data
+        ];
+        // dd($course);
+        return view('mhs.matakuliah', $course);
 
     }
 
@@ -91,11 +100,20 @@ class UserController extends Controller
 
     public function matkulAsisten($id)
     {
-        $course = Proses_praktikum::leftJoin('pertemuan', 'proses_praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
-        ->leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)
-        ->get();
+        $praktikum = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+                            ->where('pertemuan.id_praktikum', $id)
+                            ->get();
+      
+        $data = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
+                        ->where('pertemuan.id_praktikum', $id)
+                        ->get();
+
+        $course = [
+            'course'=>$praktikum,
+            'datas'=>$data
+        ];
     
-        return view('asist.matakuliah', compact('course'));
+        return view('asist.matakuliah', $course);
 
     }
 
@@ -144,6 +162,7 @@ class UserController extends Controller
                         ->where('pertemuan.id_praktikum', $id)
                         ->get();
 
+                        
         $icons = [
                 'pdf' => 'pdf',
                 'doc' => 'word',
