@@ -2,7 +2,7 @@
 @section('title', '')
 
 @section('content')
-  <!-- Content Wrapper. Contains page content -->
+ <!-- Content Wrapper. Contains page content -->
   <div class="content">
     <!-- Content Header (Page header) -->
         <h1 style="text-align: center; font-size:x-large;">
@@ -12,23 +12,25 @@
     <div class="card card-primary ml-2">
       <div class="card-header">
         <h3 class="card-title">
-          @forelse ($course as $item)
-            {{$item->nama_praktikum}}
-            @break
-            @empty
-            <p>s</p>
-          @endforelse
+            {{$course[0]->nama_praktikum}}
         </h3>
+        <button type="button" class="btn hijau float-right" style="float:right; padding:1px 4px;" title="Buat Pertemuan" data-toggle="modal" data-target="#modal-pertemuan">
+				<i class="fa fa-plus"></i> Tambah Pertemuan</button>
       </div>
-      @for($i = 0; $i<$item->id_praktikum; $i++)   
-      @if ($item->id_praktikum != null)
+    </div>
+      @foreach($course as $item)  
+    <?php 
+      $total = $item->where('id_praktikum', '=', $item->id_praktikum)->get();
+    ?>
+      {{-- @if ($total) --}}
       <!-- Main content -->
+    <div class="card card-primary ml-2">
       <section class="content mt-3">
         <div class="container-fluid">
           <!-- Small boxes (Stat box) -->
             <!-- Default box -->
 
-        <div class="card card-lightblue">
+        <div class="card card-lightblue"> 
           <div class="card-header">
             <h3 class="card-title">{{$item->nama_pertemuan}}</h3>
             <div class="card-tools">
@@ -38,30 +40,13 @@
             </div>
           </div>
           <div class="card-body">
-              <p>llll{{ $item->id_materi}}</p>
-          </div>
-
-              {{-- <div class="card-body">
-                <div id="dropzone">
-                  <form class="dropzone needsclick" id="demo-upload" action="" enctype="multipart/form-data">
-                  @csrf
-                    <div class="dz-message needsclick">    
-                      Drop files here or click to upload.<br>
-                      <span class="note needsclick">(This is just a demo dropzone. Selected 
-                      files are <strong>not</strong> actually uploaded.)</span>
-                    </div>
-                  </form>
+              <div class="row mb-5 mx-auto">
+                <div class="col-sm">
+                  <button type="button" class="btn hijau panjang2 " data-toggle="modal" data-target="#addmateri"> <i class="fas fa-plus"></i> Tambah Materi </button>
                 </div>
-              </div> --}}
-            <div class="card-body">
-              <button type="button" style="float: right" class="btn btn-primary" data-toggle="modal" data-target="#addmateri">
-                Upload Materi
-              </button>
-            </div>
-              
-          </div>
-          <!-- Modal -->
-          <div class="modal fade" id="addmateri" tabindex="-1" role="dialog" aria-labelledby="addmateriLabel" aria-hidden="true">
+                
+      <!-- Modal -->
+          <div class="modal fade" id="addmateri">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
               <div class="modal-header">
@@ -91,8 +76,10 @@
                               </ul>
                           </div>
                         @endif
+                          <input type="text" class="form-control" name="id_pertemuan" value="{{ old('id', $item->id_pertemuan)}}" readonly>
                           <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
                           <button type="submit" style="float:right; margin-bottom:15px;"class="btn btn-success">Upload</button>
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -100,29 +87,152 @@
               </div>
               </div>
             </div>
+
+        <div class="col-sm">
+          <button type="button" class="btn hijau2 panjang2 " data-toggle="modal" data-target="#modal-presensi"> <i class="fas fa-plus"></i> Buat Presensi </button>
+        </div>
+
+       <div class="modal fade" id="modal-presensi">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Buat Absen</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-            <!-- end Modal -->
-          <!-- /.card-body -->
+            <div class="modal-body">
+        <form action=" {{ route('absen') }}" method="POST">					
+						@csrf
+
+             @if ($message = Session::get('success'))
+                          <div class="alert alert-success">
+                              <strong>{{ $message }}</strong>
+                          </div>
+                        @endif
+              
+                        @if (count($errors) > 0)
+                          <div class="alert alert-danger">
+                              <ul>
+                                  @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                  @endforeach
+                              </ul>
+                          </div>
+                        @endif
+							<div class="form-group">
+								<label for="">Pertemuan</label>
+								<input type="number" class="form-control" name="id" >
+								<span style="color:red">@error('id') {{ $message }} @enderror</span>
+							</div>
+							
+							<div class="form-group">
+								<label for="">Tanggal</label>
+								<input type="date" class="form-control" name="tanggal" >
+								<span style="color:red">@error('tanggal') {{ $message }} @enderror</span>
+							</div>
+
+              <div class="form-group">
+								<label for="">Materi</label>
+								<input type="text" class="form-control" name="materi" >
+								<span style="color:red">@error('materi') {{ $message }} @enderror</span>
+							</div>
+
+              <div class="form-group">
+								<label for="">Waktu Mulai Presensi</label>
+								<input type="datetime-local" class="form-control" name="wmp" >
+								<span style="color:red">@error('wmp') {{ $message }} @enderror</span>
+							</div>
+						
+            <div class="form-group">
+								<label for="">Waktu Akhir Presensi</label>
+								<input type="datetime-local" class="form-control" name="wap" >
+								<span style="color:red">@error('wap') {{ $message }} @enderror</span>
+						</div>
+          
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Buat Presensi</button>
+          </div>
+        </form>
+             </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+                <div class="col-sm">
+                  <button type="button" class="btn hijau3 panjang2 " data-toggle="modal" data-target="#"> <i class="fas fa-plus"></i> Edit Pertemuan </button>
+                </div>
+              </div>
+            </div>
+          <div class="card-body">
+            @foreach($datas as $data)
+              @if($data->id_pertemuan == $item->id_pertemuan)
+              <h6>
+                <a href="{{route('download', $data->namafile_materi)}}" style="color:coral">{{$data->namafile_materi}}</a>
+              </h6>
+                
+                  @if($data->deskripsi_file != null)
+                    <div class="card-footer"><p>{{$data->deskripsi_file}}</p>
+                    </div>
+                  @endif
+              @endif
+            @endforeach
+          </div> 
+        </div>
+          
+            </div>
           <div class="card-footer">
             {{$item->deskripsi}}
           </div>
-          <!-- /.card-footer-->
         </div>
-        <!-- /.card -->
-            <!-- ./col -->
+        @endforeach
     </div>
-          <!-- /.row -->
-          <!-- Main row -->
-        <!-- /.modal -->
 
-        
-          <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
-      </section>
-      @else
+      <div class="modal fade" id="modal-pertemuan">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Buat Pertemuan</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+      <div class="modal-body">
+        <form action= "{{ route('pertemuan') }}" method="POST">
+          @csrf
+              <div class="form-group">
+								<label for="">Mata Kuliah</label>
+								<input type="text" class="form-control" name="id" value="{{$course[0]->id_praktikum}}" readonly>
+								<span style="color:red">@error('id') {{ $message }} @enderror</span>
+							</div>
+
+							<div class="form-group">
+								<label for="">Pertemuan Ke</label>
+								<input type="text" class="form-control" placeholder="Contoh: Pertemuan 1" name="nama_pertemuan" required>
+								<span style="color:red">@error('nama_pertemuan') {{ $message }} @enderror</span>
+							</div>
+							
+							<div class="form-group">
+								<label for="">Materi Pembahasan</label>
+								<input type="text" class="form-control" placeholder="Contoh: Cara Menggunakan Framework Laravel" name="deskripsi" required>
+								<span style="color:red">@error('deskripsi') {{ $message }} @enderror</span>
+							</div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" >Buat Pertemuan</button>
+              </div>
+				</form>
+      </div>
+              
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
 <!-- /.content -->
-      @endif  
-      @endfor
+      </section>
   </div>
-  <!-- /.content-wrapper -->
+
 @endsection

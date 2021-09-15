@@ -8,14 +8,19 @@
 
    <!-- Font Awesome -->
    <link rel="stylesheet" href="{{asset('template/plugins/fontawesome-free/css/all.min.css')}}">
+   
    <!-- Theme style -->
    <link rel="stylesheet" href="{{asset('template/dist/css/adminlte.min.css')}}">
+   
    <!-- overlayScrollbars -->
    <link rel="stylesheet" href="{{asset('template/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
+
    <!-- Google Font: Source Sans Pro -->
    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
    <link rel="stylesheet" href="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.css')}}">
+
+   <link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -48,13 +53,19 @@
                                    document.getElementById('logout-form').submit();">
                       {{ __('Logout') }}
                   </a>
-                  <a class="dropdown-item" href="{{ route('mhs.dashboard') }}">
+                  @if($data != null)
+                  <a class="dropdown-item" href="{{ route('asist.dashboard') }}">
                     Back
                   </a>
 
                   <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                       @csrf
                   </form>
+                  @else
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                      @csrf
+                  </form>
+                  @endif
               </div>
           </li>
       @endguest
