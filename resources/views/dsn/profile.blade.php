@@ -1,6 +1,8 @@
 @extends('dsn.dashboard')
 @section('title', "Profile")
 
+@section('Judul', "Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat")s
+
 @section('content')
 <section class="content">
       <div class="container-fluid">

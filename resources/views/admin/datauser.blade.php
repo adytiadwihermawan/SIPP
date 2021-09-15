@@ -1,4 +1,6 @@
 @extends('admin.dashboard')
+
+@section('Judul', "Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat")
 @section('title', "Data User")
 @section('content')
 <div class="card card-info">

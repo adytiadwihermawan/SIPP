@@ -10,6 +10,10 @@
     background-color:#31bf67;
     color: white;
 }
+.hijau4{
+    background-color:#117a3a;
+    color: white;
+}
 .biru{
     background-color: #1988e1;
     color: #cfe2f1;
@@ -22,4 +26,52 @@
 
 .panjang2{
     width: 20vw;
+}
+
+.cold1{
+    background-color:#e7f9ff;
+    color: #053742;
+}
+.cold2{
+    background-color:#A2DBFA;
+    color: #053742; 
+}
+.cold3{
+    background-color:#39A2DB;
+    color: #E8F0F2;
+}
+.cold4, .cold4h{
+    background-color:#053742;
+    color: #E8F0F2;
+}
+.cold4h:hover{
+    background-color:#0a667a;
+    color: #d6d6d6;
+}
+
+.army1{
+    background-color:#F2EDD7;
+    color: #5F939A;
+}
+.army2{
+    background-color:#A0937D;
+    color: #0d3625; 
+}
+.army3{
+    background-color:#3A6351;
+    color: #fcfcfc;
+}
+.army4{
+    background-color:#5F939A;
+    color: #fffdf6;
+}
+
+.tomato{
+    background-color: tomato;
+    color: white;
+}
+
+.tomato2{
+    background-color: rgb(212, 219, 182);
+    color: rgb(70, 45, 45);
 }

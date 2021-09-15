@@ -17,6 +17,8 @@
   <link rel="stylesheet" href="{{asset('template/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  
+<link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
 
   <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
@@ -38,7 +40,7 @@
     </ul>
     <ul class="navbar-nav ml-auto">
       <div class="user-panel mt-0 pb-0 mb-0 d-flex" >
-        <div class="image">
+        <div class="image ml-2">
           <img src="{{asset('dist/img/defaultpic.png')}}" class="img-circle elevation-2" alt="User Image">
         </div>
       </div>
@@ -106,14 +108,14 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h5 class="m-0 text-dark">@yield('Judul')</h5>
+        <div class="row mb-1">
+          <div class="col-sm-12 card pt-2 pb-2 army4">
+            <h5 class="mx-auto">@yield('Judul')</h5>
           </div><!-- /.col -->
         
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
-    </div>
+    
     <!-- /.content-header -->
 
     <!-- Main content -->

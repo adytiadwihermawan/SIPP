@@ -13,8 +13,11 @@
 <link rel="stylesheet" href="{{asset('template/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
 <!-- Theme style -->
 <link rel="stylesheet" href="{{asset('template/dist/css/adminlte.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
+
+
 </head>                
-<body class="hold-transition login-page">
+<body class="hold-transition login-page cold1 ">
 
 <div id="warning-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -42,7 +45,7 @@
                     <div class="text-center">
                         <img src="{{asset('img/logo.png')}}" style="height: 128px; width: 128px;"><br>
                         <a href="#">
-                        <b>S</b>ISTEM PENDATAAN PRAKTIKUM
+                        <b>SI</b>STEM PEN<b>D</b>ATAAN <b>P</b>RAKTIKUM
                         </a>
                     </div>
                     </div>
@@ -51,8 +54,8 @@
                             {{ Session::get('error')  }}
                         </div>
                     @endif
-                    <div class="card card-primary">
-                    <div class="card-header">
+                    <div class="card card cold2">
+                    <div class="card-header cold4">
                         <h5 class="card-title">
                         <i class="fas fa-sign-in-alt mr-1"></i>
                         Sign in
@@ -94,7 +97,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn cold4h">
                                 {{ __('Login') }}
                             </button>
                             <a style="margin-left: 10px;" data-toggle="modal" data-target="#warning-modal">  Lupa Password ?</a>

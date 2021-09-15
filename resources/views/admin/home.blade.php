@@ -5,13 +5,13 @@
 
 @section('content')
 <div class="row">
-	<div class="col-lg-3 col-6">
+	<div class="col-lg-3">
 		<!-- small box -->
-		<div class="small-box bg-info">
+		<div class="small-box army4">
 			<div class="inner">
-				<h5>
+				<h3>
 					{{ DB::table("users")->count() }}
-				</h5>
+				</h3>
 
 				<p>Jumlah User</p>
 			</div>
@@ -24,13 +24,13 @@
 		</div>
 	</div>
 	<!-- ./col -->
-	<div class="col-lg-3 col-6">
+	<div class="col-lg-3">
 		<!-- small box -->
-		<div class="small-box bg-success">
+		<div class="small-box army2">
 			<div class="inner">
-				<h5>
+				<h3>
 					{{ DB::table("praktikum")->count() }}
-				</h5>
+				</h3>
 
 				<p>Jumlah Kelas</p>
 			</div>
@@ -43,13 +43,13 @@
 		</div>
 	</div>
 	<!-- ./col -->
-	<div class="col-lg-3 col-6">
+	<div class="col-lg-3">
 		<!-- small box -->
-		<div class="small-box bg-warning">
+		<div class="small-box army1 ">
 			<div class="inner">
-				<h5>
+				<h3>
 					{{ DB::table("lab")->count() }}
-				</h5>
+				</h3>
 
 				<p>Jumlah Laboratorium</p>
 			</div>
@@ -61,5 +61,23 @@
 			</a>
 		</div>
 	</div>
+	<div class="col-lg-3">
+		<!-- small box -->
+		<div class="small-box army2">
+			<div class="inner">
+				<h3>
+					<i class="fas fa-user"></i>
+				</h3>
+
+				<p>Buka perekrutan Asisten</p>
+			</div>
+	
+			<a href="#" class="small-box-footer">Selengkapnya
+				<i class="fas fa-arrow-circle-right"></i>
+			</a>
+		</div>
+	</div>
+</div>
 	<!-- ./col -->
+	
 @endsection

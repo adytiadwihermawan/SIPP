@@ -1,4 +1,6 @@
 @extends('admin.dashboard')
+
+@section('Judul', "Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat")
 @section('title', "Data Lab")
 @section('content')
 

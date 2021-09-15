@@ -3,12 +3,12 @@
 @section('title', "Dashboard Dosen")
 
 @section('content')
-    <div class="row">
+    <div class="row ml-2">
 		@foreach ($course as $matkul)
-		<div class="col-lg-3 col-6">
+		<div class="col-lg-4 col-6">
 			<!-- small box -->
 			
-			<div class="small-box bg-warning">
+			<div class="small-box bg-secondary">
 				<div class="inner">
 				
 					<h5>{{ $matkul->nama_praktikum }}</h5>

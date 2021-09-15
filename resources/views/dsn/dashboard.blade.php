@@ -18,6 +18,7 @@
    <link rel="stylesheet" href="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.css')}}">
 
 
+   <link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.min.css" rel="stylesheet">
     
     <style>
@@ -125,10 +126,9 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
-            <h5 class="m-0 text-dark">@yield('Judul')</h5>
+        <div class="col-sm-12 card pt-2 pb-2 tomato">
+            <h5 class="mx-auto">@yield('Judul')</h5>
           </div><!-- /.col -->
-        
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
