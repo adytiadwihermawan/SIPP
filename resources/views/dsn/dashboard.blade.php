@@ -21,15 +21,6 @@
    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.min.css" rel="stylesheet">
     
     <style>
-        .dropzone {
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 14px;
-            margin: 60px 0 0 0;
-            background: #e3e6ff;
-            border: 1px dotted #4e4e4e;            
-        }
 
         .container {
             max-width: 500px;

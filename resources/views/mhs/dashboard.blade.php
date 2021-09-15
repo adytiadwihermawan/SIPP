@@ -48,13 +48,19 @@
                                    document.getElementById('logout-form').submit();">
                       {{ __('Logout') }}
                   </a>
-                  <a class="dropdown-item" href="{{ route('mhs.dashboard') }}">
+                  @if($data != null)
+                  <a class="dropdown-item" href="{{ route('asist.dashboard') }}">
                     Back
                   </a>
 
                   <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                       @csrf
                   </form>
+                  @else
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                      @csrf
+                  </form>
+                  @endif
               </div>
           </li>
       @endguest

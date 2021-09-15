@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row">
-	@foreach ($course as $matkul)
+	@foreach ($data as $matkul)
 	<div class="col-lg-3 col-6">
 		<!-- small box -->
 		

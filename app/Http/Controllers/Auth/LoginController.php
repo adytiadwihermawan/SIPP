@@ -34,13 +34,16 @@ class LoginController extends Controller
     protected $redirectTo = RouteServiceProvider::HOME;
 
         protected function redirectTo(){
+            $cek = Roles::where('id_status', '=', 3 )
+                    ->Where('id_user', '=', Auth::user()->id)
+                    ->first(); 
             if(auth()->user()->id_status == 1){
                 return route('admin.dashboard');
             }
             elseif(auth()->user()->id_status == 2){
                 return route('dsn.dashboard');
             }
-            elseif(auth()->user()->id_status == 4 && Roles::where('id_status', '=', 3))
+            elseif($cek)
             {
                 return route('asist.dashboard');
             }
@@ -65,17 +68,22 @@ class LoginController extends Controller
             'username' => 'required',
             'password' => 'required',
         ]);
-          
+
+        
+        // dd($cek);
         if(auth()->attempt(array('username' => $input['username'], 'password' => $input['password'])))
         {
-            
+            $cek = Roles::where('id_status', '=', 3 )
+                    ->Where('id_user', '=', Auth::user()->id)
+                    ->first(); 
+                
             if(auth()->user()->id_status == 1){
                 return redirect()->route('admin.dashboard');
             }
             elseif(auth()->user()->id_status == 2){
                 return redirect()->route('dsn.dashboard');
             }
-            elseif(auth()->user()->id_status == 4 && Roles::where('id_status', '=', 3))
+            elseif($cek)
             {
                 return redirect()->route('asist.dashboard');
             }

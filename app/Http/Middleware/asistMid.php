@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Roles;
 
 class asistMid
@@ -17,7 +18,10 @@ class asistMid
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->id_status == 3 || Roles::where('id_status', '=', 3)){
+        $cek = Roles::where('id_status', '=', 3 )
+                    ->Where('id_user', '=', Auth::user()->id)
+                    ->first();
+        if($cek){
             return $next($request);
         }
         return redirect('auth.login')->with('error', "Username atau Password Salah");
