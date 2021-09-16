@@ -167,14 +167,14 @@
               </div>
             </div>
           <div class="card-body">
-            @foreach($datas as $data)
-              @if($data->id_pertemuan == $item->id_pertemuan)
+            @foreach($data as $datas)
+              @if($datas->id_pertemuan == $item->id_pertemuan)
               <h6>
-                <a href="{{route('download', $data->namafile_materi)}}" style="color:coral">{{$data->namafile_materi}}</a>
+                <a href="{{route('download', $datas->namafile_materi)}}" style="color:coral">{{$datas->namafile_materi}}</a>
               </h6>
                 
-                  @if($data->deskripsi_file != null)
-                    <div class="card-footer"><p>{{$data->deskripsi_file}}</p>
+                  @if($datas->deskripsi_file != null)
+                    <div class="card-footer"><p>{{$datas->deskripsi_file}}</p>
                     </div>
                   @endif
               @endif
