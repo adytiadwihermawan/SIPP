@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
-  <title>{{$course[0]->nama_praktikum}}</title>
+  <title>@yield('title')</title>
 
    <!-- Font Awesome -->
    <link rel="stylesheet" href="{{asset('template/plugins/fontawesome-free/css/all.min.css')}}">
@@ -24,15 +24,6 @@
    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     
     <style>
-        .dropzone {
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 14px;
-            margin: 60px 0 0 0;
-            background: #e3e6ff;
-            border: 1px dotted #4e4e4e;            
-        }
 
         .container {
             max-width: 500px;
@@ -124,12 +115,16 @@
     @include('dsn.nav-mk')
      <!-- /.sidebar-menu -->
 
-  <!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div class="row mb-1">
+          <div class="col-sm-12 card pt-2 pb-2 tomato">
+            <h5 class="mx-auto">@yield('Judul')</h5>
+          </div><!-- /.col -->
+        
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
@@ -137,7 +132,26 @@
 
     <!-- Main content -->
     <div class="container-fluid">
-      @yield('content')
+      
+@if(empty($course[0]->id_praktikum))
+    <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>
+                    Oops!</h1>
+                <h2>
+                    Belum Ada Pertemuan untuk Mata Kuliah Sekarang</h2>
+                <div class="error-details">
+                    Mohon menunggu sampai dosen atau asisten kelas membuat pertemuan untuk mata kuliah ini
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@else
+    @yield('content')
+@endif
     </div>
   </div>
 
@@ -178,7 +192,7 @@
             serverside: true,
             responsive: true,
             ajax: {
-                url: "{{ route('data', [$course[0]->id_praktikum]) }}"
+                url: "{{ route('data', [$data[0]->id_praktikum]) }}"
             },
             columnDefs: [
                         {"className": "dt-center", "targets": [0,2,3]}

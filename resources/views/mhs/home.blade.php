@@ -21,7 +21,7 @@
                 <i class="fas fa-desktop"></i>
               </div>
 		
-			<a href="matkul/{{$matkul->id_praktikum}}" class="small-box-footer">Selengkapnya
+			<a href="/matkul/{{$matkul->id_praktikum}}" class="small-box-footer">Selengkapnya
 				<i class="fas fa-arrow-circle-right"></i>
 			</a>
 		</div>

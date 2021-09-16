@@ -27,7 +27,7 @@ class UserController extends Controller
                     ->where('id_status', '=', 3)
                     ->Where('id_user', '=', Auth::user()->id)
                     ->first();
-        // dd($course);
+        // dd($mk);
         $datas = [
             'course'=>$mk,
             'data'=>$data
@@ -37,31 +37,53 @@ class UserController extends Controller
 
     public function mhsProfile()
     {
+        $data = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')
+                    ->where('id_status', '=', 3)
+                    ->Where('id_user', '=', Auth::user()->id)
+                    ->get();
+
         $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
 
-        return view('mhs.profile', compact('course'));
+        $datas = [
+            'course'=>$course,
+            'data'=>$data
+        ];
+        return view('mhs.profile', $datas);
     }
 
     public function mhsPresensi()
     {
-       $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+       $data = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')
+                    ->where('id_status', '=', 3)
+                    ->Where('id_user', '=', Auth::user()->id)
+                    ->get();
 
-        return view('mhs.presensi', compact('course'));
+        $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+
+        $datas = [
+            'course'=>$course,
+            'data'=>$data
+        ];
+        return view('mhs.presensi', $datas);
     }
 
 
     public function matkulMhs($id)
     {
-        $praktikum = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+        $kelas = Praktikum::where('id_praktikum', $id)->get();
+        
+        $proses_praktikum = Pertemuan::join('proses_praktikum', 'pertemuan.id_praktikum', '=', 'proses_praktikum.id_praktikum')
                             ->where('pertemuan.id_praktikum', $id)
+                            ->where('id_user', Auth::user()->id)
                             ->get();
-      
+        // dd($proses_praktikum);
         $data = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
-                        ->where('pertemuan.id_praktikum', $id)
+                        ->where('pertemuan.id_pertemuan', $id)
                         ->get();
-
+        // dd($data);
         $course = [
-            'course'=>$praktikum,
+            'course'=>$proses_praktikum,
+            'mk'=>$kelas,
             'data'=>$data
         ];
         // dd($course);
@@ -101,7 +123,7 @@ class UserController extends Controller
     public function matkulAsisten($id)
     {
         $praktikum = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
-                            ->where('pertemuan.id_praktikum', $id)
+                            ->where('praktikum.id_praktikum', $id)
                             ->get();
       
         $data = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
@@ -153,36 +175,36 @@ class UserController extends Controller
 
     public function matkulDsn($id)
     {
-        $praktikum = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
-                            // ->join('materi', 'pertemuan.id_pertemuan', '=', 'materi.id_pertemuan')
-                            ->where('pertemuan.id_praktikum', $id)
-                            ->get();
-      
-        $data = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
-                        ->where('pertemuan.id_praktikum', $id)
-                        ->get();
-
-                        
-        $icons = [
-                'pdf' => 'pdf',
-                'doc' => 'word',
-                'docx' => 'word',
-                'xls' => 'excel',
-                'xlsx' => 'excel',
-                'ppt' => 'powerpoint',
-                'pptx' => 'powerpoint',
-                'txt' => 'text',
-                'png' => 'image',
-                'jpg' => 'image',
-                'jpeg' => 'image',
-            ];
-        // dd($icons);
-        $course = [
-            'course'=>$praktikum,
-            'datas'=>$data,
-            'icon'=>$icons
-        ];
+        $kelas = Praktikum::where('id_praktikum', $id)->get();
         
+        $proses_praktikum = Pertemuan::join('proses_praktikum', 'pertemuan.id_praktikum', '=', 'proses_praktikum.id_praktikum')
+                            ->where('pertemuan.id_praktikum', $id)
+                            ->where('id_user', Auth::user()->id)
+                            ->get();
+    
+        $data = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
+                        ->get();
+        // dd($data);
+        $course = [
+            'course'=>$proses_praktikum,
+            'mk'=>$kelas,
+            'data'=>$data
+        ];
+                        
+        // $icons = [
+        //         'pdf' => 'pdf',
+        //         'doc' => 'word',
+        //         'docx' => 'word',
+        //         'xls' => 'excel',
+        //         'xlsx' => 'excel',
+        //         'ppt' => 'powerpoint',
+        //         'pptx' => 'powerpoint',
+        //         'txt' => 'text',
+        //         'png' => 'image',
+        //         'jpg' => 'image',
+        //         'jpeg' => 'image',
+        //     ];
+        // dd($course);
         return view('dsn.matakuliah', $course);
 
     }
@@ -359,7 +381,12 @@ class UserController extends Controller
                 ->rawColumns(['Aksi'])
                 ->make(true);
             }
-            return view('dsn.participants', compact('course'));
+
+            $cek = [
+                'data'=>$data,
+                'course'=>$course
+            ];
+            return view('dsn.participants', $cek);
         }
 
     public function buatAbsen(Request $request)

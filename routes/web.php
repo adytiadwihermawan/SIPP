@@ -103,13 +103,13 @@ Route::get('asist/matkul/{id}', [UserController::class, 'matkulAsisten']);
 
 // -----------------------------------------  Dashboard Mahasiswa -------------------------------------------------------------------- \\
 
-Route::get('mhs/dashboard', [UserController::class, 'dashboardMhs'])->name('mhs.dashboard')->middleware('mhsMid');
+Route::get('dashboard', [UserController::class, 'dashboardMhs'])->name('mhs.dashboard')->middleware('mhsMid');
 
-Route::get('mhs/profile', [UserController::class, 'mhsProfile']);
+Route::get('profile', [UserController::class, 'mhsProfile']);
 
-Route::get('mhs/presensi', [UserController::class, 'mhsPresensi']);
+Route::get('presensi', [UserController::class, 'mhsPresensi']);
 
-Route::get('mhs/matkul/{id}', [UserController::class, 'matkulMhs']);
+Route::get('matkul/{id}', [UserController::class, 'matkulMhs'])->name('mhsMatkul');
 
 Route::view('form-daftar-asisten', [UserController::class, 'formdaftar']);
 

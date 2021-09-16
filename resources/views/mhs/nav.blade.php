@@ -4,7 +4,7 @@
       <!-- Add icons to the links using the .nav-icon class
            with font-awesome or any other icon font library -->
            <li class="nav-item">
-            <a href="{{ url('mhs/dashboard') }}" class="{{ request()->is('mhs/dashboard') ? 'nav-link active' : 'nav-link' }}">
+            <a href="{{ url('dashboard') }}" class="{{ request()->is('dashboard') ? 'nav-link active' : 'nav-link' }}">
               <i class="nav-icon fas fa-home"></i>
               <p>
                 Dashboard
@@ -13,7 +13,7 @@
            </li>
 
            <li class="nav-item">
-            <a href="{{url('mhs/profile')}}" class="{{ request()->is('mhs/profile') ? 'nav-link active' : 'nav-link' }}">
+            <a href="{{url('profile')}}" class="{{ request()->is('profile') ? 'nav-link active' : 'nav-link' }}">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 Akun
@@ -21,15 +21,6 @@
             </a>
            </li>
 
-
-           <li class="nav-item">
-            <a href="{{url('mhs/presensi')}}" class="{{ request()->is('mhs/presensi') ? 'nav-link active' : 'nav-link' }}">
-              <i class="nav-icon fas fa-tasks"></i>
-              <p>
-                Presensi
-              </p>
-            </a>
-           </li>
 
             <li class="nav-item menu mb-5">
         <a href="#" class="nav-link">
@@ -42,7 +33,7 @@
         <ul class="nav nav-treeview">
           @foreach ($course as $matkul)
           <li class="nav-item">
-            <a href="/mhs/matkul/{{$matkul->id_praktikum}}" class="{{ request()->is('mhs/matkul') ? 'nav-link active' : 'nav-link' }}">
+            <a href="/matkul/{{$matkul->id_praktikum}}" class="{{ request()->is('mhs/matkul') ? 'nav-link active' : 'nav-link' }}">
               <i class="fas fa-book-open"></i>
               <p>{{ $matkul->nama_praktikum }}</p>
             </a>
