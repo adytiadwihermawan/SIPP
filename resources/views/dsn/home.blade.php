@@ -8,7 +8,7 @@
 		<div class="col-lg-4 col-6">
 			<!-- small box -->
 			
-			<div class="small-box bg-secondary">
+			<div class="small-box army3">
 				<div class="inner">
 				
 					<h5>{{ $matkul->nama_praktikum }}</h5>
@@ -19,7 +19,7 @@
 				<div class="icon">
 					<i class="ion ion-stats-bars"></i>
 				</div>
-			<a href="/dsn/matkul/{{$matkul->id_praktikum}}" class="small-box-footer">Selengkapnya
+			<a href="/dsn/matkul/{{$matkul->id_praktikum}}" class="small-box-footer bg-info">Selengkapnya
 					<i class="fas fa-arrow-circle-right"></i>
 				</a>
 			</div>

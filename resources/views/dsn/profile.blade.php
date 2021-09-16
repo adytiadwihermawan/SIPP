@@ -1,7 +1,7 @@
 @extends('dsn.dashboard')
-@section('title', "Profile")
+@section('title',"Profile")
 
-@section('Judul', "Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat")s
+@section('Judul',"Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat")
 
 @section('content')
 <section class="content">
@@ -36,9 +36,9 @@
           <!-- /.col -->
           <div class="col-md-9">
             <div class="card">
-              <div class="card-header p-2">
+              <div class="card-header p-2 tomato">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#ganti_password" data-toggle="tab">Ganti Password</a></li>
+                 <h4 class="mx-auto"> <b>UBAH PASSWORD <b></h4>
                 </ul>
               </div><!-- /.card-header -->
               <div class="card-body">
@@ -70,7 +70,7 @@
                       </div>
                       <div class="form-group row">
                         <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Update Password</button>
+                          <button type="submit" class="btn btn-secondary">Update Password</button>
                         </div>
                       </div>
                     </form>

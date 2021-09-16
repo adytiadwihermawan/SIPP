@@ -184,8 +184,8 @@
 
               
               <div class="card">
-  <div class="card-header cold1">
-    nama materi
+  <div class="card-header cold2">
+    <b>Nama Materi</b>
   </div>
   <div class="card-body">
   <a href="{{route('download', $data->namafile_materi)}}" style="color:coral">{{$data->namafile_materi}}</a>
