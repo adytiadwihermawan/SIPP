@@ -35,7 +35,6 @@
           <?php 
             $total = $matkul->where('id_praktikum', '=', $matkul->id_praktikum)->count();
             if($count == $total) 
-              break; 
           ?>
           <li class="nav-item">
             <a href="/dsn/matkul/{{$matkul->id_praktikum}}" class="nav-link">
