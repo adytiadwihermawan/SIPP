@@ -34,20 +34,25 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        {{-- @if($data[0]->id_pertemuan == $item->id_pertemuan) --}}
+                        @if($data[0]->id_pertemuan == $item->id_pertemuan)
                         @foreach($data as $datas)
-                        <h6>
-                            <a href="{{route('download', $datas->namafile_materi)}}"
-                                style="color:coral">{{$datas->namafile_materi}}</a>
-                        </h6>
 
-                        @if(!empty($data->deskripsi_file))
-                        <div class="card-footer">
-                            <p>{{$datas->deskripsi_file}}</p>
+
+                        <div class="card col-13 mx-auto">
+                            <div class="card-header cold4">
+                                <b>Nama Materi</b>
+                            </div>
+                            <div class="card-body cold1">
+                                <a href="{{route('download', $datas->namafile_materi)}}">{{$datas->namafile_materi}}</a>
+                                @if($datas->deskripsi_file)
+                                <div class="card-footer">
+                                    <p>{{$datas->deskripsi_file}}</p>
+                                </div>
+                                @endif
+                            </div>
                         </div>
-                        @endif
                         @endforeach
-                        {{-- @endif --}}
+                        @endif
                     </div>
                 </div>
                 <div class="card-footer">

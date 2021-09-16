@@ -74,14 +74,47 @@
     color: white;
 }
 
-<<<<<<< HEAD
-.tomato2 {
-    background-color: rgb(212, 219, 182);
-    color: rgb(70, 45, 45);
+.beedark {
+    background-color: #4a403a;
+    color: #efefef;
+}
+.beebrown {
+    background-color: #a45d5d;
+    color: #ffc069;
+}
+.beeyel {
+    background-color: #ffc069;
+    color: #502424;
+}
+.beelig {
+    background-color: #efefef;
+    color: #4a403a;
 }
 
-body {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMC8yOS8xMiKqq3kAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAABHklEQVRIib2Vyw6EIAxFW5idr///Qx9sfG3pLEyJ3tAwi5EmBqRo7vHawiEEERHS6x7MTMxMVv6+z3tPMUYSkfTM/R0fEaG2bbMv+Gc4nZzn+dN4HAcREa3r+hi3bcuu68jLskhVIlW073tWaYlQ9+F9IpqmSfq+fwskhdO/AwmUTJXrOuaRQNeRkOd5lq7rXmS5InmERKoER/QMvUAPlZDHcZRhGN4CSeGY+aHMqgcks5RrHv/eeh455x5KrMq2yHQdibDO6ncG/KZWL7M8xDyS1/MIO0NJqdULLS81X6/X6aR0nqBSJcPeZnlZrzN477NKURn2Nus8sjzmEII0TfMiyxUuxphVWjpJkbx0btUnshRihVv70Bv8ItXq6Asoi/ZiCbU6YgAAAABJRU5ErkJggg==);
+.blue1 {
+    background-color: #eeeeee;
+    color: #0f044c;
+}
+
+.blue2 {
+    background-color: #44465e;
+    color: #d5d1ec;
+}
+
+.blue3 {
+    background-color: #0f044c;
+    color: #c4c5d1;
+}
+
+.blue4,
+.blue4h {
+    background-color: #141e61;
+    color: #eeeeee;
+}
+
+.blue4h:hover {
+    background-color: #6972ad;
+    color: #322f42;
 }
 .error-template {
     padding: 40px 15px;
@@ -94,46 +127,3 @@ body {
 .error-actions .btn {
     margin-right: 10px;
 }
-=======
-.beedark{
-    background-color: #4A403A;
-    color: #EFEFEF;
-}
-.beebrown{
-    background-color: #A45D5D;
-    color: #FFC069;
-}
-.beeyel{
-    background-color: #FFC069;
-    color: #502424;
-}
-.beelig{
-    background-color: #EFEFEF;
-    color: #4A403A;
-}
-
-.blue1{
-    background-color: #EEEEEE;
-    color: #0F044C;
-}
-
-.blue2{
-    background-color: #44465e;
-    color: #d5d1ec;
-}
-
-.blue3{
-    background-color: #0F044C;
-    color: #c4c5d1;
-}
-
-.blue4,.blue4h{
-    background-color: #141E61;
-    color: #EEEEEE;
-}
-
-.blue4h:hover{
-    background-color: #6972ad;
-    color: #322f42;
-}
->>>>>>> c6da111591bc9e382d640204f7fca0d3a71c04c6

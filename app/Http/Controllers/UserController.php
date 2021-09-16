@@ -51,7 +51,7 @@ class UserController extends Controller
         return view('mhs.profile', $datas);
     }
 
-    public function mhsPresensi()
+    public function mhsPresensi($id)
     {
        $data = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')
                     ->where('id_status', '=', 3)
@@ -60,9 +60,12 @@ class UserController extends Controller
 
         $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
 
+        $kelas = Praktikum::where('id_praktikum', $id)->get();
+
         $datas = [
             'course'=>$course,
-            'data'=>$data
+            'data'=>$data,
+            'mk'=>$kelas
         ];
         return view('mhs.presensi', $datas);
     }
@@ -78,7 +81,6 @@ class UserController extends Controller
                             ->get();
         // dd($proses_praktikum);
         $data = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
-                        ->where('pertemuan.id_pertemuan', $id)
                         ->get();
         // dd($data);
         $course = [

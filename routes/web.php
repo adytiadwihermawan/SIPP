@@ -107,7 +107,7 @@ Route::get('dashboard', [UserController::class, 'dashboardMhs'])->name('mhs.dash
 
 Route::get('profile', [UserController::class, 'mhsProfile']);
 
-Route::get('presensi', [UserController::class, 'mhsPresensi']);
+Route::get('presensi/{id}', [UserController::class, 'mhsPresensi'])->name('presensi');
 
 Route::get('matkul/{id}', [UserController::class, 'matkulMhs'])->name('mhsMatkul');
 
