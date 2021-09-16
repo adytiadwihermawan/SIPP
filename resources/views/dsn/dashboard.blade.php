@@ -118,8 +118,8 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-        <div class="col-sm-12 card pt-2 pb-2 tomato">
-            <h5 class="mx-auto">@yield('Judul')</h5>
+        <div class="col-sm-12 card pt-2 pb-2 beeyel">
+            <h5 class="mx-auto"><b>@yield('Judul') </b></h5> 
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->

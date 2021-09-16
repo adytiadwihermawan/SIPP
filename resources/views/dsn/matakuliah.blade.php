@@ -4,49 +4,95 @@
 
 @section('content')
 <!-- Content Wrapper. Contains page content -->
-
-@if(!empty($course[0]->id_praktikum))
-
-<div class="content">
-    <div class="card card-primary ml-2">
-        <div class="card-header">
-            <h3 class="card-title">
-                {{$mk[0]->nama_praktikum}}
-            </h3>
-            <button type="button" class="btn hijau float-right" style=" padding:1px 4px;" title="Buat Pertemuan"
-                data-toggle="modal" data-target="#modal-pertemuan">
-                <i class="fa fa-plus"></i> Tambah Pertemuan</button>
-
-        </div>
+  <div class="content">
+    <!-- Content Header (Page header) -->
+        <h1 style="text-align: center; font-size:x-large;">
+          Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat</h1>
+          <br>
+    <!-- /.content-header -->
+    <div class="card blue2 ml-2">
+      <div class="card-header">
+        <h3 class="card-title">
+            {{$course[0]->nama_praktikum}}
+        </h3>
+        <button type="button" class="btn blue4h float-right" style=" padding:1px 4px;" title="Buat Pertemuan" data-toggle="modal" data-target="#modal-pertemuan">
+				<i class="fa fa-plus"></i> Tambah Pertemuan</button>
+        
+      </div>
     </div>
 
     <div class="col-12 mb-3ss  ">
-        <button type="button" class="btn cold4h panjang1 float-right mb-3" data-toggle="modal"
-            data-target="#modal-presensi"> <i class="fas fa-plus"></i> Buat Presensi </button>
-    </div>
+          <button type="button" class="btn blue4h panjang1 float-right mb-3" data-toggle="modal" data-target="#modal-presensi"> <i class="fas fa-plus"></i> Buat Presensi </button>
+        </div>
 
 
-  <div class="card col-12 card-primary ml-2">
-
-        @foreach($course as $item)
-        <?php 
+       <div class="card col-12">
+     
+      @foreach($course as $item)  
+    <?php 
       $total = $item->where('id_praktikum', '=', $item->id_praktikum)->get();
     ?>
-        {{-- @if ($total) --}}
-        <!-- Main content -->
+      {{-- @if ($total) --}}
+      <!-- Main content -->
+    
+        
+          <!-- Small boxes (Stat box) -->
+            <!-- Default box -->
+
+        <div class="card "> 
+          <div class="card-header blue2">
+            <h3 class="card-title">{{$item->nama_pertemuan}}</h3>
+            
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+            </div>
 
 
-        <!-- Small boxes (Stat box) -->
-        <!-- Default box -->
-
-        <div class="card">
-            <div class="card-header cold3">
-                <h3 class="card-title">{{$item->nama_pertemuan}}</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
+          <div class="card-body">
+              <div class="row mb-3 ml-5">
+                <div class="col-sm">
+                  <button type="button" class="btn hijau panjang1 " data-toggle="modal" data-target="#addmateri"> <i class="fas fa-plus"></i> Tambah Materi </button>
+                </div>
+                
+      <!-- Modal -->
+          <div class="modal fade" id="addmateri">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addpesertaLabel">Upload Materi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+                
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                      <form action="{{ route('fileUpload') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        @if ($message = Session::get('success'))
+                          <div class="alert alert-success">
+                              <strong>{{ $message }}</strong>
+                          </div>
+                        @endif
+              
+                        @if (count($errors) > 0)
+                          <div class="alert alert-danger">
+                              <ul>
+                                  @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                  @endforeach
+                              </ul>
+                          </div>
+                        @endif
+                          <input type="text" class="form-control" name="id_pertemuan" value="{{ old('id', $item->id_pertemuan)}}" readonly>
+                          <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
+                          <button type="submit" style="float:right; margin-bottom:15px;"class="btn btn-success">Upload</button>
+                      </form>
+                    </div>
+                  </div>
                 </div>
 
             </div>
@@ -185,6 +231,8 @@
                     </div>
 
 
+                <div class="col-sm">
+                  <button type="button" class="btn hijau3 panjang1 " data-toggle="modal" data-target="#"> <i class="fas fa-edit"></i> Edit Pertemuan </button>
                 </div>
 
                 @if($data[0]->id_pertemuan == $item->id_pertemuan)
@@ -204,6 +252,36 @@
                 @endforeach
                 @endif
             </div>
+          
+            @foreach($datas as $data)
+              @if($data->id_pertemuan == $item->id_pertemuan)
+
+              
+              <div class="card col-13 mx-auto">
+  <div class="card-header cold4">
+    <b>Nama Materi</b>
+  </div>
+  <div class="card-body cold1">
+  <a  href="{{route('download', $data->namafile_materi)}}" >{{$data->namafile_materi}}</a>
+  </div>
+</div>
+             
+                
+                  @if($data->deskripsi_file != null)
+                    <div class="card-footer"><p>{{$data->deskripsi_file}}</p>
+                    </div>
+                  @endif
+              @endif
+            @endforeach
+          </div> 
+        
+          
+          <div class="card-footer blue1">
+            {{$item->deskripsi}}
+          </div>
+        </div>
+        
+        
 
         </div>
         <div class="card-footer">
