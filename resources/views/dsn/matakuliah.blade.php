@@ -9,23 +9,23 @@
           Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat</h1>
           <br>
     <!-- /.content-header -->
-    <div class="card card-primary ml-2">
+    <div class="card blue2 ml-2">
       <div class="card-header">
         <h3 class="card-title">
             {{$course[0]->nama_praktikum}}
         </h3>
-        <button type="button" class="btn hijau float-right" style=" padding:1px 4px;" title="Buat Pertemuan" data-toggle="modal" data-target="#modal-pertemuan">
+        <button type="button" class="btn blue4h float-right" style=" padding:1px 4px;" title="Buat Pertemuan" data-toggle="modal" data-target="#modal-pertemuan">
 				<i class="fa fa-plus"></i> Tambah Pertemuan</button>
         
       </div>
     </div>
 
     <div class="col-12 mb-3ss  ">
-          <button type="button" class="btn cold4h panjang1 float-right mb-3" data-toggle="modal" data-target="#modal-presensi"> <i class="fas fa-plus"></i> Buat Presensi </button>
+          <button type="button" class="btn blue4h panjang1 float-right mb-3" data-toggle="modal" data-target="#modal-presensi"> <i class="fas fa-plus"></i> Buat Presensi </button>
         </div>
 
 
-       <div class="card col-12 card-primary ml-2">
+       <div class="card col-12">
      
       @foreach($course as $item)  
     <?php 
@@ -38,8 +38,8 @@
           <!-- Small boxes (Stat box) -->
             <!-- Default box -->
 
-        <div class="card"> 
-          <div class="card-header cold3">
+        <div class="card "> 
+          <div class="card-header blue2">
             <h3 class="card-title">{{$item->nama_pertemuan}}</h3>
             
             <div class="card-tools">
@@ -51,9 +51,9 @@
           </div>
 
           <div class="card-body">
-              <div class="row mb-5 mx-auto">
+              <div class="row mb-3 ml-5">
                 <div class="col-sm">
-                  <button type="button" class="btn hijau panjang2 " data-toggle="modal" data-target="#addmateri"> <i class="fas fa-plus"></i> Tambah Materi </button>
+                  <button type="button" class="btn hijau panjang1 " data-toggle="modal" data-target="#addmateri"> <i class="fas fa-plus"></i> Tambah Materi </button>
                 </div>
                 
       <!-- Modal -->
@@ -173,7 +173,7 @@
 
 
                 <div class="col-sm">
-                  <button type="button" class="btn hijau3 panjang2 " data-toggle="modal" data-target="#"> <i class="fas fa-plus"></i> Edit Pertemuan </button>
+                  <button type="button" class="btn hijau3 panjang1 " data-toggle="modal" data-target="#"> <i class="fas fa-edit"></i> Edit Pertemuan </button>
                 </div>
 
                 
@@ -183,12 +183,12 @@
               @if($data->id_pertemuan == $item->id_pertemuan)
 
               
-              <div class="card">
-  <div class="card-header cold2">
+              <div class="card col-13 mx-auto">
+  <div class="card-header cold4">
     <b>Nama Materi</b>
   </div>
-  <div class="card-body">
-  <a href="{{route('download', $data->namafile_materi)}}" style="color:coral">{{$data->namafile_materi}}</a>
+  <div class="card-body cold1">
+  <a  href="{{route('download', $data->namafile_materi)}}" >{{$data->namafile_materi}}</a>
   </div>
 </div>
              
@@ -202,7 +202,7 @@
           </div> 
         
           
-          <div class="card-footer biru">
+          <div class="card-footer blue1">
             {{$item->deskripsi}}
           </div>
         </div>

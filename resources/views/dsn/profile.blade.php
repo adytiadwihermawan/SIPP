@@ -36,7 +36,7 @@
           <!-- /.col -->
           <div class="col-md-9">
             <div class="card">
-              <div class="card-header p-2 tomato">
+              <div class="card-header p-2 beedark">
                 <ul class="nav nav-pills">
                  <h4 class="mx-auto"> <b>UBAH PASSWORD <b></h4>
                 </ul>
