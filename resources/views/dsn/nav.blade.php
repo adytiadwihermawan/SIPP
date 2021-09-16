@@ -34,8 +34,8 @@
           @foreach ($course as $matkul)
           <?php 
             $total = $matkul->where('id_praktikum', '=', $matkul->id_praktikum)->count();
-            if($count == $total) 
-              break; 
+            if($count == $total) ;
+             
           ?>
           <li class="nav-item">
             <a href="/dsn/matkul/{{$matkul->id_praktikum}}" class="nav-link">
