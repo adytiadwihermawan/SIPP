@@ -11,15 +11,18 @@
         <h3 class="card-title">
             {{$course[0]->nama_praktikum}}
         </h3>
+        
         <button type="button" class="btn blue4h float-right" style=" padding:1px 4px;" title="Buat Pertemuan" data-toggle="modal" data-target="#modal-pertemuan">
 				<i class="fa fa-plus"></i> Tambah Pertemuan</button>
         
       </div>
     </div>
 
-    <div class="col-12 mb-3ss  ">
-          <button type="button" class="btn blue4h panjang1 float-right mb-3" data-toggle="modal" data-target="#modal-presensi"> <i class="fas fa-plus"></i> Buat Presensi </button>
-        </div>
+    <div class="col-12 mb-3 ">
+          <button type="button" class="btn blue4h panjang1" data-toggle="modal" data-target="#modal-presensi"> <i class="fas fa-plus"></i> Buat Presensi </button>
+       
+                  <button type="button" class="btn hijau panjang1 ml-3" data-toggle="modal" data-target="#addmateri"> <i class="fas fa-plus"></i> Tambah Materi </button>
+                </div>
 
 
        <div class="card col-12">
@@ -39,6 +42,8 @@
           <div class="card-header blue2">
             <h3 class="card-title">{{$item->nama_pertemuan}}</h3>
             
+         
+
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                 <i class="fas fa-minus"></i>
@@ -49,9 +54,7 @@
 
           <div class="card-body">
               <div class="row mb-3 ml-5">
-                <div class="col-sm">
-                  <button type="button" class="btn hijau panjang1 " data-toggle="modal" data-target="#addmateri"> <i class="fas fa-plus"></i> Tambah Materi </button>
-                </div>
+                
                 
       <!-- Modal -->
           <div class="modal fade" id="addmateri">
@@ -169,9 +172,7 @@
       </div>
 
 
-                <div class="col-sm">
-                  <button type="button" class="btn hijau3 panjang1 " data-toggle="modal" data-target="#"> <i class="fas fa-edit"></i> Edit Pertemuan </button>
-                </div>
+               
 
                 
             </div>
@@ -183,6 +184,10 @@
               <div class="card col-13 mx-auto">
   <div class="card-header cold4">
     <b>Nama Materi</b>
+
+    <a href="" title="Delete" class="btn-sm btn-danger btn float-right" onclick="return confirm('Are you sure to delete this data ?')">
+								<i class="fa fa-trash"></i> 
+							</a>
   </div>
   <div class="card-body cold1">
   <a  href="{{route('download', $datas->namafile_materi)}}" >{{$datas->namafile_materi}}</a>
@@ -201,7 +206,8 @@
           
           <div class="card-footer blue1">
             {{$item->deskripsi}}
-          </div>
+           <br> <button type="button" class="btn hijau3 panjang1 float-right" data-toggle="modal" data-target="#"> <i class="fas fa-edit"></i> Edit Pertemuan </button>
+                </div>
         </div>
         
         
