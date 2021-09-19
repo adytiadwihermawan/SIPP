@@ -17,9 +17,6 @@
     </div>
     @foreach($course as $item)
 
-    <?php 
-      $total = $item->where('id_praktikum', '=', $item->id_praktikum)->get();
-    ?>
     <div class="card card-primary ml-2">
         <section class="content mt-3">
             <div class="container-fluid">

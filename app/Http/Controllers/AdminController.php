@@ -77,8 +77,8 @@ class AdminController extends Controller
                 'password'=> Hash::make($request->input('password')),
                 'id_status'=>$request->input('role')
             ]);
-               if( !$query ){
-                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to update password in database']);
+            if( !$query ){
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to add user in database']);
             }else{
                 return response()->json(['status'=>1,'msg'=>'Data Berhasil Ditambahkan']);
             }

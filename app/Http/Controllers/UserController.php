@@ -221,41 +221,36 @@ class UserController extends Controller
     // }
 
     public function upload(Request $request){
-        $request->validate([
-        'id',
-        '_file' => 'required|mimes:pptx,txt,xlx,xls,doc,docx,pdf,ppsx'
-        ]);
 
+        $request->validate([
+                    'id'=>'required',
+                    '_file' => 'required|mimes:pptx,txt,xlx,xls,doc,docx,pdf,ppsx',
+                    'judul_materi'=>'required',
+                    'deskripsi'
+                ]);
+        // dd($request->all());
         $fileModel = new Materi;
 
-        if($request->file()) {
+        if($request->all()) {
             $path = 'uploads/';
             $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
             // $fileName = time().'_'.$request->_file->getClientOriginalName();
             // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
             $filePath = $request->_file->move(public_path($path), $newname);
 
-            $fileModel->namafile_materi= $request->_file->getClientOriginalName();
+            $fileModel->id_pertemuan= $request->id;
+            $fileModel->namafile_materi = $request->_file->getClientOriginalName();
+            $fileModel->judul_materi = $request->judul_materi;
+            $fileModel->deskripsi_file = $request->deskripsi;
             $fileModel->save();
 
-            return back()
-            ->with('success','File has been uploaded.');}
-        // // }
-        // $path = 'uploads/';
-        // $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
-        // $id = $request->input('id');
-        // $upload = $request->_file->move(public_path($path), $newname);
-         
-        // if($upload){
-        //     $post = new Materi();
-        //     $post->nama = $newname;
-        //     $post->id_pertemuan = $id;
-        //     dd($post);
-        //     $post->save();
-        //     echo 'Berhasil';
-        // }else{
-        //     echo 'Gagal';
-        // }
+            if(!$fileModel->save()){
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
+            }                
+            else{
+                return response()->json(['status'=>1,'msg'=>'File Berhasil Diunggah']);
+            }
+        }
    }
 
    public function downloadFile(Request $request, $file)
@@ -353,11 +348,11 @@ class UserController extends Controller
                         'deskripsi'=>$request->input('deskripsi')
                     ]);
     //    dd($query);
-            if($query){
-                return redirect()->route('matkulDsn', [$request->input('id')])->with('berhasil', 'Data Berhasil Ditambahkan');
+            if(!$query){
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal membuat pertemuan']);
             }                
             else{
-                return back()->with('gagal', 'Ada terjadi kesalahan');
+                return response()->json(['status'=>1,'msg'=>'Data Berhasil Ditambahkan']);
             }
         }
 
