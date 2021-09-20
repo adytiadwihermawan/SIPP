@@ -85,7 +85,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="addmateri" action="{{ route('fileUpload') }}" method="POST" enctype="multipart/form-data">
+                    <form id="upload-file" action="{{ route('fileUpload') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="">Pertemuan ke:</label>
@@ -114,8 +115,10 @@
                         <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control"
                             required>
 
-                        <button id="upload" type="submit" style="float:right; margin-bottom:15px;"
-                            class="btn btn-success">Upload</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Upload File</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -123,10 +126,66 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    
-            @foreach($course as $item)
-    <div class="card col-12">
 
+    <div class="modal fade" id="modal-presensi">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Buat Presensi</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="absen" action="{{ route('buatAbsen') }}" method="POST">
+                        @csrf
+
+                        <input type="hidden" class="form-control" name="id" value="{{$mk[0]->id_praktikum}}" readonly>
+
+                        <div class="form-group">
+                            <label for="">Pertemuan</label>
+                            <input type="number" class="form-control" name="pertemuan" required>
+                            <span class="text-danger error-text id_error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Tanggal</label>
+                            <input type="date" class="form-control" name="tanggal" required>
+                            <span class="text-danger error-text tanggal_error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Materi</label>
+                            <input type="text" class="form-control" name="materi" required>
+                            <span class="text-danger error-text materi_error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Waktu Mulai Presensi</label>
+                            <input type="datetime-local" class="form-control" name="wmp" required>
+                            <span class="text-danger error-text wmp_error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Waktu Akhir Presensi</label>
+                            <input type="datetime-local" class="form-control" name="wap" required>
+                            <span class="text-danger error-text wap_error"></span>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Buat Presensi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    @foreach($course as $item)
+    <div class="card col-12">
 
         <div class="card">
             <div class="card-header blue2">
@@ -139,93 +198,14 @@
                 </div>
 
             </div>
-
-            <div class="card-body">
-                <div class="row mb-3 ml-5">
-
-                    <div class="modal fade" id="modal-presensi">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Buat Absen</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action=" {{ route('absen') }}" method="POST">
-                                        @csrf
-
-                                        @if ($message = Session::get('success'))
-                                        <div class="alert alert-success">
-                                            <strong>{{ $message }}</strong>
-                                        </div>
-                                        @endif
-
-                                        @if (count($errors) > 0)
-                                        <div class="alert alert-danger">
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                        @endif
-                                        <div class="form-group">
-                                            <label for="">Pertemuan</label>
-                                            <input type="number" class="form-control" name="id">
-                                            <span style="color:red">@error('id') {{ $message }} @enderror</span>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="">Tanggal</label>
-                                            <input type="date" class="form-control" name="tanggal">
-                                            <span style="color:red">@error('tanggal') {{ $message }} @enderror</span>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="">Materi</label>
-                                            <input type="text" class="form-control" name="materi">
-                                            <span style="color:red">@error('materi') {{ $message }} @enderror</span>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="">Waktu Mulai Presensi</label>
-                                            <input type="datetime-local" class="form-control" name="wmp">
-                                            <span style="color:red">@error('wmp') {{ $message }} @enderror</span>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="">Waktu Akhir Presensi</label>
-                                            <input type="datetime-local" class="form-control" name="wap">
-                                            <span style="color:red">@error('wap') {{ $message }} @enderror</span>
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Buat Presensi</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                    </div>
-
-                </div>
-            </div>
-
+            <br>
             @foreach($data as $datas)
             @if($datas->id_pertemuan == $item->id_pertemuan)
 
-
-            <div class="card col-13 mx-auto">
-                <div class="card-header cold4">
-                    <b>Nama Materi</b>
-
-                    <a href="" title="Delete" class="btn-sm btn-danger btn float-right"
+            <div class="card col-12">
+                <div class="card-header cold4 ">
+                   <h3 class="card-title">{{$datas->judul_materi}}</h3>
+                    <a href="/deletemateri/{{  $datas->id_pertemuan }}" title="Delete" class="btn-sm btn-danger btn float-right"
                         onclick="return confirm('Are you sure to delete this data ?')">
                         <i class="fa fa-trash"></i>
                     </a>
@@ -249,7 +229,7 @@
                 <i class="fas fa-edit"></i> Edit Pertemuan </button>
         </div>
     </div>
-  @endforeach
+    @endforeach
 </div>
 @endif
 @endsection

@@ -19,9 +19,7 @@
    
    <link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
 
-   <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.min.css" rel="stylesheet">
-
-   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     
     <style>
 
@@ -285,11 +283,11 @@
   });
 
    $(function(){
-
-    $('#upload').on('submit', function(e){
-      location.reload();
+    
+    $('#upload-file').on('submit', function(e){
+      // location.reload();
       e.preventDefault();
-
+      
       $.ajax({
         url:$(this).attr('action'),
         method:$(this).attr('method'),
@@ -306,13 +304,41 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            $('#addmateri')[0].reset();
+            $('#upload-file')[0].reset();
             alert(data.msg);
           }
         }
       });
     });
+  });
 
+  $(function(){
+    
+    $('#absen').on('submit', function(e){
+      e.preventDefault();
+      
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            $('#absen')[0].reset();
+            alert(data.msg);
+          }
+        }
+      });
+    });
   });
 
 </script>

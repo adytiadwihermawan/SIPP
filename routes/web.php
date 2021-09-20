@@ -84,11 +84,13 @@ Route::get('dsn/matkul/{id}', [UserController::class, 'matkulDsn'])->name('matku
 
 Route::post('upload', [UserController::class, 'upload'])->name('fileUpload');
 
+Route::get('deletemateri/{id}', [UserController::class, 'deletemateri']);
+
 Route::get('downloadfile{file}', [UserController::class, 'downloadFile'])->name('download');
 
 Route::post('pertemuan', [UserController::class, 'buatPertemuan'])->name('pertemuan');
 
-Route::post('absen', [UserController::class, 'buatAbsen'])->name('absen');
+Route::post('absen', [UserController::class, 'buatAbsen'])->name('buatAbsen');
 
 Route::get('dsn/partisipan/{id}', [UserController::class, 'dataTable'])->name('data');
 

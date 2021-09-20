@@ -1,4 +1,4 @@
-@extends('mhs.dashboard')
+@extends('mhs.dashboard-mk')
 @section('title', "Presensi")
 @section('Judul', "Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat")
 

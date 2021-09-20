@@ -11,7 +11,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href=""
+            <a href="{{ route('matkulDsn', [$mk[0]->id_praktikum]) }}"
                 class="{{ request()->routeIs('matkulDsn', [$mk[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
                 <i class="nav-icon fas fa-book-open"></i>
                 <p> {{$mk[0]->nama_praktikum}}</p>
@@ -19,11 +19,21 @@
         </li>
 
         <li class="nav-item">
-            <a href=""
-                class="{{ request()->routeIs('data', [$mk[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
+            <a href="{{ route('data', [$data[0]->id_praktikum]) }}"
+                class="{{ request()->routeIs('data', [$data[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
                 <i class="nav-icon fas fa-book"></i>
                 <p>
                     Participants
+                </p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href=""
+                class="{{ request()->routeIs('data', [$data[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
+                <i class="nav-icon fas fa-book"></i>
+                <p>
+                    Grades
                 </p>
             </a>
         </li>

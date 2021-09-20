@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Wadahpresensi extends Model
 {
     protected $fillable = [
-        'id_pertemuan',
+        'id_praktikum',
         'keterangan',
         'waktu_mulai',
         'waktu_berakhir',

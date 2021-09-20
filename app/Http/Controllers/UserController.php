@@ -224,7 +224,7 @@ class UserController extends Controller
 
         $request->validate([
                     'id'=>'required',
-                    '_file' => 'required|mimes:pptx,txt,xlx,xls,doc,docx,pdf,ppsx',
+                    '_file' => 'required|mimes:pptx,txt,xlx,xls,doc,docx,pdf,ppsx,xlxs',
                     'judul_materi'=>'required',
                     'deskripsi'
                 ]);
@@ -242,13 +242,13 @@ class UserController extends Controller
             $fileModel->namafile_materi = $request->_file->getClientOriginalName();
             $fileModel->judul_materi = $request->judul_materi;
             $fileModel->deskripsi_file = $request->deskripsi;
-            $fileModel->save();
+            $query = $fileModel->save();
 
-            if(!$fileModel->save()){
-                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
+            if($query){
+                return response()->json(['status'=>1,'msg'=>'File Berhasil Diunggah']);
             }                
             else{
-                return response()->json(['status'=>1,'msg'=>'File Berhasil Diunggah']);
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
             }
         }
    }
@@ -339,7 +339,7 @@ class UserController extends Controller
             $request->validate([
                     'id'=>'required',
                     'nama_pertemuan'=>'required',
-                    'deskripsi'=>'required',
+                    'deskripsi'=>'required'
                 ]);
         // dd($request->all());
             $query = Pertemuan::insert([
@@ -366,6 +366,8 @@ class UserController extends Controller
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
                                 ->where('pertemuan.id_praktikum', $id)
                                 ->get();
+
+            $kelas = Praktikum::where('id_praktikum', $id)->get();
             // dd($data);
             if(request()->ajax()){
                 return datatables()->of($data)
@@ -380,6 +382,7 @@ class UserController extends Controller
             }
 
             $cek = [
+                'mk'=>$kelas,
                 'data'=>$data,
                 'course'=>$course
             ];
@@ -390,6 +393,7 @@ class UserController extends Controller
     {
         $request->validate([
                     'id',
+                    'pertemuan',
                     'tanggal'=>'required',
                     'materi'=>'required',
                     'wmp'=>'required',
@@ -397,18 +401,32 @@ class UserController extends Controller
                 ]);
         //  dd($request->all());
         $query = Wadahpresensi::insert([
-                        'id_pertemuan'=>$request->input('id'),
+                        'id_praktikum'=>$request->input('id'),
+                        'urutanpertemuan'=>$request->input('pertemuan'),
                         'keterangan'=>$request->input('materi'),
                         'waktu_mulai'=>$request->input('wmp'),
                         'waktu_berakhir'=>$request->input('wap'),
                         'tanggal'=>$request->input('tanggal')
                     ]);
         // dd($query);
-        if($query)
-        {
-            return back()
-            ->with('success','data has been uploaded.');
+        if($query){
+            return response()->json(['status'=>1,'msg'=>'Absen berhasil dibuat']);
+        }                
+        else{
+            return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
         }
+            
     }
+
+    public function deletemateri($id){
+        $query = Materi::where('id_pertemuan', $id)->Delete();
+         
+         if($query){
+             return back()->with('berhasil', 'Data Berhasil Dihapus');
+         }
+         else{
+             return back()->with('gagal', 'Ada terjadi kesalahan');
+         }
+     }
 
 }
