@@ -19,8 +19,8 @@
         </li>
 
         <li class="nav-item">
-            <a href="#"
-                class="{{ request()->routeIs('data', [$mk[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
+            <a href="{{ route('partisipan', [$mk[0]->id_praktikum]) }}"
+                class="{{ request()->routeIs('partisipan', [$mk[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
                <i class="nav-icon fas fa-book"></i>
                 <p>
                     Participants

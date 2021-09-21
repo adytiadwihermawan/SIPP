@@ -122,3 +122,5 @@ Route::view('form-daftar-asisten', [UserController::class, 'formdaftar']);
 Route::post('change-profile-pic', [UserController::class, 'updateFoto'])->name('updateFotoUser');
 
 Route::post('change-password', [UserController::class, 'gantiPassword'])->name('gantiPassword');
+
+Route::get('mhs/partisipan/{id}', [UserController::class, 'partisipan'])->name('partisipan');

@@ -21,6 +21,9 @@
    <link rel="stylesheet" href="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.css')}}">
 
    <link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
+
+   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -171,6 +174,38 @@
 <script src="{{asset('template/dist/js/adminlte.js')}}"></script>
 
 <script src="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.js')}}"></script>
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+
+<script>
+
+$(document).ready(function(){
+        data()
+    })
+
+    function data() {
+        $('#partis').DataTable({
+            serverside: true,
+            responsive: true,
+            ajax: {
+                url: "{{ route('partisipan', [$mk[0]->id_praktikum]) }}"
+            },
+            columnDefs: [
+                        {"className": "dt-center", "targets": [0,2]}
+                    ],
+            columns:[
+                {
+                    "data": null, "sortable": false,
+                    render: function(data, type, row, meta){
+                        return meta.row + meta.settings._iDisplayStart + 1
+                    }
+                },
+                {data: 'nama_user', name: 'nama_user'},
+                {data: 'status', name: 'status'}
+            ]
+        })
+    }
+</script>
 
 </body>
 </html>

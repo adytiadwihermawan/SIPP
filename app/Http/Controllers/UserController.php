@@ -390,6 +390,33 @@ class UserController extends Controller
             return view('dsn.participants', $cek);
         }
 
+        public function partisipan($id)
+        {
+            $data = User::join('proses_praktikum', 'users.id', '=', 'proses_praktikum.id_user')
+                         ->join('status_user', 'users.id_status', 'status_user.id_status') 
+                         ->where('proses_praktikum.id_praktikum', $id)
+                         ->get();
+
+            $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+                                ->where('pertemuan.id_praktikum', $id)
+                                ->get();
+
+            $kelas = Praktikum::where('id_praktikum', $id)->get();
+            // dd($data);
+            if(request()->ajax()){
+                return datatables()->of($data)
+                ->make(true);
+            }
+
+            $cek = [
+                'mk'=>$kelas,
+                'data'=>$data,
+                'course'=>$course
+            ];
+            return view('mhs.partisipan', $cek);
+        }
+
+
          public function grade($id)
         {
             $data = Uploadtugas::join('materi', 'uploadtugas.id_materi', '=', 'materi.id_materi')

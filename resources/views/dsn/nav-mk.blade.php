@@ -30,7 +30,7 @@
         </li>
 
         <li class="nav-item">
-            <a href="{{ route('matkulDsn', [$mk[0]->id_praktikum]) }}" class="nav-link">
+            <a href="{{ route('matkulDsn', [$mk[0]->id_praktikum]) }}" class="nav-link' }}">
                 <p>
                     Grades
                 </p>
