@@ -12,15 +12,6 @@
           </a>
         </li>
 
-         <li class="nav-item">
-          <a href="{{url('asist/presensi')}}" class="{{ request()->is('asist/presensi') ? 'nav-link active' : 'nav-link' }}">
-            <i class="nav-icon fas fa-tasks"></i>
-            <p>
-              Presensi
-            </p>
-          </a>
-         </li>
-
           <li class="nav-item menu mb-5">
       <a href="#" class="nav-link">
         <i class="nav-icon fas fa-book"></i>
@@ -32,7 +23,7 @@
       <ul class="nav nav-treeview">
          @foreach ($course as $matkul)
           <li class="nav-item">
-            <a href="/asist/matkul/{{$matkul->id_praktikum}}" class="{{ request()->is('mhs/matkul') ? 'nav-link active' : 'nav-link' }}">
+            <a href="/asist/matkul/{{$matkul->id_praktikum}}" class="{{ request()->is('asist/matkul') ? 'nav-link active' : 'nav-link' }}">
               <i class="fas fa-book-open"></i>
               <p>{{ $matkul->nama_praktikum }}</p>
             </a>

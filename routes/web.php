@@ -94,9 +94,9 @@ Route::post('absen', [UserController::class, 'buatAbsen'])->name('buatAbsen');
 
 Route::post('nilai', [UserController::class, 'nilai'])->name('nilaiTugas');
 
-Route::get('dsn/partisipan/{id}', [UserController::class, 'dataPartisipan'])->name('data');
+Route::get('dsn/partisipan/{id}', [UserController::class, 'dsnPartisipan'])->name('data');
 
-Route::get('dsn/grade/{id}', [UserController::class, 'grade'])->name('grade');
+Route::get('dsn/grade/{id}', [UserController::class, 'dsnGrade'])->name('grade');
 
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
 
@@ -104,7 +104,11 @@ Route::get('asist/home', [UserController::class, 'asistDashboard'])->name('asist
 
 Route::get('asist/dashboard', [UserController::class, 'asistHome'])->name('asist.home');
 
-Route::get('asist/matkul/{id}', [UserController::class, 'matkulAsisten']);
+Route::get('asist/matkul/{id}', [UserController::class, 'matkulAsisten'])->name('matkulAsisten');
+
+Route::get('asist/partisipan/{id}', [UserController::class, 'asistPartisipan'])->name('asistenPart');
+
+Route::get('asist/grade/{id}', [UserController::class, 'asistGrade'])->name('gradeAsisten');
 
 
 // -----------------------------------------  Dashboard Mahasiswa -------------------------------------------------------------------- \\

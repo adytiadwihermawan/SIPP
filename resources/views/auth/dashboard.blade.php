@@ -137,7 +137,7 @@
                             <a class="d-block w-100" data-toggle="collapse" href="#collapseThree">
                                 <div class="card-header">
                                     <h4 class="card-title w-100">
-                                        Mahasiswa
+                                        MAHASISWA
                                     </h4>
                                 </div>
                             </a>
@@ -157,7 +157,7 @@
 
                                             <div class="mt-5 ml-5">
 
-                                                <button type="button" class="btn btn-primary btn-flat mt-1" onclick="window.location.href='/mhs/dashboard'"></i>
+                                                <button type="button" class="btn btn-primary btn-flat mt-1" onclick="window.location.href='/dashboard'"></i>
                                                     Kunjungi Situs</button>
                                                 <button type="button" class="btn btn-outline-info btn-flat mt-1"><i
                                                         class="fa fa-book"></i> Panduan pengguna</button>
