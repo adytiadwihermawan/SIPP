@@ -10,7 +10,9 @@ use App\Models\Proses_praktikum;
 use App\Models\User;
 use App\Models\Statusform;
 use App\Models\Materi;
+use App\Models\Nilai;
 use App\Models\Roles;
+use App\Models\Uploadtugas;
 use App\Models\Wadahpresensi;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
@@ -356,7 +358,7 @@ class UserController extends Controller
             }
         }
 
-        public function dataTable($id)
+        public function dataPartisipan($id)
         {
             $data = User::join('proses_praktikum', 'users.id', '=', 'proses_praktikum.id_user')
                          ->join('status_user', 'users.id_status', 'status_user.id_status') 
@@ -373,8 +375,7 @@ class UserController extends Controller
                 return datatables()->of($data)
                 ->addColumn('Aksi', function($data)
                 {
-                    $button = "<button class='edit btn btn-danger' style='text-align: center' id='".$data->id."'>Edit</button>";
-                    $button .= "<button class='delete btn btn-danger' style='text-align: center' id='".$data->id."'>Delete</button>";
+                    $button = "<button class='edit btn btn-success' style='text-align: center' id='".$data->id."'>View</button>";
                     return $button;
                 })
                 ->rawColumns(['Aksi'])
@@ -387,6 +388,47 @@ class UserController extends Controller
                 'course'=>$course
             ];
             return view('dsn.participants', $cek);
+        }
+
+         public function grade($id)
+        {
+            $data = Uploadtugas::join('materi', 'uploadtugas.id_materi', '=', 'materi.id_materi')
+                         ->join('users', 'uploadtugas.id_user', 'users.id') 
+                         ->where('materi.id_pertemuan', $id)
+                         ->get();
+
+            
+            $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+                                ->where('pertemuan.id_pertemuan', $id)
+                                ->get();
+
+            $kelas = Praktikum::join('pertemuan', 'praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
+                                ->where('pertemuan.id_pertemuan', $id)
+                                ->get();
+            // dd($data);
+            if(request()->ajax()){
+                return datatables()->of($data)
+                ->addColumn('Grade', function($data)
+                {
+                    $button = "<button class='edit btn btn-danger' data-remote='false' data-toggle='modal' data-target='#nilai' style='text-align: center' id='".$data->id_materi."'>Grade</button>";
+                    return $button;
+                })
+                ->addColumn('Edit', function($data)
+                {
+                    $btn = "<button class='edit btn btn-success' style='text-align: center' id='".$data->id_materi."'>Edit</button>";
+                    return $btn;
+                })
+                ->rawColumns(['Grade', 'Edit']) 
+                ->make(true);
+            }
+
+            $cek = [
+                'mk'=>$kelas,
+                'grade'=>$data,
+                'course'=>$course
+            ];
+            // dd($cek);
+            return view('dsn.grades', $cek);
         }
 
     public function buatAbsen(Request $request)
@@ -429,4 +471,24 @@ class UserController extends Controller
          }
      }
 
+    public function nilai(Request $request){
+            $request->validate([
+                    'nilai'=>'required',
+                    'id_materi'=>'required',
+                    'id_user'=>'required'
+                ]);
+        //  dd($request->all());
+        $query = Nilai::insert([
+                        'nilai'=>$request->input('nilai'),
+                        'id_materi'=>$request->input('id_materi'),
+                        'id_user'=>$request->input('id_user')
+                    ]);
+        // dd($query);
+        if($query){
+            return response()->json(['status'=>1,'msg'=>'Nilai berhasil diinput']);
+        }                
+        else{
+            return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
+        }
+    }
 }

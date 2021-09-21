@@ -92,7 +92,11 @@ Route::post('pertemuan', [UserController::class, 'buatPertemuan'])->name('pertem
 
 Route::post('absen', [UserController::class, 'buatAbsen'])->name('buatAbsen');
 
-Route::get('dsn/partisipan/{id}', [UserController::class, 'dataTable'])->name('data');
+Route::post('nilai', [UserController::class, 'nilai'])->name('nilaiTugas');
+
+Route::get('dsn/partisipan/{id}', [UserController::class, 'dataPartisipan'])->name('data');
+
+Route::get('dsn/grade/{id}', [UserController::class, 'grade'])->name('grade');
 
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
 

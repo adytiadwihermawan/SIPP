@@ -232,7 +232,7 @@
             serverside: true,
             responsive: true,
             ajax: {
-                url: "{{ route('data', [$data[0]->id_praktikum]) }}"
+                url: "{{ route('data', [$mk[0]->id_praktikum]) }}"
             },
             columnDefs: [
                         {"className": "dt-center", "targets": [0,2,3]}
@@ -247,6 +247,37 @@
                 {data: 'nama_user', name: 'nama_user'},
                 {data: 'status', name: 'status'},
                 {data: 'Aksi', name: 'aksi'}
+            ]
+        })
+    }
+
+     $(document).ready(function(){
+        grade()
+    })
+
+    function grade() {
+        $('#grade').DataTable({
+            serverside: true,
+            responsive: true,
+            ajax: {
+                url: "{{ route('grade', [$course[0]->id_pertemuan]) }}"
+            },
+            columnDefs: [
+                        {"className": "dt-center", "targets": [0,2,3]}
+                    ],
+            columns:[
+                {
+                    "data": null, "sortable": false,
+                    render: function(data, type, row, meta){
+                        return meta.row + meta.settings._iDisplayStart + 1
+                    }
+                },
+                {data: 'fotouser', name: 'fotouser'},
+                {data: 'nama_user', name: 'nama_user'},
+                {data: 'username', name: 'username'},
+                {data: 'Grade', name: 'grade'},
+                {data: 'Edit', name: 'edit'},
+                {data: 'namafile_tugas', name: 'namafile_tugas'}
             ]
         })
     }
@@ -285,8 +316,8 @@
    $(function(){
     
     $('#upload-file').on('submit', function(e){
-      // location.reload();
       e.preventDefault();
+      // location.reload();
       
       $.ajax({
         url:$(this).attr('action'),
@@ -334,6 +365,34 @@
             });
           }else{
             $('#absen')[0].reset();
+            alert(data.msg);
+          }
+        }
+      });
+    });
+  });
+
+  $(function(){
+    
+    $('#nilai-tugas').on('submit', function(e){
+     e.preventDefault();
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            $('#nilai-tugas')[0].reset();
             alert(data.msg);
           }
         }
