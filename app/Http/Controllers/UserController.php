@@ -375,6 +375,29 @@ class UserController extends Controller
             }
         }
 
+    public function updatePertemuan(Request $request){
+        $request->validate([
+            'id' => 'required',
+            'nama_pertemuan' => 'required',
+            'deskripsi' => 'required'
+        ]);
+
+        $update = Pertemuan::where('id_pertemuan', $request->input('id'))
+                            ->update([
+                                'id_pertemuan'=>$request->input('id'),
+                                'nama_pertemuan'=>$request->input('nama_pertemuan'),
+                                'deskripsi'=>$request->input('deskripsi')
+                        ]);
+        // dd($update);
+        if(!$update){
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal memperbaharui pertemuan']);
+            }                
+            else{
+                return response()->json(['status'=>1,'msg'=>'Data Berhasil Diperbaharui']);
+            }
+
+    }
+
         public function dsnPartisipan($id)
         {
             $data = User::join('proses_praktikum', 'users.id', '=', 'proses_praktikum.id_user')

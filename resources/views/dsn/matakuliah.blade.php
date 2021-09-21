@@ -225,11 +225,62 @@
 
         <div class="card-footer blue1">
             {{$item->deskripsi}}
-            <br> <button type="button" class="btn hijau3 panjang1 float-right" data-toggle="modal" data-target="#">
+            <br> 
+            <a data-toggle="modal" data-id="{{ $item->id_pertemuan }}" data-pertemuan="{{$item->nama_pertemuan}}" data-deskripsi="{{$item->deskripsi}}" class="passingID">
+            <button type="button" class="btn hijau3 panjang1 float-right"  data-toggle="modal" data-target="#edit-pertemuan">
                 <i class="fas fa-edit"></i> Edit Pertemuan </button>
+            </a>
         </div>
     </div>
     @endforeach
+
+    <div class="modal fade" id="edit-pertemuan">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Pertemuan</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-pertemuan" action="{{ route('updatepertemuan') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="">Pertemuan</label>
+                            <input type="text" class="form-control" name="id" id="id" value="{{$item->id_pertemuan}}" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Pertemuan Ke</label>
+                            <input type="text" class="form-control" id="pertemuan" value="{{ $item->nama_pertemuan }}"
+                                name="nama_pertemuan" required>
+                            <span class="text-danger error-text nama_pertemuan_error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Materi Pembahasan</label>
+                            <input type="text" class="form-control"
+                                placeholder="Masukkan Deskripsi" name="deskripsi" id="deskripsi"  required>
+                            <span class="text-danger error-text deskripsi_error"></span>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" id="buat-pertemuan" class="btn btn-primary">Edit Pertemuan</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.content -->
+    </div>
+
+</div>
+
 </div>
 @endif
 @endsection

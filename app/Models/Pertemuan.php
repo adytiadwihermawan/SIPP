@@ -15,6 +15,8 @@ class Pertemuan extends Model
         'id_praktikum'
     ];
 
+    public $timestamps = false;
+    
     public function pertemuan()
     {
         return $this->hasOne(Praktikum::class);

@@ -313,6 +313,38 @@
 
   });
 
+  $(function(){
+
+    $('#edit-pertemuan').on('submit', function(){
+      location.reload();
+      // e.preventDefault();
+
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            $('#edit-pertemuan')[0].reset();
+            alert(data.msg);
+          }
+        }
+      });
+      return false;
+    });
+
+  });
+
    $(function(){
     
     $('#upload-file').on('submit', function(e){
@@ -401,6 +433,17 @@
   });
 
 </script>
+
+  <script>
+    $(document).on("click", ".passingID", function () {
+     var ids = $(this).attr('data-id');
+     var pertemuan = $(this).attr('data-pertemuan');
+     var deskripsi = $(this).attr('data-deskripsi');
+     $(".modal-body #id").val( ids );
+     $(".modal-body #pertemuan").val( pertemuan );
+     $(".modal-body #deskripsi").val( deskripsi );
+    });
+  </script>
 
 </body>
 </html>

@@ -90,6 +90,8 @@ Route::get('downloadfile{file}', [UserController::class, 'downloadFile'])->name(
 
 Route::post('pertemuan', [UserController::class, 'buatPertemuan'])->name('pertemuan');
 
+Route::post('editpertemuan', [UserController::class, 'updatePertemuan'])->name('updatepertemuan');
+
 Route::post('absen', [UserController::class, 'buatAbsen'])->name('buatAbsen');
 
 Route::post('nilai', [UserController::class, 'nilai'])->name('nilaiTugas');
