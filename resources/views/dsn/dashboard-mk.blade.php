@@ -433,6 +433,17 @@
   });
 
 </script>
+ 
+<script>
+    $(document).on("click", ".passingID", function () {
+     var ids = $(this).attr('data-id');
+     var pertemuan = $(this).attr('data-pertemuan');
+     var deskripsi = $(this).attr('data-deskripsi');
+     $(".modal-body #id").val( ids );
+     $(".modal-body #pertemuan").val( pertemuan );
+     $(".modal-body #deskripsi").val( deskripsi );
+    });
+  </script>
 
 </body>
 </html>

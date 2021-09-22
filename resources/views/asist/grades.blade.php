@@ -35,7 +35,7 @@
 
                         <div class="form-group">
                             <label for="">Nilai</label>
-                            <input type="number" class="form-control" name="nilai" min="0" max="100" required>
+                            <input type="number" class="form-control" name="nilai" min="0" max="100">
                             <span class="text-danger error-text nilai_error"></span>
                         </div>
 

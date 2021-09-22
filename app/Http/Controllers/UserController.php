@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Stroage;
 use App\Models\Praktikum;
@@ -103,7 +104,7 @@ class UserController extends Controller
 
     public function asistHome()
     {
-        $course = Proses_praktikum::join('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+        $course = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
         
         $data = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')
                     ->where('id_status', '=', 3)
@@ -554,7 +555,7 @@ class UserController extends Controller
                 return datatables()->of($data)
                 ->addColumn('Grade', function($data)
                 {
-                    $button = "<button class='edit btn btn-danger' data-remote='false' data-toggle='modal' data-target='#nilai' style='text-align: center' id='".$data->id_materi."'>Grade</button>";
+                    $button = "<button class='edit btn btn-danger' data-toggle='modal' data-target='#nilai' style='text-align: center' id='".$data->id_materi."'>Grade</button>";
                     return $button;
                 })
                 ->addColumn('Edit', function($data)
@@ -616,23 +617,40 @@ class UserController extends Controller
      }
 
     public function nilai(Request $request){
-            $request->validate([
-                    'nilai'=>'required',
-                    'id_materi'=>'required',
-                    'id_user'=>'required'
-                ]);
-        //  dd($request->all());
-        $query = Nilai::insert([
-                        'nilai'=>$request->input('nilai'),
-                        'id_materi'=>$request->input('id_materi'),
-                        'id_user'=>$request->input('id_user')
-                    ]);
-        // dd($query);
+
+        $rules = [
+         'nilai' => 'required',
+         'id_materi' => [
+             'required',
+             Rule::unique('nilai', 'id_materi')
+            ],
+         'id_user' => [
+             'required',
+             Rule::unique('nilai', 'id_user')
+         ],
+        ];
+        
+
+       $validator = \Validator::make($request->all(), $rules, [
+            'nilai.required' => "Masukkan Nilai Tugas"
+    ]);
+       if( $validator->passes()){
+        
+            $query = Nilai::insert([
+                            'nilai'=>$request->input('nilai'),
+                            'id_materi'=>$request->input('id_materi'),
+                            'id_user'=>$request->input('id_user')
+                        ]);
         if($query){
-            return response()->json(['status'=>1,'msg'=>'Nilai berhasil diinput']);
-        }                
-        else{
-            return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
+                return response()->json(['status'=>1,'msg'=>'Nilai berhasil diinput']);
+            }                
+            else{
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
+            }
         }
+    else{          
+        return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
+        }
+
     }
 }
