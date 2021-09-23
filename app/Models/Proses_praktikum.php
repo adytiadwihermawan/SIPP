@@ -10,11 +10,12 @@ class Proses_praktikum extends Model
 {
     protected $fillable = [
         'id_user',
-        'id_presensi',
         'id_praktikum'
     ];
 
     protected $table = 'proses_praktikum';
+
+    public $timestamps = false;
     
     public function praktikum()
     {

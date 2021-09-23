@@ -130,68 +130,7 @@
 
     <!-- Main content -->
     <div class="container-fluid">
-      
-@if(empty($course[0]->id_praktikum))
-   <div class="card blue2 ml-2">
-        <div class="card-header">
-            <h3 class="card-title">
-                {{$mk[0]->nama_praktikum}}
-            </h3>
-
-            <button type="button" class="btn blue4h float-right" style=" padding:1px 4px;" title="Buat Pertemuan"
-                data-toggle="modal" data-target="#modal-pertemuan">
-                <i class="fa fa-plus"></i> Tambah Pertemuan</button>
-
-        </div>
-    </div>
-    
-<div class="modal fade" id="modal-pertemuan">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Buat Pertemuan</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="buat-pertemuan" action="{{ route('pertemuan') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="">Mata Kuliah</label>
-                        <input type="text" class="form-control" name="id" value="{{$mk[0]->id_praktikum}}" readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Pertemuan Ke</label>
-                        <input type="text" class="form-control" placeholder="Contoh: Pertemuan 1" name="nama_pertemuan"
-                            required>
-                        <span class="text-danger error-text nama_pertemuan_error"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Materi Pembahasan</label>
-                        <input type="text" class="form-control" placeholder="Contoh: Cara Menggunakan Framework Laravel"
-                            name="deskripsi" required>
-                        <span class="text-danger error-text deskripsi_error"></span>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" id="buat-pertemuan" class="btn btn-primary">Buat Pertemuan</button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.content -->
-</div>
-@else
     @yield('content')
-@endif
     </div>
   </div>
 
@@ -232,7 +171,7 @@
             serverside: true,
             responsive: true,
             ajax: {
-                url: "{{ route('asistenPart', [$mk[0]->id_praktikum]) }}"
+                url: "{{ route('data', [$mk[0]->id_praktikum]) }}"
             },
             columnDefs: [
                         {"className": "dt-center", "targets": [0,2,3]}
@@ -251,7 +190,7 @@
         })
     }
 
-     $(document).ready(function(){
+      $(document).ready(function(){
         grade()
     })
 
@@ -260,7 +199,7 @@
             serverside: true,
             responsive: true,
             ajax: {
-                url: "{{ route('gradeAsisten', [$course[0]->id_pertemuan]) }}"
+                url: "{{ route('grade', [$course[0]->id_pertemuan]) }}"
             },
             columnDefs: [
                         {"className": "dt-center", "targets": [0,2,3]}
@@ -313,11 +252,11 @@
 
   });
 
-  $(function(){
+   $(function(){
 
     $('#edit-pertemuan').on('submit', function(){
       location.reload();
-      // e.preventDefault();
+      e.preventDefault();
 
       $.ajax({
         url:$(this).attr('action'),
@@ -433,8 +372,8 @@
   });
 
 </script>
-
-  <script>
+ 
+<script>
     $(document).on("click", ".passingID", function () {
      var ids = $(this).attr('data-id');
      var pertemuan = $(this).attr('data-pertemuan');

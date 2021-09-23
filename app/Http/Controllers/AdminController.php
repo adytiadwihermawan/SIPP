@@ -7,9 +7,13 @@ use App\Models\User;
 use App\Models\Praktikum;
 use App\Models\Proses_Praktikum;
 use App\Models\Lab;
+use App\Models\Pertemuan;
 use App\Models\Status_user;
 use App\Models\Roles;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UsersImport;
+use App\Imports\PesertaImport;
 
 
 use Illuminate\Support\Facades\Hash;
@@ -31,6 +35,12 @@ class AdminController extends Controller
 
 
     // ----------------------- Add User --------------------------\\
+
+    public function fileImport(Request $request) 
+    {
+        Excel::import(new UsersImport, $request->file('file')->store('temp'));
+        return back();
+    }
 
     public function adduser(Request $request){
 
@@ -208,11 +218,21 @@ class AdminController extends Controller
          'tahun_ajaran'=>'required',
      ]);
  
-        $query = Praktikum::insert([
-            'nama_praktikum'=>$request->input('nama_praktikum'),
-            'tahun_ajaran'=>$request->input('tahun_ajaran')
-        ]);
-    
+        // $query = Praktikum::insert([
+        //     'nama_praktikum'=>$request->input('nama_praktikum'),
+        //     'tahun_ajaran'=>$request->input('tahun_ajaran')
+        // ]);
+        $post = $request->all();
+
+        $data = new Praktikum;
+        $data->nama_praktikum = $post['nama_praktikum'];
+        $data->tahun_ajaran = $post['tahun_ajaran'];
+        $query = $data->save();
+
+        Pertemuan::insert([
+                'id_praktikum'=>DB::getPdo()->lastInsertId()
+            ]);
+        // dd($query);
         if($query){
             return redirect('datakelas')->with('berhasil', 'Data Berhasil Ditambahkan');
         }
@@ -243,11 +263,17 @@ class AdminController extends Controller
         }
     }
 
+    public function fileImportPeserta(Request $request) 
+    {
+        Excel::import(new PesertaImport, $request->file('file')->store('temp'));
+        return back();
+    }
+
     public function addpeserta(Request $request){
 
         $request->validate([
             'kelas'=>'required',
-            'peserta'=>'required|unique:proses_praktikum,id_user'
+            'peserta'=>'required'
         ]);
 
         $query = Proses_praktikum::insert([

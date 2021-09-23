@@ -20,6 +20,8 @@
    <link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
 
    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+
+   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css">
     
     <style>
 
@@ -131,7 +133,7 @@
     <!-- Main content -->
     <div class="container-fluid">
       
-@if(empty($course[0]->id_praktikum))
+@if(empty($course[0]->id_pertemuan))
    <div class="card blue2 ml-2">
         <div class="card-header">
             <h3 class="card-title">
@@ -220,7 +222,13 @@
 
 <script src="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.js')}}"></script>
 
+
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+
 
 <script>
     $(document).ready(function(){
@@ -251,7 +259,7 @@
         })
     }
 
-     $(document).ready(function(){
+    $(document).ready(function(){
         grade()
     })
 
@@ -259,11 +267,21 @@
         $('#grade').DataTable({
             serverside: true,
             responsive: true,
+            dom: 'Bfrtip',
             ajax: {
                 url: "{{ route('grade', [$course[0]->id_pertemuan]) }}"
             },
             columnDefs: [
                         {"className": "dt-center", "targets": [0,2,3]}
+                    ],
+            buttons : [
+                    {
+                    extend: 'excel',
+                    text: '<span class="fa fa-file-excel-o"></span> Excel Export',
+                    exportOptions: {
+                    columns: [ 0, 1, 2, 3 ]
+                }
+                  }
                     ],
             columns:[
                 {
@@ -272,10 +290,9 @@
                         return meta.row + meta.settings._iDisplayStart + 1
                     }
                 },
-                {data: 'fotouser', name: 'fotouser'},
                 {data: 'nama_user', name: 'nama_user'},
                 {data: 'username', name: 'username'},
-                {data: 'Grade', name: 'grade'},
+                {data: 'id_materi', name: 'grade'},
                 {data: 'Edit', name: 'edit'},
                 {data: 'namafile_tugas', name: 'namafile_tugas'}
             ]

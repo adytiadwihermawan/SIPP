@@ -68,6 +68,11 @@ Route::get('deletelab/{id}', [AdminController::class, 'deletelab']);
 
 Route::view('/openrekrutasist', 'admin.bukapendaftaran');
 
+Route::post('file-import', [AdminController::class, 'fileImport'])->name('file-import');
+
+Route::post('file-import-peserta', [AdminController::class, 'fileImportPeserta'])->name('file-import-peserta');
+
+
 // ----------------------------------------- Dashboard Dosen -------------------------------------------------------------------- \\
 
 Route::get('dosen/dashboard', [UserController::class, 'dashboardDsn'])->name('dsn.dashboard')->middleware('dsnMid');
@@ -100,6 +105,8 @@ Route::get('dsn/partisipan/{id}', [UserController::class, 'dsnPartisipan'])->nam
 
 Route::get('dsn/grade/{id}', [UserController::class, 'dsnGrade'])->name('grade');
 
+Route::get('file-export', [UserController::class, 'fileExport'])->name('file-export');
+
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
 
 Route::get('asist/home', [UserController::class, 'asistDashboard'])->name('asist.dashboard')->middleware('asistMid');
@@ -111,7 +118,6 @@ Route::get('asist/matkul/{id}', [UserController::class, 'matkulAsisten'])->name(
 Route::get('asist/partisipan/{id}', [UserController::class, 'asistPartisipan'])->name('asistenPart');
 
 Route::get('asist/grade/{id}', [UserController::class, 'asistGrade'])->name('gradeAsisten');
-
 
 // -----------------------------------------  Dashboard Mahasiswa -------------------------------------------------------------------- \\
 

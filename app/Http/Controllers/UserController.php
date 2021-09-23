@@ -18,6 +18,9 @@ use App\Models\Wadahpresensi;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
 use DataTables;
+use App\DataTables\NilaiDataTable;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UsersImport;
 
 class UserController extends Controller
 {
@@ -133,7 +136,7 @@ class UserController extends Controller
                             ->where('pertemuan.id_praktikum', $id)
                             ->where('id_user', Auth::user()->id)
                             ->get();
-    
+        // dd($proses_praktikum);
         $data = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
                         ->get();
         // dd($data);
@@ -441,7 +444,7 @@ class UserController extends Controller
                          ->where('proses_praktikum.id_praktikum', $id)
                          ->orwhere('roles.id_praktikum', $id)
                          ->get();
-
+            // dd($data);
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
                                 ->where('pertemuan.id_praktikum', $id)
                                 ->get();
@@ -470,8 +473,10 @@ class UserController extends Controller
         public function partisipan($id)
         {
             $data = User::join('proses_praktikum', 'users.id', '=', 'proses_praktikum.id_user')
+                         ->leftjoin('roles', 'users.id', 'roles.id_user')
                          ->join('status_user', 'users.id_status', 'status_user.id_status') 
                          ->where('proses_praktikum.id_praktikum', $id)
+                         ->orWhere('roles.id_praktikum', $id)
                          ->get();
 
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
@@ -542,7 +547,8 @@ class UserController extends Controller
                          ->where('materi.id_pertemuan', $id)
                          ->get();
 
-            
+            // $nilai = Nilai::join('uploadtugas', 'nilai.id_user')
+
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
                                 ->where('pertemuan.id_pertemuan', $id)
                                 ->get();
@@ -551,10 +557,13 @@ class UserController extends Controller
                                 ->where('pertemuan.id_pertemuan', $id)
                                 ->get();
             // dd($data);
+        
             if(request()->ajax()){
+                
                 return datatables()->of($data)
                 ->addColumn('Grade', function($data)
                 {
+                    if($data)
                     $button = "<button class='edit btn btn-danger' data-toggle='modal' data-target='#nilai' style='text-align: center' id='".$data->id_materi."'>Grade</button>";
                     return $button;
                 })
@@ -653,4 +662,5 @@ class UserController extends Controller
         }
 
     }
+
 }

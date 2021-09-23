@@ -7,7 +7,6 @@
             <thead>
                 <tr style="text-align: center">
                     <th>No</th>
-                    <th>User picture</th>
                     <th>Nama</th>
                     <th>NIM</th>
                     <th>Grade</th>
@@ -15,7 +14,7 @@
                     <th>file submission</th>
                 </tr>
             </thead>
-@if(!empty($grade[0]->id_tugas))
+
   <div class="modal fade" id="nilai">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -50,6 +49,6 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-@endif
+
 </table>
 @endsection

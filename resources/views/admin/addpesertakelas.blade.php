@@ -45,6 +45,39 @@
 						<button type="submit" class="btn btn-primary">Tambah Peserta Kelas</button>
 					</div>
 					</form>
+
+					<button type="button" class="btn blue4h float-right" style=" padding:1px 4px;" title="Buat Pertemuan"
+                data-toggle="modal" data-target="#modal-import">
+                <i class="fa fa-plus"></i> Import Data User</button>
+
+				<div class="modal fade" id="modal-import">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Import Data User</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<form id="import-user" action="{{ route('file-import-peserta') }}" method="POST" enctype="multipart/form-data">
+								@csrf
+								<div class="form-group mb-4" style="max-width: 500px; margin: 0 auto;">
+									<div class="custom-file text-left">
+										<input type="file" name="file" class="custom-file-input" id="customFile">
+										<label class="custom-file-label" for="customFile">Choose file</label>
+									</div>
+								</div>
+								<button class="btn btn-primary">Import data</button>
+							</form>
+						</div>
+
+						<!-- /.modal-content -->
+					</div>
+					<!-- /.modal-dialog -->
+				</div>
+				<!-- /.content -->
+			</div>
 </div>
 			<table id="pesertakelas" class="table table-bordered table-striped">
 				<thead>

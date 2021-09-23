@@ -5,7 +5,7 @@
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 
-@if(!empty($course[0]->id_praktikum))
+
 <div class="content">
 
     @foreach($course as $item)
@@ -49,5 +49,5 @@
     </div>
     @endforeach
 </div>
-@endif
+
 @endsection
