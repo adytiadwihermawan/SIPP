@@ -50,7 +50,7 @@
 						
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal"><a style="color: white;" href="/datauser">Kembali</a></button>
-						<button type="submit" class="btn btn-primary">Tambah Data User</button>
+						<button type="submit" class="btn btn-primary"  href="/datauser">Tambah Data User</button>
 					</div>
 				</form>
 		</div>

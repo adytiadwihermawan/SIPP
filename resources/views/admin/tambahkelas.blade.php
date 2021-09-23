@@ -16,13 +16,13 @@
 
                         <div class="form-group">
                             <label for="">Nama Kelas</label>
-                            <input type="text" class="form-control" name="nama_praktikum" >
+                            <input type="text" class="form-control" name="nama_praktikum" maxlength="50">
                             <span style="color:red">@error('nama_praktikum') {{ $message }} @enderror</span>
                         </div>
                         
                         <div class="form-group">
                             <label for="">Tahun Ajaran</label>
-                            <input type="text" class="form-control" name="tahun_ajaran" >
+                            <input type="text" class="form-control" name="tahun_ajaran" maxlength="20">
                             <span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
                         </div>
 						

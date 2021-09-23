@@ -17,9 +17,10 @@
 
 						<tr>
 							<td><label for="">Nama Laboratorium</label></td>
-							<td><input type="text" class="form-control" name="nama_lab" value="{{ old('nama_lab') }}"></td>
-								<span style="color:red">@error('nama_lab') {{ $message }} @enderror</span>
+							<td><input type="text" class="form-control ml-5" name="nama_lab" value="{{ old('nama_lab') }}"></td>
+							<span style="color:red">@error('nama_lab') {{ $message }} @enderror</span>	
 						</tr>
+						
                         <tr>
 							<td><label for="">Nama Kepala Laboratorium</label></td>
 							<td><select id="id" name="id" value="{{ old('id') }}" class="form-control ml-5" style="width: 25vw;">
