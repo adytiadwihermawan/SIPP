@@ -3,7 +3,8 @@
 @section('Judul', 'Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat')
 
 @section('content')        
-<table style="width: 100%" class="table table-striped hover" id="partisipan">
+<div class="card card-outline card-warning ml-3 py-4 px-4">
+<table style="width: 100%" class="table table-bordered table-striped my-5" id="partisipan">
             <thead>
                 <tr style="text-align: center">
                     <th>No</th>
@@ -13,5 +14,5 @@
                 </tr>
             </thead>
 </table>
-
+</div>
 @endsection
