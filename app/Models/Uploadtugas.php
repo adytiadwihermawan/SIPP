@@ -9,6 +9,8 @@ class Uploadtugas extends Model
 {
     protected $table = 'uploadtugas';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'namafile_tugas',
         'id_materi',

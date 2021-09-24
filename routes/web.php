@@ -140,3 +140,7 @@ Route::post('change-profile-pic', [UserController::class, 'updateFoto'])->name('
 Route::post('change-password', [UserController::class, 'gantiPassword'])->name('gantiPassword');
 
 Route::get('mhs/partisipan/{id}', [UserController::class, 'partisipan'])->name('partisipan');
+
+Route::get('matkul/tugas/{id}', [UserController::class, 'tampilTugas'])->name('tugas');
+
+Route::post('send-assignment', [UserController::class, 'kumpulTugas'])->name('assignment');

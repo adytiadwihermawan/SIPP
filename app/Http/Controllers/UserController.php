@@ -87,13 +87,17 @@ class UserController extends Controller
                             ->where('id_user', Auth::user()->id)
                             ->get();
         // dd($proses_praktikum);
-        $data = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
+         $data_materi = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
+                        ->get();
+
+        $data_tugas = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', '=', 'pertemuan.id_pertemuan')
                         ->get();
         // dd($data);
         $course = [
             'course'=>$proses_praktikum,
             'mk'=>$kelas,
-            'data'=>$data
+            'data_materi'=>$data_materi,
+            'data_tugas'=>$data_tugas
         ];
         // dd($course);
         return view('mhs.matakuliah', $course);
@@ -717,5 +721,69 @@ class UserController extends Controller
         }
 
     }
+
+     public function tampilTugas($id){  
+        $kelas = Praktikum::join('pertemuan', 'praktikum.id_praktikum', 'pertemuan.id_praktikum')
+                            ->where('id_pertemuan', $id)
+                            ->get();
+
+        $nama_dosen = Proses_praktikum::join('users', 'proses_praktikum.id_user', 'users.id')
+                                      ->join('pertemuan', 'proses_praktikum.id_praktikum', 'pertemuan.id_praktikum')
+                                      ->where('pertemuan.id_pertemuan', $id)
+                                      ->where('id_status', 2)
+                                      ->get();
+
+        $nama_asisten = Roles::join('users', 'roles.id_user', 'users.id')
+                             ->join('pertemuan', 'roles.id_praktikum', 'pertemuan.id_praktikum')
+                             ->where('pertemuan.id_pertemuan', $id)
+                             ->where('roles.id_status', 3)
+                             ->get();
+
+        $data = Pertemuan::join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
+                        ->where('wadah_tugas.id_pertemuan', $id)
+                        ->get();
+
+        $assign = Uploadtugas::get();
+           
+        $data = [
+            'mk'=>$kelas,
+            'nama_dosen'=>$nama_dosen,
+            'nama_asisten'=>$nama_asisten,
+            'data'=>$data,
+            'assign'=>$assign
+        ];
+        return view('mhs.kumpultugas', $data);
+    }
+
+    public function kumpulTugas(Request $request){
+
+        $request->validate([
+                    'id'=>'required',
+                    'id_user'=>'required',
+                    '_file' => 'required'
+                ]);
+        // dd($request->all());
+        $fileModel = new Uploadtugas;
+
+        if($request->all()) {
+            $path = 'uploads/';
+            $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
+            // $fileName = time().'_'.$request->_file->getClientOriginalName();
+            // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
+            $filePath = $request->_file->move(public_path($path), $newname);
+
+            $fileModel->id_praktikum = $request->id;
+            $fileModel->id_user = $request->id_user;
+            $fileModel->namafile_tugas = $request->_file->getClientOriginalName();
+            $query = $fileModel->save();
+
+            if($query){
+                return response()->json(['status'=>1,'msg'=>'File Berhasil Diunggah']);
+            }                
+            else{
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
+            }
+        }
+   }
 
 }
