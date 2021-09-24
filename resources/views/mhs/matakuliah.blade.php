@@ -8,7 +8,23 @@
 
 <div class="content">
 
-
+@if(empty($course[0]->id_praktikum))
+    <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>
+                    Oops!</h1>
+                <h2>
+                    Belum Ada Pertemuan untuk Mata Kuliah Sekarang</h2>
+                <div class="error-details">
+                    Mohon menunggu sampai dosen atau asisten kelas membuat pertemuan untuk mata kuliah ini
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@else
 <div class="card blue1 ml-2">
         <div class="card-header">
             <h3 class="card-title">
@@ -57,6 +73,7 @@
         </div>
     </div>
     @endforeach
+    @endif
 </div>
 
 @endsection

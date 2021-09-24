@@ -444,7 +444,7 @@ class UserController extends Controller
                          ->where('proses_praktikum.id_praktikum', $id)
                          ->orwhere('roles.id_praktikum', $id)
                          ->get();
-            dd($data);
+            // dd($data);
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
                                 ->where('pertemuan.id_praktikum', $id)
                                 ->get();

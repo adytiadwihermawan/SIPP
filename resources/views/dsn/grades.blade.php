@@ -4,17 +4,7 @@
 
 @section('content')        
 <table style="width: 80%" class="table table-striped hover" id="grade">
-            <thead>
-                <tr style="text-align: center">
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>NIM</th>
-                    <th>Grade</th>
-                    <th>Edit</th>
-                    <th>file submission</th>
-                </tr>
-            </thead>
-
+@if(!empty($grade[0]->id_tugas))
   <div class="modal fade" id="nilai">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -49,6 +39,17 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-
+@else
+            <thead>
+                <tr style="text-align: center">
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>NIM</th>
+                    <th>Grade</th>
+                    <th>Edit</th>
+                    <th>file submission</th>
+                </tr>
+            </thead>
+            @endif
 </table>
 @endsection
