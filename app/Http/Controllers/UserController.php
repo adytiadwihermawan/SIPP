@@ -138,13 +138,17 @@ class UserController extends Controller
                             ->where('id_user', Auth::user()->id)
                             ->get();
         // dd($proses_praktikum);
-        $data = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
+         $data_materi = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
+                        ->get();
+
+        $data_tugas = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', '=', 'pertemuan.id_pertemuan')
                         ->get();
         // dd($data);
         $course = [
             'course'=>$proses_praktikum,
             'mk'=>$kelas,
-            'data'=>$data
+            'data_materi'=>$data_materi,
+            'data_tugas'=>$data_tugas
         ];
                         
         // $icons = [
