@@ -128,7 +128,10 @@
                 class="fas fa-plus"></i> Buat Presensi </button>
 
         <button type="button" class="btn hijau panjang1 ml-3" data-toggle="modal" data-target="#addmateri"> <i
-                class="fas fa-plus"></i> Tambah Materi </button>
+                class="fas fa-plus"></i> Upload Materi </button>
+
+        <button type="button" class="btn hijau panjang1 ml-3" data-toggle="modal" data-target="#addtugas"> <i
+                class="fas fa-plus"></i> Upload Tugas </button>
 
     </div>
 
@@ -136,7 +139,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Upload Materi/Tugas</h4>
+                    <h4 class="modal-title">Upload Materi</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -174,7 +177,59 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Upload File</button>
+                            <button type="submit" class="btn btn-primary">Upload Materi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" id="addtugas">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Upload Tugas</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="upload-tugas" action="{{ route('uploadTugas') }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label for="">Pertemuan ke:</label>
+                            <select id="id" name="id" class="form-control" required>
+                                <option value="" selected>Pilih Pertemuan</option>
+                                @foreach($course as $pertemuan)
+                                <option value="{{$pertemuan->id_pertemuan}}">
+                                    {{$pertemuan->nama_pertemuan}}</option>
+                                @endforeach
+                            </select>
+                            <span class="text-danger error-text id_error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Judul Tugas</label>
+                            <input type="text" class="form-control" name="judul_tugas" required>
+                            <span class="text-danger error-text judul_tugas_error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Deskripsi Tugas</label>
+                            <input type="text" class="form-control" name="deskripsi" maxlength="30">
+                            <span class="text-danger error-text deskripsi_error"></span>
+                        </div>
+
+                        <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control"
+                            required>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Upload Tugas</button>
                         </div>
                     </form>
                 </div>
@@ -256,7 +311,7 @@
 
             </div>
             <br>
-            @foreach($data as $datas)
+            @foreach($data_materi as $datas)
             @if($datas->id_pertemuan == $item->id_pertemuan)
 
             <div class="card col-12">
@@ -278,6 +333,31 @@
             </div>
             @endif
             @endforeach
+
+            <br>
+            @foreach($data_tugas as $datas)
+            @if($datas->id_pertemuan == $item->id_pertemuan)
+
+            <div class="card col-12">
+                <div class="card-header cold4 ">
+                   <h3 class="card-title">{{$datas->judul_tugas}}</h3>
+                    <a href="/deletetugas/{{  $datas->id_pertemuan }}" title="Delete" class="btn-sm btn-danger btn float-right"
+                        onclick="return confirm('Are you sure to delete this data ?')">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>
+                <div class="card-body cold1">
+                    <a href="{{route('download', $datas->file_tugas)}}">{{$datas->file_tugas}}</a>
+                </div>
+                @if($datas->deskripsi_tugas != null)
+                <div class="card-footer">
+                    <p>{{$datas->deskripsi_tugas}}</p>
+                </div>
+                @endif
+            </div>
+            @endif
+            @endforeach
+
         </div>
 
         <div class="card-footer blue1">

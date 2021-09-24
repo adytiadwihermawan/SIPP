@@ -14,6 +14,7 @@ use App\Models\Materi;
 use App\Models\Nilai;
 use App\Models\Roles;
 use App\Models\Uploadtugas;
+use App\Models\Wadah_tugas;
 use App\Models\Wadahpresensi;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
@@ -207,13 +208,17 @@ class UserController extends Controller
                             ->where('id_user', Auth::user()->id)
                             ->get();
     
-        $data = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
+        $data_materi = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
+                        ->get();
+
+        $data_tugas = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', '=', 'pertemuan.id_pertemuan')
                         ->get();
         // dd($data);
         $course = [
             'course'=>$proses_praktikum,
             'mk'=>$kelas,
-            'data'=>$data
+            'data_materi'=>$data_materi,
+            'data_tugas'=>$data_tugas
         ];
                         
         // $icons = [
@@ -265,6 +270,39 @@ class UserController extends Controller
             $fileModel->namafile_materi = $request->_file->getClientOriginalName();
             $fileModel->judul_materi = $request->judul_materi;
             $fileModel->deskripsi_file = $request->deskripsi;
+            $query = $fileModel->save();
+
+            if($query){
+                return response()->json(['status'=>1,'msg'=>'File Berhasil Diunggah']);
+            }                
+            else{
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
+            }
+        }
+   }
+
+   public function uploadTugas(Request $request){
+
+        $request->validate([
+                    'id'=>'required',
+                    '_file' => 'required',
+                    'judul_tugas'=>'required',
+                    'deskripsi'
+                ]);
+        // dd($request->all());
+        $fileModel = new Wadah_tugas;
+
+        if($request->all()) {
+            $path = 'uploads/';
+            $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
+            // $fileName = time().'_'.$request->_file->getClientOriginalName();
+            // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
+            $filePath = $request->_file->move(public_path($path), $newname);
+
+            $fileModel->id_pertemuan= $request->id;
+            $fileModel->file_tugas = $request->_file->getClientOriginalName();
+            $fileModel->judul_tugas = $request->judul_tugas;
+            $fileModel->deskripsi_tugas = $request->deskripsi;
             $query = $fileModel->save();
 
             if($query){
@@ -618,6 +656,17 @@ class UserController extends Controller
 
     public function deletemateri($id){
         $query = Materi::where('id_pertemuan', $id)->Delete();
+         
+         if($query){
+             return back()->with('berhasil', 'Data Berhasil Dihapus');
+         }
+         else{
+             return back()->with('gagal', 'Ada terjadi kesalahan');
+         }
+     }
+
+     public function deletetugas($id){
+        $query = Wadah_tugas::where('id_pertemuan', $id)->Delete();
          
          if($query){
              return back()->with('berhasil', 'Data Berhasil Dihapus');
