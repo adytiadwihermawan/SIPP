@@ -444,7 +444,7 @@ class UserController extends Controller
                          ->where('proses_praktikum.id_praktikum', $id)
                          ->orwhere('roles.id_praktikum', $id)
                          ->get();
-            // dd($data);
+            dd($data);
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
                                 ->where('pertemuan.id_praktikum', $id)
                                 ->get();
@@ -467,18 +467,20 @@ class UserController extends Controller
                 'data'=>$data,
                 'course'=>$course
             ];
+            // dd($cek);
             return view('asist.participants', $cek);
         }
 
         public function partisipan($id)
         {
             $data = User::join('proses_praktikum', 'users.id', '=', 'proses_praktikum.id_user')
-                         ->leftjoin('roles', 'users.id', 'roles.id_user')
+                         ->join('roles', 'users.id', 'roles.id_user')
                          ->join('status_user', 'users.id_status', 'status_user.id_status') 
                          ->where('proses_praktikum.id_praktikum', $id)
                          ->orWhere('roles.id_praktikum', $id)
+                         ->where('proses_praktikum.id_proses', $id)
                          ->get();
-
+            // dd($data);
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
                                 ->where('pertemuan.id_praktikum', $id)
                                 ->get();

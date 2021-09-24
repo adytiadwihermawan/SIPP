@@ -33,7 +33,10 @@
             padding: 0;
             list-style: none;
         }
-
+      .dataTables_wrapper .dt-buttons {
+        float:none;  
+        text-align:left;
+      }
     
     </style>
   </head>
@@ -132,68 +135,7 @@
 
     <!-- Main content -->
     <div class="container-fluid">
-      
-@if(empty($course[0]->id_pertemuan))
-   <div class="card blue2 ml-2">
-        <div class="card-header">
-            <h3 class="card-title">
-                {{$mk[0]->nama_praktikum}}
-            </h3>
-
-            <button type="button" class="btn blue4h float-right" style=" padding:1px 4px;" title="Buat Pertemuan"
-                data-toggle="modal" data-target="#modal-pertemuan">
-                <i class="fa fa-plus"></i> Tambah Pertemuan</button>
-
-        </div>
-    </div>
-    
-<div class="modal fade" id="modal-pertemuan">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Buat Pertemuan</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="buat-pertemuan" action="{{ route('pertemuan') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="">Mata Kuliah</label>
-                        <input type="text" class="form-control" name="id" value="{{$mk[0]->id_praktikum}}" readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Pertemuan Ke</label>
-                        <input type="text" class="form-control" placeholder="Contoh: Pertemuan 1" name="nama_pertemuan"
-                            required>
-                        <span class="text-danger error-text nama_pertemuan_error"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Materi Pembahasan</label>
-                        <input type="text" class="form-control" placeholder="Contoh: Cara Menggunakan Framework Laravel"
-                            name="deskripsi" required>
-                        <span class="text-danger error-text deskripsi_error"></span>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" id="buat-pertemuan" class="btn btn-primary">Buat Pertemuan</button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.content -->
-</div>
-@else
     @yield('content')
-@endif
     </div>
   </div>
 
@@ -225,9 +167,11 @@
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
 
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script> 
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
 
 
 <script>
@@ -267,22 +211,34 @@
         $('#grade').DataTable({
             serverside: true,
             responsive: true,
-            dom: 'Bfrtip',
+            lengthMenu: [[10, 25, 50, 100, -1], [10,25, 50, 100, "All"]],
+            dom: 'Bflrtip',
             ajax: {
                 url: "{{ route('grade', [$course[0]->id_pertemuan]) }}"
             },
             columnDefs: [
-                        {"className": "dt-center", "targets": [0,2,3]}
+                        {
+                          "className": "dt-center", "targets": [0,2,3],
+                          "className": "text-center", "targets": [0,2,3]
+                        }
                     ],
             buttons : [
                     {
                     extend: 'excel',
-                    text: '<span class="fa fa-file-excel-o"></span> Excel Export',
+                    text: '<span class="fa fa-file-excel-o"></span> Export Nilai',
+                    messageTop: 'Rekap Nilai Tugas {{$course[0]->nama_pertemuan}}',
+                    title: 'Rekap Nilai untuk Praktikum {{$course[0]->nama_praktikum}} ',
                     exportOptions: {
-                    columns: [ 0, 1, 2, 3 ]
-                }
+                    columns: [ 0, 1, 2, 3 ],
+                    format: { 
+                      header: function ( data, columnDefs ) {
+                        return data.toUpperCase();
+                      }
+                    },
+                    },
                   }
                     ],
+                    
             columns:[
                 {
                     "data": null, "sortable": false,
@@ -290,7 +246,7 @@
                         return meta.row + meta.settings._iDisplayStart + 1
                     }
                 },
-                {data: 'nama_user', name: 'nama_user'},
+                {data: 'nama_user', name: 'nama_user' },
                 {data: 'username', name: 'username'},
                 {data: 'id_materi', name: 'grade'},
                 {data: 'Edit', name: 'edit'},

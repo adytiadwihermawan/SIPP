@@ -5,13 +5,70 @@
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 
-@if(!empty($course[0]->id_praktikum))
 <div class="content">
-
-<div class="card blue1 ml-2">
+@if(empty($course[0]->id_pertemuan))
+   <div class="card blue2 ml-2">
         <div class="card-header">
             <h3 class="card-title">
-              <b>  {{$mk[0]->nama_praktikum}} </b>
+                {{$mk[0]->nama_praktikum}}
+            </h3>
+
+            <button type="button" class="btn blue4h float-right" style=" padding:1px 4px;" title="Buat Pertemuan"
+                data-toggle="modal" data-target="#modal-pertemuan">
+                <i class="fa fa-plus"></i> Tambah Pertemuan</button>
+
+        </div>
+    </div>
+    
+<div class="modal fade" id="modal-pertemuan">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Buat Pertemuan</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="buat-pertemuan" action="{{ route('pertemuan') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="">Mata Kuliah</label>
+                        <input type="text" class="form-control" name="id" value="{{$mk[0]->id_praktikum}}" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Pertemuan Ke</label>
+                        <input type="text" class="form-control" placeholder="Contoh: Pertemuan 1" name="nama_pertemuan"
+                            required>
+                        <span class="text-danger error-text nama_pertemuan_error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Materi Pembahasan</label>
+                        <input type="text" class="form-control" placeholder="Contoh: Cara Menggunakan Framework Laravel"
+                            name="deskripsi" required>
+                        <span class="text-danger error-text deskripsi_error"></span>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" id="buat-pertemuan" class="btn btn-primary">Buat Pertemuan</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.content -->
+</div>
+@else
+    <div class="card blue2 ml-2">
+        <div class="card-header">
+            <h3 class="card-title">
+                {{$mk[0]->nama_praktikum}}
             </h3>
 
             <button type="button" class="btn blue4h float-right" style=" padding:1px 4px;" title="Buat Pertemuan"
@@ -202,42 +259,40 @@
             @foreach($data as $datas)
             @if($datas->id_pertemuan == $item->id_pertemuan)
 
-            <div class="card-body col-13 card-outline card-primary mb-0 ml-3 px-0" >
+            <div class="card col-12">
+                <div class="card-header cold4 ">
+                   <h3 class="card-title">{{$datas->judul_materi}}</h3>
+                    <a href="/deletemateri/{{  $datas->id_pertemuan }}" title="Delete" class="btn-sm btn-danger btn float-right"
+                        onclick="return confirm('Are you sure to delete this data ?')">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>
+                <div class="card-body cold1">
+                    <a href="{{route('download', $datas->namafile_materi)}}">{{$datas->namafile_materi}}</a>
+                </div>
+                @if($datas->deskripsi_file != null)
+                <div class="card-footer">
+                    <p>{{$datas->deskripsi_file}}</p>
+                </div>
+                @endif
+            </div>
+            @endif
+            @endforeach
+        </div>
 
-<div class="card-header pt-0" >
-   <h3 class="card-title">{{$datas->judul_materi}}</h3>
-    <a href="/deletemateri/{{  $datas->id_pertemuan }}" title="Delete" class="btn-sm btn-danger btn float-right"
-        onclick="return confirm('Are you sure to delete this data ?')">
-        <i class="fa fa-trash"></i>
-    </a>
-</div>
-<div class="card-body cold1 col-13 mb-0">
-    <a href="{{route('download', $datas->namafile_materi)}}">{{$datas->namafile_materi}}</a>
-</div>
-@if($datas->deskripsi_file != null)
-<div class="card-footer">
-    <p>{{$datas->deskripsi_file}}</p>
-</div>
-@endif
-</div>
-@endif
-@endforeach
-
-
-<div class="card-footer">
-{{$item->deskripsi}}
-<br> 
-<a data-toggle="modal" data-id="{{ $item->id_pertemuan }}" data-pertemuan="{{$item->nama_pertemuan}}" data-deskripsi="{{$item->deskripsi}}" class="passingID">
-<button type="button" class="btn hijau3 panjang1 float-right"  data-toggle="modal" data-target="#edit-pertemuan">
-<i class="fas fa-edit"></i> Edit Pertemuan </button>
-</div>
-</div>
-
-</div>
-
+        <div class="card-footer blue1">
+            {{$item->deskripsi}}
+            <br> 
+            <a data-toggle="modal" data-id="{{ $item->id_pertemuan }}" data-pertemuan="{{$item->nama_pertemuan}}" data-deskripsi="{{$item->deskripsi}}" class="passingID">
+            <button type="button" class="btn hijau3 panjang1 float-right"  data-toggle="modal" data-target="#edit-pertemuan">
+                <i class="fas fa-edit"></i> Edit Pertemuan </button>
+            </a>
+        </div>
+    </div>
+    
     @endforeach
-
-    <div class="modal fade" id="edit-pertemuan">
+    
+<div class="modal fade" id="edit-pertemuan">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -281,9 +336,7 @@
         </div>
         <!-- /.content -->
     </div>
-
-</div>
-
-</div>
 @endif
+</div>
+
 @endsection
