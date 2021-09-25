@@ -80,11 +80,11 @@
         @foreach($data_tugas as $datas)
         @if($datas->id_pertemuan == $item->id_pertemuan)
 
-        <div class="card-body col-13 card-outline card-wawrning mb-0 ml-3 px-0">
-            <div class="card-header pt-0 ">
+        <div class="card-body col-13 card-outline card-warning mb-0 ml-3 px-0">
+            <div class="card-header pt-0  ">
                 <a href="{{route('tugas', [$item->id_pertemuan])}}"><h3 class="card-title">{{$datas->judul_tugas}}</h3></a>
             </div>
-            <div class="card-body cold1">
+            <div class="card-body beee">
                 <a href="{{route('download', $datas->file_tugas)}}">{{$datas->file_tugas}}</a>
             </div>
             @if($datas->deskripsi_tugas != null)
