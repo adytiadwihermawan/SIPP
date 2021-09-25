@@ -26,14 +26,14 @@
 					@endif
 
 			
-					<div class="row mb-5 mx-auto">
+					<div class="row mb-5">
 					<div class="col-sm">
 			<button type="button" class="btn btn-primary" onclick="window.location.href='/tambahuser'">
-				<i class="fa fa-edit"></i> Tambah User </button> </div>
+				<i class="fa fa-edit"></i> Tambah User </button> 
 
-				<button type="button" class="btn blue4h float-right" style=" padding:1px 4px;" title="Buat Pertemuan"
+				<button type="button" class="btn blue4h" title="Buat Pertemuan"
                 data-toggle="modal" data-target="#modal-import">
-                <i class="fa fa-plus"></i> Import Data User</button>
+                <i class="fa fa-plus"></i> Import Data User</button></div>
 
 				<div class="modal fade" id="modal-import">
 				<div class="modal-dialog modal-lg">

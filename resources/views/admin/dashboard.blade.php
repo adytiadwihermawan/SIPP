@@ -41,7 +41,7 @@
     <ul class="navbar-nav ml-auto">
       <div class="user-panel mt-0 pb-0 mb-0 d-flex" >
         <div class="image ml-2">
-          <img src="{{asset('dist/img/defaultpic.png')}}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{asset('dist/img/logo.png')}}" class="img-circle elevation-2" alt="User Image">
         </div>
       </div>
         @guest
@@ -78,10 +78,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{asset('dist/img/defaultpic.png')}}" class="img-circle elevation-2" alt="User Image"  style="height: 40px; width: 40px;">
+          <img src="{{asset('dist/img/logo.png')}}" class="img-circle elevation-2" alt="User Image"  style="height: 40px; width: 40px;">
         </div>
         <div class="info">
-            <a href="index.php" class="d-block">
+            <a class="d-block">
                 {{ Auth::user()->nama_user }}
             </a>
             <span class="badge badge-success" style="font-size: 12px;">

@@ -7,7 +7,8 @@
 
 <div class="content">
 @if(empty($course[0]->id_pertemuan))
-   <div class="card blue2 ml-2">
+
+   <div class="card blue1 ml-2">
         <div class="card-header">
             <h3 class="card-title">
                 {{$mk[0]->nama_praktikum}}
@@ -65,10 +66,10 @@
     <!-- /.content -->
 </div>
 @else
-    <div class="card blue2 ml-2">
+    <div class="card blue1 ml-2">
         <div class="card-header">
             <h3 class="card-title">
-                {{$mk[0]->nama_praktikum}}
+              <b>  {{$mk[0]->nama_praktikum}} </b>
             </h3>
 
             <button type="button" class="btn blue4h float-right" style=" padding:1px 4px;" title="Buat Pertemuan"
@@ -128,10 +129,10 @@
                 class="fas fa-plus"></i> Buat Presensi </button>
 
         <button type="button" class="btn hijau panjang1 ml-3" data-toggle="modal" data-target="#addmateri"> <i
-                class="fas fa-plus"></i> Upload Materi </button>
+                class="fas fa-plus"></i> Tambah Materi </button>
 
         <button type="button" class="btn hijau panjang1 ml-3" data-toggle="modal" data-target="#addtugas"> <i
-                class="fas fa-plus"></i> Upload Tugas </button>
+                class="fas fa-plus"></i> Tambah Tugas </button>
 
     </div>
 
@@ -297,10 +298,9 @@
     </div>
 
     @foreach($course as $item)
-    <div class="card col-12">
-
-        <div class="card">
-            <div class="card-header blue2">
+    <div class="card col-13 mb-0">
+    <div class="card" >
+            <div class="card-header blue2 mb-0">
                 <h3 class="card-title">{{$item->nama_pertemuan}}</h3>
 
                 <div class="card-tools">
@@ -314,15 +314,15 @@
             @foreach($data_materi as $datas)
             @if($datas->id_pertemuan == $item->id_pertemuan)
 
-            <div class="card col-12">
-                <div class="card-header cold4 ">
+            <div class="card-body col-13 card-outline card-primary mb-0 ml-3 px-0">
+                <div class="card-header pt-0 ">
                    <h3 class="card-title">{{$datas->judul_materi}}</h3>
                     <a href="/deletemateri/{{  $datas->id_pertemuan }}" title="Delete" class="btn-sm btn-danger btn float-right"
                         onclick="return confirm('Are you sure to delete this data ?')">
                         <i class="fa fa-trash"></i>
                     </a>
                 </div>
-                <div class="card-body cold1">
+                <div class="card-body cold1 col-13 mb-0">
                     <a href="{{route('download', $datas->namafile_materi)}}">{{$datas->namafile_materi}}</a>
                 </div>
                 @if($datas->deskripsi_file != null)
@@ -333,7 +333,6 @@
             </div>
             @endif
             @endforeach
-
             <br>
             @foreach($data_tugas as $datas)
             @if($datas->id_pertemuan == $item->id_pertemuan)
@@ -358,7 +357,7 @@
             @endif
             @endforeach
 
-        </div>
+        
 
         <div class="card-footer blue1">
             {{$item->deskripsi}}
@@ -367,6 +366,7 @@
             <button type="button" class="btn hijau3 panjang1 float-right"  data-toggle="modal" data-target="#edit-pertemuan">
                 <i class="fas fa-edit"></i> Edit Pertemuan </button>
             </a>
+        </div>
         </div>
     </div>
     
@@ -416,7 +416,8 @@
         </div>
         <!-- /.content -->
     </div>
+    </div>
 @endif
-</div>
+
 
 @endsection

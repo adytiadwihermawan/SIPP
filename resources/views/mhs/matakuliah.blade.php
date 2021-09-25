@@ -51,14 +51,10 @@
         @foreach($data_materi as $datas)
         @if($datas->id_pertemuan == $item->id_pertemuan)
 
-        <div class="card col-12">
-            <div class="card-header cold4 ">
+        <div class="card-body col-13 card-outline card-primary mb-0 ml-3 px-0">
+            <div class="card-header pt-0">
                 <h3 class="card-title">{{$datas->judul_materi}}</h3>
-                <a href="/deletemateri/{{  $datas->id_pertemuan }}" title="Delete"
-                    class="btn-sm btn-danger btn float-right"
-                    onclick="return confirm('Are you sure to delete this data ?')">
-                    <i class="fa fa-trash"></i>
-                </a>
+            
             </div>
             <div class="card-body cold1">
                 <a href="{{route('download', $datas->namafile_materi)}}">{{$datas->namafile_materi}}</a>
@@ -76,8 +72,8 @@
         @foreach($data_tugas as $datas)
         @if($datas->id_pertemuan == $item->id_pertemuan)
 
-        <div class="card col-12">
-            <div class="card-header cold4 ">
+        <div class="card-body col-13 card-outline card-wawrning mb-0 ml-3 px-0">
+            <div class="card-header pt-0 ">
                 <a href="{{route('tugas', [$item->id_pertemuan])}}"><h3 class="card-title">{{$datas->judul_tugas}}</h3></a>
             </div>
             <div class="card-body cold1">

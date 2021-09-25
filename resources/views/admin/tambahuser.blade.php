@@ -26,20 +26,20 @@
 							</div>
 							
                             <div class="form-group">
-								<label for="">Id User</label>
-								<input type="text" class="form-control" name="id" maxlength="25">
+								<label for="">Id User (NIM/NIP)</label>
+								<input type="text" class="form-control" name="id" maxlength="25" placeholder="Digunakan sebagai username saat login">
 								<span class="text-danger error-text id_error"></span>
 							</div>
 
 							<div class="form-group">
 								<label for="">Password</label>
-								<input type="text" class="form-control" name="password" maxlength="30">
+								<input type="text" class="form-control" name="password" maxlength="30" placeholder="Minimal 8 karakter">
 								<span class="text-danger error-text password_error"></span>
 							</div>
 
 							<div class="form-group">
 								<label for="">Role</label>
-								<select id="role" name="role" class="form-control">
+								<select id="role" name="role" class="form-control selectpicker"  data-live-search="true" >
 									<option value="" selected></option>
 									<option value="1">admin</option>
 									<option value="2">dosen</option>
