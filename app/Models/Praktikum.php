@@ -12,6 +12,8 @@ class Praktikum extends Model
 
     protected $dates = ['jam_praktikum'];
 
+    public $timestamps = false;
+
     protected $fillable = [
         'id_praktikum', 'tahun_ajaran', 'nama_praktikum', 'jam_praktikum', 'id_lab', 'hari_praktikum'
     ];

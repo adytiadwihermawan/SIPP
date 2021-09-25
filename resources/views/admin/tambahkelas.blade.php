@@ -14,6 +14,8 @@
 					
 						@csrf
 
+						<input type="hidden" value="Pertemuan 1" name="nama_pertemuan">
+
                         <div class="form-group">
                             <label for="">Nama Kelas</label>
                             <input type="text" class="form-control" name="nama_praktikum" maxlength="50">

@@ -12,6 +12,26 @@
 
 
 @section('content')
+@if(empty($absen[0]->id_wadah))
+
+<div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="error-template">
+                    <h1>
+                        Oops!</h1>
+                    <h2>
+                        Belum Ada Absen untuk Mata Kuliah Sekarang</h2>
+                    <div class="error-details">
+                        Mohon menunggu sampai dosen atau asisten kelas membuat absen untuk mata kuliah ini
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@else
+
 <div class="card card-primary ml-2">
   <div class="card-header">
     <h3 class="card-title">Presensi</h3>
@@ -105,7 +125,7 @@
                         @csrf
 
                         <input type="hidden" class="form-control" name="id_user" value="{{Auth::user()->id}}" readonly>
-
+                        
                         <input type="hidden" class="form-control" id="id" name="id_wadah" value="{{$data->id_wadah}}" readonly>
                         
                         <div class="col-md-12">
@@ -129,5 +149,6 @@
   <!-- /.modal -->
     <!-- /.row (main row) -->
   </div><!-- /.container-fluid -->
-</section>
+  
+@endif
 @endsection

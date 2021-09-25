@@ -9,6 +9,14 @@
 <div class="content">
 
     @if(empty($course[0]->id_praktikum))
+    <div class="card blue1 ml-2">
+        <div class="card-header">
+            <h3 class="card-title">
+                <b> {{$mk[0]->nama_praktikum}} </b>
+            </h3>
+
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
