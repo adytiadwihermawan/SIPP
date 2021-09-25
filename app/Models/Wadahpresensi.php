@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Wadahpresensi extends Model
 {
     protected $fillable = [
@@ -15,6 +16,14 @@ class Wadahpresensi extends Model
         'tanggal',
         'urutanpertemuan'
     ];
+
+    protected $dates = [
+        'waktu_mulai',
+        'waktu_berakhir',
+        'tanggal'
+    ];
+
+    
 
     protected $table = 'wadahpresensi';
     

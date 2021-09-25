@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Stroage;
@@ -16,6 +17,7 @@ use App\Models\Roles;
 use App\Models\Uploadtugas;
 use App\Models\Wadah_tugas;
 use App\Models\Wadahpresensi;
+use App\Models\Presensi;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
 use DataTables;
@@ -58,24 +60,24 @@ class UserController extends Controller
         return view('mhs.profile', $datas);
     }
 
-    public function mhsPresensi($id)
-    {
-       $data = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')
-                    ->where('id_status', '=', 3)
-                    ->Where('id_user', '=', Auth::user()->id)
-                    ->get();
+    // public function mhsPresensi($id)
+    // {
+    //    $data = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')
+    //                 ->where('id_status', '=', 3)
+    //                 ->Where('id_user', '=', Auth::user()->id)
+    //                 ->get();
 
-        $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+    //     $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
 
-        $kelas = Praktikum::where('id_praktikum', $id)->get();
+    //     $kelas = Praktikum::where('id_praktikum', $id)->get();
 
-        $datas = [
-            'course'=>$course,
-            'data'=>$data,
-            'mk'=>$kelas
-        ];
-        return view('mhs.presensi', $datas);
-    }
+    //     $datas = [
+    //         'course'=>$course,
+    //         'data'=>$data,
+    //         'mk'=>$kelas
+    //     ];
+    //     return view('mhs.presensi', $datas);
+    // }
 
 
     public function matkulMhs($id)
@@ -785,5 +787,67 @@ class UserController extends Controller
             }
         }
    }
+
+   public function dataAbsen($id)
+   {
+       $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
+                            ->where('wadahpresensi.id_praktikum', $id)
+                            ->simplePaginate(16);
+
+        $kelas = Praktikum::where('id_praktikum', $id)->get();
+
+        $cek = Presensi::join('wadahpresensi', 'presensi.id_wadah', 'wadahpresensi.id_wadah')
+                        ->where('presensi.id_user', Auth::user()->id)
+                        ->get();
+        // dd($cek);
+        $absen = [
+            'mk'=>$kelas,
+            'absen'=>$absen,
+            'cek'=>$cek
+        ];
+
+       return view('mhs.presensi',  $absen);
+   }
+
+   public function signature(Request $request)
+    {
+
+        $request->validate([
+                    'signed'=>'required',
+                    'id_user'=>'required',
+                    'id_wadah'=>'required'
+                ]);
+
+        $folderPath = public_path('uploads/');
+        
+        $image_parts = explode(";base64,", $request->signed);
+              
+        $image_type_aux = explode("image/", $image_parts[0]);
+           
+        $image_type = $image_type_aux[1];
+           
+        $image_base64 = base64_decode($image_parts[1]);
+
+        $signature = uniqid() . '.'.$image_type;
+           
+        $file = $folderPath . $signature;
+
+        file_put_contents($file, $image_base64);
+        
+        $save = new Presensi;
+                
+        if($request->all()) {
+        
+        setlocale(LC_ALL, 'IND');
+        $save->fotottd_presensi = $signature;
+        $save->id_user = $request->id_user;
+        $save->waktu_presensi = Carbon::now()->format('Y-m-d H:i:s');
+        $save->id_wadah = $request->id_wadah;
+        $save->save();
+
+        return back()->with('success', 'success Full upload signature');
+    
+        }
+    }
 
 }

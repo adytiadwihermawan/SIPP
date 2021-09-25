@@ -129,7 +129,7 @@ Route::get('dashboard', [UserController::class, 'dashboardMhs'])->name('mhs.dash
 
 Route::get('profile', [UserController::class, 'mhsProfile']);
 
-Route::get('presensi/{id}', [UserController::class, 'mhsPresensi'])->name('presensi');
+Route::get('presensi/{id}', [UserController::class, 'dataAbsen'])->name('presensi');
 
 Route::get('matkul/{id}', [UserController::class, 'matkulMhs'])->name('mhsMatkul');
 
@@ -144,3 +144,5 @@ Route::get('mhs/partisipan/{id}', [UserController::class, 'partisipan'])->name('
 Route::get('matkul/tugas/{id}', [UserController::class, 'tampilTugas'])->name('tugas');
 
 Route::post('send-assignment', [UserController::class, 'kumpulTugas'])->name('assignment');
+
+Route::post('signaturepad', [UserController::class, 'signature'])->name('signature');

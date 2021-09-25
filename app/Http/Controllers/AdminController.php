@@ -216,6 +216,7 @@ class AdminController extends Controller
         $request->validate([
          'nama_praktikum'=>'required',
          'tahun_ajaran'=>'required',
+         'nama_pertemuan'=>'required'
      ]);
  
         // $query = Praktikum::insert([
@@ -228,9 +229,10 @@ class AdminController extends Controller
         $data->nama_praktikum = $post['nama_praktikum'];
         $data->tahun_ajaran = $post['tahun_ajaran'];
         $query = $data->save();
-
+        
         Pertemuan::insert([
-                'id_praktikum'=>DB::getPdo()->lastInsertId()
+                'id_praktikum'=>DB::getPdo()->lastInsertId(),
+                'nama_pertemuan'=>$request->input('nama_pertemuan')
             ]);
         // dd($query);
         if($query){

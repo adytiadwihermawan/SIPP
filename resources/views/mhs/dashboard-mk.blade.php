@@ -23,7 +23,10 @@
    <link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
 
    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+  
+  <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
 
+  
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -159,6 +162,9 @@
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
 
+
+<script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
+
 <script>
 
 $(document).ready(function(){
@@ -217,6 +223,22 @@ $(document).ready(function(){
   });
 
 </script>
+
+<script type="text/javascript">
+    var sig = $('#sig').signature({syncField: '#signature64', syncFormat: 'PNG'});
+    $('#clear').click(function(e) {
+        e.preventDefault();
+        sig.signature('clear');
+        $("#signature64").val('');
+    });
+</script>
+
+<script>
+    $(document).on("click", ".passingID", function () {
+     var ids = $(this).attr('data-id');
+     $(".modal-body #id").val( ids );
+    });
+  </script>
 
 </body>
 </html>
