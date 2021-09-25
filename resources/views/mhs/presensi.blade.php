@@ -31,7 +31,15 @@
     </div>
 
 @else
+<div class="card col-12 blue1">
+        <div class="card-header">
+            <h3 class="card-title">
+                <b> {{$mk[0]->nama_praktikum}} </b>
+            </h3>
 
+        </div>
+    </div>
+    
 <div class="card card-primary ml-2">
   <div class="card-header">
     <h3 class="card-title">Presensi</h3>
@@ -40,7 +48,7 @@
 <section class="content mt-3">
   <div class="container-fluid">
     <!-- Small boxes (Stat box) -->
-    <div class="card">
+    <div class="card col-13">
           <div class="card-header">
             <h3 class="card-title">Presensi Praktikum</h3>
           </div>
