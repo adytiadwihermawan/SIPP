@@ -39,7 +39,7 @@
 
         </div>
     </div>
-    
+
 <div class="card card-primary ml-2">
   <div class="card-header">
     <h3 class="card-title">Presensi</h3>
@@ -94,7 +94,7 @@
                         </td>
                         <td>
                           <a data-toggle="modal" data-id="{{ $data->id_wadah }}" class="passingID">
-                          <button type="button" class="btn btn-block btn-success " data-toggle="modal" data-target="#modal-lg">
+                          <button type="button" class="btn btn-block btn-success " data-toggle="modal" data-target="#modal-default">
                             Presensi
                           </button>
                            </a>
@@ -113,8 +113,8 @@
     <!-- Main row -->
    <!-- /.modal -->
 
-   <div class="modal fade" id="modal-lg">
-    <div class="modal-dialog modal-lg">
+   <div class="modal fade" id="modal-default">
+    <div class="modal-dialog modal-default">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Tanda Tangan Absen</h4>
@@ -139,7 +139,7 @@
                         <div class="col-md-12">
                             <label class="" for="">Tanda Tangan:</label>
                             <br/>
-                            <div id="sig" ></div>
+                            <div id="sig" style="width: 25vw;" class="mb-3"></div>
                             <br/>
                             <button id="clear" class="btn btn-danger btn-sm">Clear Signature</button>
                             <textarea id="signature64" name="signed" style="display: none"></textarea>
