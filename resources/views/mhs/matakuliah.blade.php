@@ -7,32 +7,6 @@
 
 
 <div class="content">
-
-    @if(empty($course[0]->id_praktikum))
-    <div class="card blue1 ml-2">
-        <div class="card-header">
-            <h3 class="card-title">
-                <b> {{$mk[0]->nama_praktikum}} </b>
-            </h3>
-
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="error-template">
-                    <h1>
-                        Oops!</h1>
-                    <h2>
-                        Belum Ada Pertemuan untuk Mata Kuliah Sekarang</h2>
-                    <div class="error-details">
-                        Mohon menunggu sampai dosen atau asisten kelas membuat pertemuan untuk mata kuliah ini
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @else
     <div class="card col-12 blue1">
         <div class="card-header">
             <h3 class="card-title">
@@ -82,7 +56,7 @@
 
         <div class="card-body col-13 card-outline card-warning mb-0 ml-3 px-0">
             <div class="card-header pt-0  ">
-                <a href="{{route('tugas', [$item->id_pertemuan])}}"><h3 class="card-title">{{$datas->judul_tugas}}</h3></a>
+                <a style="text-decoration: none" href="{{route('tugas', [$item->id_pertemuan])}}"><h3 class="card-title" style="color: black">{{$datas->judul_tugas}}</h3></a>
             </div>
             <div class="card-body beee">
                 <a href="{{route('download', $datas->file_tugas)}}">{{$datas->file_tugas}}</a>
@@ -101,7 +75,6 @@
         </div>
     </div>
     @endforeach
-    @endif
 </div>
 
 @endsection

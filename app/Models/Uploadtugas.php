@@ -11,10 +11,13 @@ class Uploadtugas extends Model
 
     public $timestamps = false;
 
+    protected $dates = ['waktu_submit'];
+
     protected $fillable = [
         'namafile_tugas',
         'id_materi',
         'id_praktikum',
-        'id_user'
+        'id_user',
+        'waktu_submit'
     ];
 }

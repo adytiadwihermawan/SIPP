@@ -225,8 +225,25 @@
                             <span class="text-danger error-text deskripsi_error"></span>
                         </div>
 
-                        <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control"
-                            required>
+                        <div class="form-group">
+                            <label for="">Waktu Mulai Pengumpulan</label>
+                            <input type="datetime-local" class="form-control" name="wmp" required>
+                            <span class="text-danger error-text wmp_error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Waktu Akhir Pengumpulan</label>
+                            <input type="datetime-local" class="form-control" name="wap" required>
+                            <span class="text-danger error-text wap_error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Waktu Cut-Off Pengumpulan</label>
+                            <input type="datetime-local" class="form-control" name="wcp">
+                            <span class="text-danger error-text wcp_error"></span>
+                        </div>
+
+                        <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

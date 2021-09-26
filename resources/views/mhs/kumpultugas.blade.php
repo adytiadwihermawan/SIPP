@@ -3,7 +3,7 @@
 @section('Judul', 'Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat')
 
 @section('content')
-@if(!empty($assign[0]->id_tugas))
+@if(!empty($assign[0]->id_tugas && $assign[0]->waktu_submit))
 <div class="col-12 row-3">
     <div class="card ml-3 ">
         <div class="card-header" style="background-color: aliceblue;">
@@ -66,14 +66,7 @@
             </div>
             <div class="row mt-3">
                 <p class="card-title">
-
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae mi maximus, malesuada ligula
-                    eget, tempus dui. Aenean pretium justo diam, id congue turpis tincidunt vitae. Duis blandit non nisi
-                    in porttitor. Etiam varius finibus nulla, sit amet faucibus nunc sodales in. Vestibulum ante ipsum
-                    primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam a leo et neque faucibus
-                    convallis at et nisl. Aenean vulputate tempus venenatis. Class aptent taciti sociosqu ad litora
-                    torquent per conubia nostra, per inceptos himenaeos. Curabitur lacus erat, pellentesque ac lacus sit
-                    amet, semper condimentum ligula.
+                    {{$data[0]->deskripsi_tugas}}
                 </p>
             </div>
 
@@ -85,26 +78,27 @@
             <table class="table table-hover text-nowrap">
                 <tbody>
                     <tr>
-                        <th>data 1</th>
+                        <th>Grading status</th>
                         <td>isi data 1</td>
                     </tr>
                     <tr>
-                        <th>data 2</th>
+                        <th>Due date</th>
                         <td>isi data 2</td>
                     </tr>
                     <tr>
-                        <th>data 3</th>
+                        <th>Time remaining</th>
                         <td>isi data 3</td>
                     </tr>
                     <tr>
-                        <th>data 4</th>
+                        <th>Last modified</th>
                         <td>isi data 4</td>
                     </tr>
                     <tr>
                         <th>FILE</th>
                         <td>
                             <div class="custom-file">
-                               <a href="{{route('download', $assign[0]->namafile_tugas)}}"> {{$assign[0]->namafile_tugas}} </a>
+                               <a style="text-decoration: none; color:indianred"  href="{{route('download', $assign[0]->namafile_tugas)}}"> {{$assign[0]->namafile_tugas}}</a>
+                                {{$assign[0]->waktu_submit->format('j F Y, H:i A')}}
                             </div>
                         </td>
 
@@ -115,7 +109,7 @@
                             <a href="" title="Edit" class="btn btn-success btn">
                                 <i class="fa fa-edit"></i> Edit Submission
                             </a>
-                            <a href="" title="Delete" class="btn btn-danger btn"
+                            <a href="/deletesubmission/{{  $assign[0]->id_tugas }}" title="Delete" class="btn btn-danger btn"
                                 onclick="return confirm('Are you sure to delete this data ?')">
                                 <i class="fa fa-trash"></i> Remove Submission
                             </a>
@@ -131,6 +125,7 @@
     <!-- /.card -->
 </div>
 </div>
+
 @else
 
 <div class="col-12 row-3">

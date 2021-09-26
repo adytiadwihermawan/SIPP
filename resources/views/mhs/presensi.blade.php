@@ -70,7 +70,6 @@
 				</thead>
 				<tbody>
 				@foreach ($absen as $item => $data)
-				
                     <tr style="text-align: center;">
 						<td>{{ $absen->firstItem() + $item }}</td>
                         <td>{{ $data->nama_praktikum }}</td>
@@ -93,11 +92,22 @@
                           {{ $data->waktu_berakhir->format('H:i')}}
                         </td>
                         <td>
+                        @if($cek)
+                          @if($cek->fotottd_presensi && $cek->id_wadah == $data->id_wadah)
+                            Hadir
+                          @else
+                            <a data-toggle="modal" data-id="{{ $data->id_wadah }}" class="passingID">
+                           <button type="button" class="btn btn-block btn-success " data-toggle="modal" data-target="#modal-default">
+                                Presensi
+                           </button>
+                          </a>
+                          @endif
+                        @else
                           <a data-toggle="modal" data-id="{{ $data->id_wadah }}" class="passingID">
-                          <button type="button" class="btn btn-block btn-success " data-toggle="modal" data-target="#modal-default">
-                            Presensi
-                          </button>
-                           </a>
+                           <button type="button" class="btn btn-block btn-success " data-toggle="modal" data-target="#modal-default">
+                                Presensi
+                           </button>
+                        @endif
                         </td>
                     </tr>
                 @endforeach
@@ -109,10 +119,7 @@
         </div>
       <!-- ./col -->
     </div>
-    <!-- /.row -->
-    <!-- Main row -->
-   <!-- /.modal -->
-
+</section>
    <div class="modal fade" id="modal-default">
     <div class="modal-dialog modal-default">
       <div class="modal-content">
@@ -154,9 +161,7 @@
     </div>
     <!-- /.modal-dialog -->
   </div>
-  <!-- /.modal -->
-    <!-- /.row (main row) -->
-  </div><!-- /.container-fluid -->
+  </div>
   
 @endif
 @endsection

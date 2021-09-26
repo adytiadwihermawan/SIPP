@@ -146,3 +146,5 @@ Route::get('matkul/tugas/{id}', [UserController::class, 'tampilTugas'])->name('t
 Route::post('send-assignment', [UserController::class, 'kumpulTugas'])->name('assignment');
 
 Route::post('signaturepad', [UserController::class, 'signature'])->name('signature');
+
+Route::get('deletesubmission/{id}', [UserController::class, 'deletesubmission']);

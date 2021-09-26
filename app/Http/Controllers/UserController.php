@@ -295,9 +295,12 @@ class UserController extends Controller
 
         $request->validate([
                     'id'=>'required',
-                    '_file' => 'required',
+                    '_file',
                     'judul_tugas'=>'required',
-                    'deskripsi'
+                    'deskripsi',
+                    'wmp'=>'required',
+                    'wap'=>'required',
+                    'wcp'
                 ]);
         // dd($request->all());
         $fileModel = new Wadah_tugas;
@@ -313,6 +316,10 @@ class UserController extends Controller
             $fileModel->file_tugas = $request->_file->getClientOriginalName();
             $fileModel->judul_tugas = $request->judul_tugas;
             $fileModel->deskripsi_tugas = $request->deskripsi;
+            $fileModel->waktu_mulai = $request->wmp;
+            $fileModel->waktu_selesai = $request->wap;
+            $fileModel->waktu_cutoff = $request->wcp;
+            
             $query = $fileModel->save();
 
             if($query){
@@ -777,6 +784,7 @@ class UserController extends Controller
             $fileModel->id_praktikum = $request->id;
             $fileModel->id_user = $request->id_user;
             $fileModel->namafile_tugas = $request->_file->getClientOriginalName();
+            $fileModel->waktu_submit = Carbon::now()->format('Y-m-d H:i:s');
             $query = $fileModel->save();
 
             if($query){
@@ -798,7 +806,7 @@ class UserController extends Controller
 
         $cek = Presensi::join('wadahpresensi', 'presensi.id_wadah', 'wadahpresensi.id_wadah')
                         ->where('presensi.id_user', Auth::user()->id)
-                        ->get();
+                        ->first();
         // dd($cek);
         $absen = [
             'mk'=>$kelas,
@@ -849,5 +857,16 @@ class UserController extends Controller
     
         }
     }
+
+    public function deletesubmission($id){
+        $query = uploadtugas::where('id_tugas', $id)->Delete();
+         
+         if($query){
+             return back()->with('berhasil', 'Data Berhasil Dihapus');
+         }
+         else{
+             return back()->with('gagal', 'Ada terjadi kesalahan');
+         }
+     }
 
 }

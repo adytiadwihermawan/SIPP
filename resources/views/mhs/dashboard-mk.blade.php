@@ -197,7 +197,7 @@ $(document).ready(function(){
  $(function(){
     
     $('#kumpul-tugas').on('submit', function(e){
-      location.reload();      
+      e.preventDefault();   
       $.ajax({
         url:$(this).attr('action'),
         method:$(this).attr('method'),
