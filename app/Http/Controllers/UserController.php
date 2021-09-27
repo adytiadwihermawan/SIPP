@@ -807,11 +807,13 @@ class UserController extends Controller
         $cek = Presensi::join('wadahpresensi', 'presensi.id_wadah', 'wadahpresensi.id_wadah')
                         ->where('presensi.id_user', Auth::user()->id)
                         ->first();
-        // dd($cek);
+
+        $currentTime = Carbon::now();
         $absen = [
             'mk'=>$kelas,
             'absen'=>$absen,
-            'cek'=>$cek
+            'cek'=>$cek,
+            'waktu'=>$currentTime
         ];
 
        return view('mhs.presensi',  $absen);

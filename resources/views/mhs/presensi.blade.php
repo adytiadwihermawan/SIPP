@@ -92,6 +92,8 @@
                           {{ $data->waktu_berakhir->format('H:i')}}
                         </td>
                         <td>
+                      @if ($waktu->between(Carbon\Carbon::parse($absen[0]->waktu_mulai),
+                      Carbon\Carbon::parse($absen[0]->waktu_berakhir)))
                         @if($cek)
                           @if($cek->fotottd_presensi && $cek->id_wadah == $data->id_wadah)
                             Hadir
@@ -108,6 +110,9 @@
                                 Presensi
                            </button>
                         @endif
+                      @else
+                         Absen
+                      @endif
                         </td>
                     </tr>
                 @endforeach
