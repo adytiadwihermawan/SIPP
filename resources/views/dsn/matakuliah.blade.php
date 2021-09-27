@@ -333,6 +333,9 @@
 
             <div class="card-body col-13 card-outline card-primary mb-0 ml-3 px-0">
                 <div class="card-header pt-0 ">
+       
+
+
                    <h3 class="card-title">{{$datas->judul_materi}}</h3>
                     <a href="/deletemateri/{{  $datas->id_pertemuan }}" title="Delete" class="btn-sm btn-danger btn float-right"
                         onclick="return confirm('Are you sure to delete this data ?')">
@@ -340,7 +343,13 @@
                     </a>
                 </div>
                 <div class="card-body cold1 col-13 mb-0">
-                    <a href="{{route('download', $datas->namafile_materi)}}">{{$datas->namafile_materi}}</a>
+
+            
+           
+            
+            
+
+                <a href="{{route('download', $datas->namafile_materi)}}">{{$datas->namafile_materi}}</a>
                 </div>
                 @if($datas->deskripsi_file != null)
                 <div class="card-footer">
