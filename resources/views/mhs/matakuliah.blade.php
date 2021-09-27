@@ -39,6 +39,35 @@
             
             </div>
             <div class="card-body cold1">
+
+            <?php
+                $pecah = explode(".", $datas->namafile_materi);
+                $ekstensi = $pecah[1];
+            ?>
+             @if ($ekstensi == 'zip' or $ekstensi == 'rar')
+                <i class="fa fa-file-zip-o mr-2" style="font-size:23px;color:gray"> </i>
+
+             @elseif ($ekstensi == 'docx' or $ekstensi == 'doc')
+                <i class="fa fa-file-word-o mr-2" style="font-size:23px;color:blue"></i>
+             
+             @elseif ($ekstensi == 'pdf')
+              <i class="fa fa-file-pdf-o mr-2" style="font-size:23px;color:red"></i>
+             
+             @elseif ($ekstensi == 'ppt' or $ekstensi == 'pptx')
+                 <i class="fa fa-file-powerpoint-o mr-2" style="font-size:23px;color:orange"></i>
+             
+
+             @elseif ($ekstensi == 'jpg' or $ekstensi == 'png' or $ekstensi == 'jpeg')
+                 <i class="fa fa-file-photo-o mr-2" style="font-size:23px;color:green"></i>
+             
+             @elseif ($ekstensi == 'html')
+                 <i class="fa fa-file-code-o mr-2" style="font-size:23px;color:green"></i>
+
+                 @else
+                 <i class="fa fa-file-text-o mr-2" style="font-size:23px;color:black"> </i>
+            @endif
+
+            
                 <a href="{{route('download', $datas->namafile_materi)}}">{{$datas->namafile_materi}}</a>
             </div>
             @if($datas->deskripsi_file != null)

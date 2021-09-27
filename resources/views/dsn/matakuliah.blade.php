@@ -346,26 +346,27 @@
                 $pecah = explode(".", $datas->namafile_materi);
                 $ekstensi = $pecah[1];
             ?>
-            @if ($ekstensi == 'zip')
-                <i class="fa fa-file-zip-o" style="font-size:48px;color:gray"> </i>;
+             @if ($ekstensi == 'zip' or $ekstensi == 'rar')
+                <i class="fa fa-file-zip-o mr-2" style="font-size:23px;color:gray"> </i>
 
-             @elseif ($ekstensi == 'docx')
-                <i class="fa fa-file-word-o" style="font-size:48px;color:blue"></i>
+             @elseif ($ekstensi == 'docx' or $ekstensi == 'doc')
+                <i class="fa fa-file-word-o mr-2" style="font-size:23px;color:blue"></i>
              
              @elseif ($ekstensi == 'pdf')
-              <i class="fa fa-file-pdf-o" style="font-size:48px;color:red"></i>
+              <i class="fa fa-file-pdf-o mr-2" style="font-size:23px;color:red"></i>
              
-             @elseif ($ekstensi == 'ppt')
-                 <i class="fa fa-file-powerpoint-o" style="font-size:48px;color:orange"></i>
+             @elseif ($ekstensi == 'ppt' or $ekstensi == 'pptx')
+                 <i class="fa fa-file-powerpoint-o mr-2" style="font-size:23px;color:orange"></i>
              
-             @elseif ($ekstensi == 'pptx')
-                 <i class="fa fa-file-powerpoint-o" style="font-size:48px;color:orange"></i>
 
-             @elseif ($ekstensi == 'jpg' or $ekstensi == 'png')
-                 <i class="fa fa-file-photo-o" style="font-size:48px;color:green"></i>
+             @elseif ($ekstensi == 'jpg' or $ekstensi == 'png' or $ekstensi == 'jpeg')
+                 <i class="fa fa-file-photo-o mr-2" style="font-size:23px;color:green"></i>
              
              @elseif ($ekstensi == 'html')
-                 <i class="fa fa-file-code-o" style="font-size:48px;color:green"></i>
+                 <i class="fa fa-file-code-o mr-2" style="font-size:23px;color:green"></i>
+
+                 @else
+                 <i class="fa fa-file-text-o mr-2" style="font-size:23px;color:black"> </i>
             @endif
 
                 <a href="{{route('download', $datas->namafile_materi)}}">{{$datas->namafile_materi}}</a>
