@@ -66,7 +66,7 @@ Route::post('updatelab', [AdminController::class, 'updatelab']);
 
 Route::get('deletelab/{id}', [AdminController::class, 'deletelab']);
 
-Route::view('/openrekrutasist', 'admin.bukapendaftaran');
+Route::get('/openrekrutasist', [AdminController::class, 'openpendaftaran']);
 
 Route::post('file-import', [AdminController::class, 'fileImport'])->name('file-import');
 

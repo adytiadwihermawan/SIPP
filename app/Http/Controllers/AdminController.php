@@ -442,4 +442,10 @@ class AdminController extends Controller
          }
      }
     // ------------------------------------------------- End CRUD Data Lab --------------------------------------- \\
+
+    public function openpendaftaran()
+    {
+        return view('admin.bukapendaftaran');
+    }
+
 }

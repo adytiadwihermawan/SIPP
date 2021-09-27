@@ -111,7 +111,7 @@
                            </button>
                         @endif
                       @else
-                         Absen
+                         Tanpa Keterangan
                       @endif
                         </td>
                     </tr>

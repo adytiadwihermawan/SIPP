@@ -26,7 +26,7 @@
 							</div>
 							
                             <div class="form-group">
-								<label for="">Id User (NIM/NIP)</label>
+								<label for="">NIM/NIP</label>
 								<input type="text" class="form-control" name="id" maxlength="25" placeholder="Digunakan sebagai username saat login">
 								<span class="text-danger error-text id_error"></span>
 							</div>
