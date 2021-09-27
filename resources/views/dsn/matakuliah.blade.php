@@ -334,8 +334,6 @@
             <div class="card-body col-13 card-outline card-primary mb-0 ml-3 px-0">
                 <div class="card-header pt-0 ">
        
-
-
                    <h3 class="card-title">{{$datas->judul_materi}}</h3>
                     <a href="/deletemateri/{{  $datas->id_pertemuan }}" title="Delete" class="btn-sm btn-danger btn float-right"
                         onclick="return confirm('Are you sure to delete this data ?')">
@@ -344,10 +342,31 @@
                 </div>
                 <div class="card-body cold1 col-13 mb-0">
 
-            
-           
-            
-            
+            <?php
+                $pecah = explode(".", $datas->namafile_materi);
+                $ekstensi = $pecah[1];
+            ?>
+            @if ($ekstensi == 'zip')
+                <i class="fa fa-file-zip-o" style="font-size:48px;color:gray"> </i>;
+
+             @elseif ($ekstensi == 'docx')
+                <i class="fa fa-file-word-o" style="font-size:48px;color:blue"></i>
+             
+             @elseif ($ekstensi == 'pdf')
+              <i class="fa fa-file-pdf-o" style="font-size:48px;color:red"></i>
+             
+             @elseif ($ekstensi == 'ppt')
+                 <i class="fa fa-file-powerpoint-o" style="font-size:48px;color:orange"></i>
+             
+             @elseif ($ekstensi == 'pptx')
+                 <i class="fa fa-file-powerpoint-o" style="font-size:48px;color:orange"></i>
+
+             @elseif ($ekstensi == 'jpg' or $ekstensi == 'png')
+                 <i class="fa fa-file-photo-o" style="font-size:48px;color:green"></i>
+             
+             @elseif ($ekstensi == 'html')
+                 <i class="fa fa-file-code-o" style="font-size:48px;color:green"></i>
+            @endif
 
                 <a href="{{route('download', $datas->namafile_materi)}}">{{$datas->namafile_materi}}</a>
                 </div>

@@ -262,7 +262,7 @@ class UserController extends Controller
 
         $request->validate([
                     'id'=>'required',
-                    '_file' => 'required|mimes:pptx,txt,xlx,xls,doc,docx,pdf,ppsx,xlxs',
+                    '_file' => 'required',
                     'judul_materi'=>'required',
                     'deskripsi'
                 ]);
