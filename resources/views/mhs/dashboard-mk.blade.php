@@ -197,7 +197,7 @@ $(document).ready(function(){
  $(function(){
     
     $('#kumpul-tugas').on('submit', function(e){
-      e.preventDefault();   
+      e.preventDefault();
       $.ajax({
         url:$(this).attr('action'),
         method:$(this).attr('method'),
@@ -214,7 +214,7 @@ $(document).ready(function(){
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            $('#kumpul-tugas')[0].reset();
+            location.reload();
             alert(data.msg);
           }
         }

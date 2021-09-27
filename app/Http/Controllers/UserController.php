@@ -752,7 +752,9 @@ class UserController extends Controller
                         ->where('wadah_tugas.id_pertemuan', $id)
                         ->get();
 
-        $assign = Uploadtugas::get();
+        $assign = Uploadtugas::join('wadah_tugas', 'uploadtugas.id_wadahtugas', 'wadah_tugas.id_wadahtugas')
+                            ->where('wadah_tugas.id_pertemuan', $id)
+                            ->first();
            
         $data = [
             'mk'=>$kelas,
@@ -769,6 +771,7 @@ class UserController extends Controller
         $request->validate([
                     'id'=>'required',
                     'id_user'=>'required',
+                    'id_wadahtugas'=>'required',
                     '_file' => 'required'
                 ]);
         // dd($request->all());
@@ -783,6 +786,7 @@ class UserController extends Controller
 
             $fileModel->id_praktikum = $request->id;
             $fileModel->id_user = $request->id_user;
+            $fileModel->id_wadahtugas = $request->id_wadahtugas;
             $fileModel->namafile_tugas = $request->_file->getClientOriginalName();
             $fileModel->waktu_submit = Carbon::now()->format('Y-m-d H:i:s');
             $query = $fileModel->save();
