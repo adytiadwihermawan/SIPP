@@ -17,7 +17,9 @@ use App\Models\Roles;
 use App\Models\Uploadtugas;
 use App\Models\Wadah_tugas;
 use App\Models\Wadahpresensi;
+use App\Models\Wadahform;
 use App\Models\Presensi;
+use App\Models\Rekrutasisten;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
 use DataTables;
@@ -783,7 +785,7 @@ class UserController extends Controller
             // $fileName = time().'_'.$request->_file->getClientOriginalName();
             // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
             $filePath = $request->_file->move(public_path($path), $newname);
-
+            
             $fileModel->id_praktikum = $request->id;
             $fileModel->id_user = $request->id_user;
             $fileModel->id_wadahtugas = $request->id_wadahtugas;
@@ -873,6 +875,85 @@ class UserController extends Controller
          else{
              return back()->with('gagal', 'Ada terjadi kesalahan');
          }
+     }
+
+     public function formasisten()
+     {
+         $form = Statusform::first();
+
+         $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')
+                                    ->where('proses_praktikum.id_user', Auth::user()->id)->get();
+
+         $data = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')
+                    ->where('id_status', '=', 3)
+                    ->Where('id_user', '=', Auth::user()->id)
+                    ->first();
+
+         $matakuliah = Wadahform::join('praktikum', 'wadahform.id_praktikum', 'praktikum.id_praktikum')
+                                ->get();
+
+        $datas = [
+            'form'=>$form,
+            'data'=>$data,
+            'course'=>$course,
+            'mk'=>$matakuliah
+        ];
+
+         return view('mhs.daftarasisten', $datas);
+     }
+
+     public function daftar(Request $request)
+     {
+         $validator = \Validator::make($request->all(),[
+             'id_user',
+            'number'=>'required',
+            'ipk'=>'required',
+            'mk1'=>'required',
+            'nmk1'=>'required',
+            'mk2'=>'required|different:mk1',
+            'nmk2'=>'required',
+            '_file'=>'required',
+            ],[
+                'number.required'=>"No Hp tidak boleh kosong",
+                'ipk.required'=>"IPK tidak boleh kosong",
+                'mk1.required'=>"Pilih salah satu matkul",
+                'nmk1.required'=>"Pilih nilai matkul",
+                'mk2.required'=>"Pilih salah satu matkul",
+                'mk2.different'=>"MK 1 dan MK 2 harus beda",
+                'nmk2.required'=>"Pilih nilai matkul",
+                '_file.required'=>"Upload Transkrip Nilai"
+        ]);
+        // dd($validator);
+        if($validator->fails()) {
+            return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
+
+        }else{          
+            
+            $path = 'uploads/';
+            $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
+            // $fileName = time().'_'.$request->_file->getClientOriginalName();
+            // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
+            $filePath = $request->_file->move(public_path($path, $newname));
+
+            $daftar = new Rekrutasisten;
+
+            $daftar->id_user = $request->id_user;
+            $daftar->praktikum_pilihan1 = $request->mk1;
+            $daftar->nilai_pilihan1 = $request->nmk1;
+            $daftar->praktikum_pilihan2 = $request->mk2;
+            $daftar->nilai_pilihan2 = $request->nmk2;
+            $daftar->IPK = $request->ipk;
+            $daftar->Nohp = $request->number;
+            $daftar->filetranskripnilai = $request->_file->getClientOriginalName();
+            $query = $daftar->save();
+
+            if($query){
+                return response()->json(['status'=>1,'msg'=>'Form Berhasil Disubmit']);
+            }                
+            else{
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal submit form']);
+            }
+        }
      }
 
 }

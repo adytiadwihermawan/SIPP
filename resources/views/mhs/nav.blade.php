@@ -43,7 +43,7 @@
         </ul>
       </li>
       <li class="nav-item">
-        <a href="{{ url('form-daftar-asisten')}}" class="nav-link">
+        <a href="{{ route('form')}}" class="{{ request()->is('formdaftarasisten') ? 'nav-link active' : 'nav-link' }}">
           <i class="nav-icon fas fa-user"></i>
           <p>
             Perekrutan Asisten

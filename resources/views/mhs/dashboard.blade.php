@@ -8,22 +8,30 @@
 
    <!-- Font Awesome -->
    <link rel="stylesheet" href="{{asset('template/plugins/fontawesome-free/css/all.min.css')}}">
-   
    <!-- Theme style -->
    <link rel="stylesheet" href="{{asset('template/dist/css/adminlte.min.css')}}">
-   
    <!-- overlayScrollbars -->
    <link rel="stylesheet" href="{{asset('template/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
-
    <!-- Google Font: Source Sans Pro -->
    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
    <link rel="stylesheet" href="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.css')}}">
 
+
    <link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
    
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
+    <style>
+
+        .container {
+            max-width: 500px;
+        }
+        dl, ol, ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+    </style>
+  </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
@@ -55,19 +63,10 @@
                                    document.getElementById('logout-form').submit();">
                       {{ __('Logout') }}
                   </a>
-                  @if($data != null)
-                  <a class="dropdown-item" href="{{ route('asist.dashboard') }}">
-                    Back
-                  </a>
 
                   <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                       @csrf
                   </form>
-                  @else
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                      @csrf
-                  </form>
-                  @endif
               </div>
           </li>
       @endguest
@@ -117,10 +116,9 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-12 card pt-2 pb-2 tomato">
-            <h5 class="mx-auto">@yield('Judul')</h5>
+        <div class="col-sm-12 card pt-2 pb-2 beeyel">
+            <h5 class="mx-auto"><b>@yield('Judul') </b></h5> 
           </div><!-- /.col -->
-        
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
@@ -130,10 +128,13 @@
     <div class="container-fluid">
     @yield('content')
     </div>
+
+
   </div>
 
   <!-- /.content-wrapper -->
   {{-- <footer class="main-footer">
+    
     <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
@@ -216,6 +217,31 @@
             });
           }else{
             $('#gantiPass')[0].reset();
+            alert(data.msg);
+          }
+        }
+      });
+    });
+
+    $('#daftar').on('submit', function(e){
+     e.preventDefault();
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            $('#daftar')[0].reset();
             alert(data.msg);
           }
         }

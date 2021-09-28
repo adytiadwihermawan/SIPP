@@ -133,12 +133,6 @@ Route::get('presensi/{id}', [UserController::class, 'dataAbsen'])->name('presens
 
 Route::get('matkul/{id}', [UserController::class, 'matkulMhs'])->name('mhsMatkul');
 
-Route::view('form-daftar-asisten', [UserController::class, 'formdaftar']);
-
-Route::post('change-profile-pic', [UserController::class, 'updateFoto'])->name('updateFotoUser');
-
-Route::post('change-password', [UserController::class, 'gantiPassword'])->name('gantiPassword');
-
 Route::get('mhs/partisipan/{id}', [UserController::class, 'partisipan'])->name('partisipan');
 
 Route::get('matkul/tugas/{id}', [UserController::class, 'tampilTugas'])->name('tugas');
@@ -148,3 +142,7 @@ Route::post('send-assignment', [UserController::class, 'kumpulTugas'])->name('as
 Route::post('signaturepad', [UserController::class, 'signature'])->name('signature');
 
 Route::get('deletesubmission/{id}', [UserController::class, 'deletesubmission']);
+
+Route::get('formdaftarasisten', [UserController::class, 'formasisten'])->name('form');
+
+Route::post('daftarAsisten', [UserController::class, 'daftar'])->name('daftarAsisten');
