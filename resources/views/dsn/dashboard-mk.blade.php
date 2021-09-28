@@ -24,6 +24,8 @@
    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
 
    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css">
+   <script src="//cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+ 
     
     <style>
 

@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="">Pertemuan Ke</label>
+                        <label for="">Nama Pertemuan : Pertemuan Ke</label>
                         <input type="text" class="form-control" placeholder="Contoh: Pertemuan 1" name="nama_pertemuan"
                             required maxlength="250">
                         <span class="text-danger error-text nama_pertemuan_error"></span>
@@ -47,8 +47,10 @@
 
                     <div class="form-group">
                         <label for="">Materi Pembahasan</label>
-                        <input type="text" class="form-control" placeholder="Contoh: Cara Menggunakan Framework Laravel"
-                            name="deskripsi" required maxlength="2500">
+                        <!-- <input type="text" class="form-control" placeholder="Contoh: Cara Menggunakan Framework Laravel"
+                            name="deskripsi" required maxlength="2500"> -->
+                            <textarea class="form-control" name="deskripsi" maxlength="2500" required rows="4" form="buat-pertemuan" placeholder="Contoh: Cara Menggunakan Framework Laravel> </textarea>
+                     
                         <span class="text-danger error-text deskripsi_error"></span>
                     </div>
 
@@ -92,12 +94,12 @@
                     <form id="buat-pertemuan" action="{{ route('pertemuan') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="">Mata Kuliah</label>
-                            <input type="text" class="form-control" name="id" value="{{$mk[0]->id_praktikum}}" readonly>
+                            <!-- <label for="">Mata Kuliahku</label> -->
+                            <input type="text" class="form-control" name="id" value="{{$mk[0]->id_praktikum}}" hidden>
                         </div>
 
                         <div class="form-group">
-                            <label for="">Pertemuan Ke</label>
+                            <label for="">Nama Pertemuan / Pertemuan Ke</label>
                             <input type="text" class="form-control" placeholder="Contoh: Pertemuan 1"
                                 name="nama_pertemuan" required>
                             <span class="text-danger error-text nama_pertemuan_error"></span>
@@ -105,9 +107,11 @@
 
                         <div class="form-group">
                             <label for="">Materi Pembahasan</label>
-                            <input type="text" class="form-control"
-                                placeholder="Contoh: Cara Menggunakan Framework Laravel" name="deskripsi" required>
-                            <span class="text-danger error-text deskripsi_error"></span>
+                            <!-- <input type="text" class="form-control"
+                                placeholder="Contoh: Cara Menggunakan Framework Laravel" name="deskripsi" required> -->
+                                <textarea class="form-control" name="deskripsi" maxlength="2500" required rows="4" form="buat-pertemuan"> </textarea>
+                     
+                                <span class="text-danger error-text deskripsi_error"></span>
                         </div>
 
                         <div class="modal-footer">
@@ -163,13 +167,19 @@
 
                         <div class="form-group">
                             <label for="">Judul Materi</label>
-                            <input type="text" class="form-control" name="judul_materi" required>
+                            <input type="text" class="form-control" name="judul_materi" required maxlength="250">
                             <span class="text-danger error-text judul_materi_error"></span>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="">Deskripsi Materi</label>
                             <input type="text" class="form-control" name="deskripsi" maxlength="30">
+                            <span class="text-danger error-text deskripsi_error"></span>
+                        </div> -->
+
+                        <div class="form-group">
+                            <label for="">Deskripsi Materi</label>
+                             <textarea class="form-control" name="deskripsi" maxlength="1000" rows="4" form="upload-file"> </textarea>
                             <span class="text-danger error-text deskripsi_error"></span>
                         </div>
 
@@ -221,7 +231,9 @@
 
                         <div class="form-group">
                             <label for="">Deskripsi Tugas</label>
-                            <input type="text" class="form-control" name="deskripsi" maxlength="10000">
+                            <!-- <input type="text" class="form-control" name="deskripsi" maxlength="10000"> -->
+                            <textarea class="form-control" name="deskripsi" maxlength="1000" rows="4" form="upload-tugas"> </textarea>
+                     
                             <span class="text-danger error-text deskripsi_error"></span>
                         </div>
 
@@ -431,12 +443,12 @@
                     <form id="edit-pertemuan" action="{{ route('updatepertemuan') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="">Pertemuan</label>
-                            <input type="text" class="form-control" name="id" id="id" value="{{$item->id_pertemuan}}" readonly>
+                            <!-- <label for="">Pertemuan</label> -->
+                            <input type="text" class="form-control" name="id" id="id" value="{{$item->id_pertemuan}}" hidden>
                         </div>
 
                         <div class="form-group">
-                            <label for="">Pertemuan Ke</label>
+                            <label for="">Nama Pertemuan / Pertemuan Ke</label>
                             <input type="text" class="form-control" id="pertemuan" value="{{ $item->nama_pertemuan }}"
                                 name="nama_pertemuan" required>
                             <span class="text-danger error-text nama_pertemuan_error"></span>
@@ -446,6 +458,8 @@
                             <label for="">Materi Pembahasan</label>
                             <input type="text" class="form-control"
                                 placeholder="Masukkan Deskripsi" name="deskripsi" id="deskripsi"  required>
+                                <!-- <textarea class="form-control" name="deskripsi" maxlength="1000" required rows="7" form="edit-pertemuan"> </textarea>
+                      -->
                             <span class="text-danger error-text deskripsi_error"></span>
                         </div>
 
