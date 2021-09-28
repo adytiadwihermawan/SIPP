@@ -66,12 +66,13 @@ Route::post('updatelab', [AdminController::class, 'updatelab']);
 
 Route::get('deletelab/{id}', [AdminController::class, 'deletelab']);
 
-Route::get('/openrekrutasist', [AdminController::class, 'openpendaftaran']);
+Route::get('openrekrutasist', [AdminController::class, 'openpendaftaran']);
 
 Route::post('file-import', [AdminController::class, 'fileImport'])->name('file-import');
 
 Route::post('file-import-peserta', [AdminController::class, 'fileImportPeserta'])->name('file-import-peserta');
 
+Route::post('delete-mk', [AdminController::class, 'hapus']);
 
 // ----------------------------------------- Dashboard Dosen -------------------------------------------------------------------- \\
 

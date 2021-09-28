@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\UsersImport;
 use App\Imports\PesertaImport;
+use App\Models\Wadahform;
+use App\Models\Statusform;
+use DataTables;
 
 
 use Illuminate\Support\Facades\Hash;
@@ -443,9 +446,38 @@ class AdminController extends Controller
      }
     // ------------------------------------------------- End CRUD Data Lab --------------------------------------- \\
 
-    public function openpendaftaran()
+
+    
+    public function openpendaftaran(Request $request)
     {
-        return view('admin.bukapendaftaran');
+        $mkwadahform = Wadahform::pluck('id_praktikum')->all();
+        $mk = Praktikum::whereNotIn('id_praktikum', $mkwadahform)
+                    ->get();
+
+        if ($request->ajax()) {
+            $data = Wadahform::join('praktikum', 'wadahform.id_praktikum', 'praktikum.id_praktikum')
+                        ->get();;
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+   
+                           $btn = " <button class='edit btn  btn-success' data-id='" . $row->id_form . "' >Edit</button>";
+
+                           $btn .= " <button class='delete btn  btn-danger' data-id='" . $row->id_form . "' >Delete</button>";
+                            return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+      
+
+        return view('admin.bukapendaftaran', compact('mk'));
+    }
+
+    public function hapus(Request $request)
+    {
+        $data = Wadahform::where('id_form', $request->id)->delete();
+        return response()->json(['text' => 'Mata Kuliah Berhasil Dihapus'], 200);
     }
 
 }

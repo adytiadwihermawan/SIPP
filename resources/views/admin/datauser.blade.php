@@ -56,12 +56,8 @@
 								<button class="btn btn-primary">Import data</button>
 							</form>
 						</div>
-
-						<!-- /.modal-content -->
 					</div>
-					<!-- /.modal-dialog -->
 				</div>
-				<!-- /.content -->
 			</div>
 			
 				<div class="col-sm">

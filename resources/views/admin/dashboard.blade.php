@@ -3,6 +3,7 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>@yield('title')</title>
   <!-- Tell the browser to be responsive to screen width -->
@@ -20,11 +21,12 @@
   
 <link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+
   <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 
-
-
+<link  href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -147,12 +149,47 @@
 <script src="{{asset('template/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('template/dist/js/adminlte.js')}}"></script>
+
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
-<!-- (Optional) Latest compiled and minified JavaScript translation files -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+
+
 <script>
+   $(function () {
+     
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    var table = $('#openasisten').DataTable({
+        processing: true,
+        serverSide: true,
+        searching: false,
+        paging: false,
+        info: false,
+        ajax: {
+          url: "openrekrutasist"
+        },
+        columnDefs: [
+                        {"className": "dt-center", "targets": [0,1,2]}
+                    ],
+        columns: [
+            {
+              "data": null, "sortable": false,
+              render: function(data, type, row, meta){
+              return meta.row + meta.settings._iDisplayStart + 1
+                    }
+                },
+            {data: 'nama_praktikum', name: 'praktikum'},
+            {data: 'action', name: 'action'},
+        ]
+    });
+  });
+
    $(function(){
 
     $('#adduser').on('submit', function(e){
@@ -181,17 +218,34 @@
       });
     });
 
-  });
-
-// Material Select Initialization
-$(document).ready(function() {
-$('.mdb-select').materialSelect();
-});
-
 // To style only selects with the my-select class
 $('.selectpicker').selectpicker();
 
-</script>
-</body>
 
+    $('body').on('click', '.delete', function () {
+       if (confirm("Are you sure to delete this data ?") == true) {
+        var id = $(this).data('id');
+         
+        // ajax
+        $.ajax({
+            headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+            type:"POST",
+            url: "{{ url('delete-mk')}} ",
+            data: { id: id },
+            dataType: 'json',
+            success: function(params){
+              alert(params.text)
+              $('#openasisten').DataTable().ajax.reload()
+           }
+        });
+       }
+    });
+
+  });
+
+</script>
+
+</body>
 </html>
