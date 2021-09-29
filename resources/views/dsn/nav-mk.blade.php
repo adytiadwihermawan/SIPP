@@ -29,6 +29,16 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a href=""
+                class="{{ request()->routeIs('data', [$mk[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>
+                     Presensi
+                </p>
+            </a>
+        </li>
+
         <li class="nav-item mt-5 ml-3">
             <a href="{{ route('matkulDsn', [$mk[0]->id_praktikum]) }}" class="nav-link' }}">
                 <p>
