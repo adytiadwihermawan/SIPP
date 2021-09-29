@@ -146,7 +146,7 @@
         <div class="row">
 
             <!-- ./col -->
-            <div class="col-sm ml-5 mt-3 mb-3">
+            <div class="col-sm ml-3 mt-3 mb-3">
 
                 <h5>Nama Mata Kuliah</h5>
                 <b>{{$mk[0]->nama_praktikum}}</b>
@@ -186,7 +186,7 @@
     <div class="card ml-3 ">
         <div class="card-header" style="background-color: aliceblue;">
             <div class="row mt-">
-                <h2 class="card-title"> Deskripsi tugas</h2>
+                <h2 class="card-title"><b> Deskripsi tugas </b></h2>
             </div>
             <div class="row mt-3">
                 <p class="card-title">
@@ -196,7 +196,7 @@
 
         </div>
         <tr>
-            <th>FILE</th>
+            <th> <a class="ml-2 mt-3"><b>FILE</b></a></th>
             <td>
                 <form id="kumpul-tugas" action="{{ route('assignment') }}" method="POST" enctype="multipart/form-data">
                     @csrf

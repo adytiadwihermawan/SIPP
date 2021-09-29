@@ -85,7 +85,9 @@
 
         <div class="card-body col-13 card-outline card-warning mb-0 ml-3 px-0">
             <div class="card-header pt-0  ">
-                <a style="text-decoration: none" href="{{route('tugas', [$item->id_pertemuan])}}"><h3 class="card-title" style="color: black">{{$datas->judul_tugas}}</h3></a>
+
+            
+               <a style="text-decoration: none" href="{{route('tugas', [$item->id_pertemuan])}}"><h4 style="color: tomato">  <i class="fas fa-file-upload mr-3"></i> <b>  {{$datas->judul_tugas}} </b></h4></a>
             </div>
             <div class="card-body beee">
                 <a href="{{route('download', $datas->file_tugas)}}">{{$datas->file_tugas}}</a>
