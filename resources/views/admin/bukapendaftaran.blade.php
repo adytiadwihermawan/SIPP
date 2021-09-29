@@ -15,6 +15,26 @@
             <i class="fa fa-plus"></i> Tambah Mata Kuliah Praktikum</button>
     </div>
 
+            <form id="addasisten" action="addasisten" method="post">
+						<table class="mt-3 ml-2">
+
+						<tr>
+
+							
+							<td><select  class="form-control" style="width: 25vw;">
+								<option value="" selected> TUTUP REKRUT ASISTEN</option>
+								
+								<option value="" >BUKA REKRUT ASISTEN</option>
+								
+							</select> </td>
+                            <td class="mt-0"><button type="submit" class="btn btn-primary mt-0">UBAH STATUS</button></td>
+						</tr>
+	
+						</table>					
+						
+					</form>
+    
+
     <div class="modal fade" id="modal-mk">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
