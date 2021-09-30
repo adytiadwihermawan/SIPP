@@ -13,4 +13,8 @@ class Nilai extends Model
         'id_materi',
         'id_user'
     ];
+    
+    public function check() {
+            return $this->belongsTo('App\Models\Uploadtugas', 'id_tugas');
+        }
 }

@@ -20,4 +20,9 @@ class Uploadtugas extends Model
         'id_user',
         'waktu_submit'
     ];
+
+    public function grade() {
+            return $this->belongsTo(Nilai::class);
+        }
 }
+

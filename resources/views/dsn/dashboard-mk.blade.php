@@ -207,57 +207,54 @@
         })
     }
 
-    $(document).ready(function(){
-        grade()
-    })
-
-    function grade() {
-        $('#grade').DataTable({
-            serverside: true,
-            responsive: true,
-            lengthMenu: [[10, 25, 50, 100, -1], [10,25, 50, 100, "All"]],
-            dom: 'Bflrtip',
-            ajax: {
-                url: "{{ route('grade', [$course[0]->id_pertemuan]) }}"
-            },
-            columnDefs: [
-                        {
-                          "className": "dt-center", "targets": [0,2,3],
-                          "className": "text-center", "targets": [0,2,3]
-                        }
+    $(function () {
+     
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    var table = $('#grade').DataTable({
+        processing: true,
+        serverSide: true,
+        dom: 'Bflrtip',
+        ajax: {
+          url: "{{ route('grade', [$course[0]->id_pertemuan]) }}"
+        },
+        columnDefs: [
+                        {"className": "dt-center", "targets": [0, 2, 3]}
                     ],
-            buttons : [
-                    {
-                    extend: 'excel',
-                    text: '<span class="fa fa-file-excel-o"></span> Export Nilai',
-                    messageTop: 'Rekap Nilai Tugas {{$course[0]->nama_pertemuan}}',
-                    title: 'Rekap Nilai untuk Praktikum {{$course[0]->nama_praktikum}} ',
-                    exportOptions: {
-                    columns: [ 0, 1, 2, 3 ],
-                    format: { 
+        buttons : [
+          {
+            extend: 'excel',
+            text: '<span class="fa fa-file-excel-o"></span> Export Nilai',
+            messageTop: 'Tugas {{$course[0]->nama_pertemuan}}',
+            title: 'Rekap Nilai untuk Praktikum {{$course[0]->nama_praktikum}} ',
+            exportOptions: {
+                columns: [ 0, 1, 2, 3 ],
+                format: { 
                       header: function ( data, columnDefs ) {
-                        return data.toUpperCase();
-                      }
-                    },
-                    },
+                      return data.toUpperCase();
                   }
-                    ],
-                    
-            columns:[
-                {
-                    "data": null, "sortable": false,
-                    render: function(data, type, row, meta){
-                        return meta.row + meta.settings._iDisplayStart + 1
+                },
+              },
+            }
+          ],
+        columns: [
+            {
+              "data": null, "sortable": false,
+              render: function(data, type, row, meta){
+              return meta.row + meta.settings._iDisplayStart + 1
                     }
                 },
-                {data: 'nama_user', name: 'nama_user' },
-                {data: 'username', name: 'username'},
-                {data: 'id_materi', name: 'grade'},
-                {data: 'Edit', name: 'edit'},
-                {data: 'namafile_tugas', name: 'namafile_tugas'}
-            ]
-        })
-    }
+              {data: 'nama_user', name: 'nama_user' },
+              {data: 'username', name: 'username'},
+              {data: 'grade', name: 'grade'},
+              {data: 'file', name: 'file'}
+        ]
+    });
+  });
 
     $(function(){
 
@@ -400,6 +397,7 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
+            location.reload();
             $('#nilai-tugas')[0].reset();
             alert(data.msg);
           }
@@ -407,6 +405,11 @@
       });
     });
   });
+
+  $(document).on("click", ".idtugas", function () {
+     var ids = $(this).attr('data-id');
+     $(".modal-body #idtugas").val( ids );
+    });
 
 </script>
  

@@ -555,45 +555,55 @@ class UserController extends Controller
         }
 
 
-         public function dsnGrade($id)
+         public function dsnGrade(Request $request, $id)
         {
-            $data = Uploadtugas::join('materi', 'uploadtugas.id_materi', '=', 'materi.id_materi')
-                         ->join('users', 'uploadtugas.id_user', 'users.id') 
-                         ->where('materi.id_pertemuan', $id)
-                         ->get();
+            $grade = Uploadtugas::join('wadah_tugas', 'uploadtugas.id_wadahtugas', 'wadah_tugas.id_wadahtugas')
+                                ->join('users', 'uploadtugas.id_user', 'users.id')
+                                ->leftjoin('nilai', 'uploadtugas.id_tugas', 'nilai.id_tugas')
+                                ->where('wadah_tugas.id_pertemuan', $id)
+                                ->select(
+                                    'uploadtugas.id_tugas', 
+                                    'nilai', 
+                                    'username', 
+                                    'nama_user', 
+                                    'namafile_tugas', 
+                                    'uploadtugas.id_wadahtugas')
+                                ->get();
+            // dd($grade);
+            if ($request->ajax()) {
+            return Datatables::of($grade)
+                    ->addColumn('grade', function($row){
+                        if($row->nilai){
+                            $nilai = $row->nilai;
+                            return $nilai;
+                            
+                        }else{
+                            $btn =  "
+                             <a data-id='".$row->id_tugas."' class='idtugas'>
+                             <button class='grade btn btn-info' data-toggle='modal' data-target='#nilai' style='text-align: center' id='".$row->id_tugas."'>Grade</button>
+                             </a>";
+                            return $btn;
+                        }
+                    })
+                    ->addColumn('file', function($row){
+                        $btn = "<a href='/downloadfile".$row->namafile_tugas."' data-id='" . $row->id_tugas . "' title='edit'>$row->namafile_tugas</a>";
+                        return $btn;
+                    })
+                    ->rawColumns(['grade', 'file'])
+                    ->make(true);
+            }
+            $mk = Praktikum::join('pertemuan', 'praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
+                                ->where('pertemuan.id_pertemuan', $id)
+                                ->get();
 
-            
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
                                 ->where('pertemuan.id_pertemuan', $id)
                                 ->get();
-
-            $kelas = Praktikum::join('pertemuan', 'praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
-                                ->where('pertemuan.id_pertemuan', $id)
-                                ->get();
-            // dd($data);
-            if(request()->ajax()){
-                return datatables()->of($data)
-                ->addColumn('Grade', function($data)
-                {
-                    $button = "<button class='edit btn btn-danger' data-remote='false' data-toggle='modal' data-target='#nilai' style='text-align: center' id='".$data->id_materi."'>Grade</button>";
-                    return $button;
-                })
-                ->addColumn('Edit', function($data)
-                {
-                    $btn = "<button class='edit btn btn-success' style='text-align: center' id='".$data->id_materi."'>Edit</button>";
-                    return $btn;
-                })
-                ->rawColumns(['Grade', 'Edit']) 
-                ->make(true);
-            }
-
-            $cek = [
-                'mk'=>$kelas,
-                'grade'=>$data,
-                'course'=>$course
-            ];
-            // dd($cek);
-            return view('dsn.grades', $cek);
+            return view('dsn.grades', [
+                'grade'=>$grade,
+                'mk'=>$mk,
+                'course'=>$course,
+            ]);
         }
         
         public function asistGrade($id)
@@ -693,39 +703,22 @@ class UserController extends Controller
      }
 
     public function nilai(Request $request){
-
-        $rules = [
-         'nilai' => 'required',
-         'id_materi' => [
-             'required',
-             Rule::unique('nilai', 'id_materi')
-            ],
-         'id_user' => [
-             'required',
-             Rule::unique('nilai', 'id_user')
-         ],
-        ];
         
-
-       $validator = \Validator::make($request->all(), $rules, [
-            'nilai.required' => "Masukkan Nilai Tugas"
-    ]);
-       if( $validator->passes()){
-        
-            $query = Nilai::insert([
-                            'nilai'=>$request->input('nilai'),
-                            'id_materi'=>$request->input('id_materi'),
-                            'id_user'=>$request->input('id_user')
-                        ]);
+       $request->validate([
+                    'id'=>'required',
+                    'nilai'=>'required',
+                ]);
+        //  dd($request->all());
+        $query = Nilai::insert([
+                        'id_tugas'=>$request->input('id'),
+                        'nilai'=>$request->input('nilai'),
+                    ]);
+        // dd($query);
         if($query){
-                return response()->json(['status'=>1,'msg'=>'Nilai berhasil diinput']);
-            }                
-            else{
-                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
-            }
-        }
-    else{          
-        return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
+            return response()->json(['status'=>1,'msg'=>'Tugas Berhasil di Nilai']);
+        }                
+        else{
+            return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
         }
 
     }
