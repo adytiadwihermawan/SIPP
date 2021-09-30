@@ -50,14 +50,14 @@
                       <div class="form-group row">
                         <label for="oldPass" class="col-sm-2 col-form-label">Old Password</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="current_password" placeholder="Enter Current Password" name="current_password">
+                          <input type="text" class="form-control" id="current_password" placeholder="Enter Current Password" name="current_password" minlength="8" maxlength="25">
                           <span class="text-danger error-text current_password_error"></span>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="newPass" class="col-sm-2 col-form-label">New Password</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="new_password" placeholder="Enter New Password" name="new_password">
+                          <input type="text" class="form-control" id="new_password" placeholder="Enter New Password" name="new_password" minlength="8" maxlength="25">
                           <span class="text-danger error-text new_password_error"></span>
                         </div>
                       </div>
