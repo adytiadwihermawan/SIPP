@@ -72,7 +72,7 @@
 				<p>Buka perekrutan Asisten</p>
 			</div>
 	
-			<a href="#" class="small-box-footer">Selengkapnya
+			<a href="/openrekrutasist" class="small-box-footer">Selengkapnya
 				<i class="fas fa-arrow-circle-right"></i>
 			</a>
 		</div>

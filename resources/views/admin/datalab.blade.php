@@ -31,38 +31,14 @@
 					@endif
 			</div>
 			<br>
-			<table id="example1" class="table table-bordered table-striped">
+			<table id="datalab" class="table table-bordered table-striped">
 				<thead>
 					<tr style="text-align: center;">
-					<th>No</th>
-                    <th>Nama Laboratorium</th>
-                    <th>Nama Kepala Laboratorium</th>
-					<th>Aksi</th>
+					<th>NO</th>
+                    <th>NAMA LABORATORIUM</th>
+                    <th>NAMA KEPALA LABORATORIUM</th>
+					<th>AKSI</th>
 					</tr>
 				</thead>
-				<tbody>
-				<?php 
-					$no = 1;
-				?>
-				@foreach ($lab as $item)
-                    <tr>
-						<td style="text-align: center;">{{ $no }}</td>
-                        <td>{{ $item->nama_laboratorium }}</td>
-                        <td>{{ $item->nama_user }}</td>
-						<td style="text-align: center;">
-							<a href="editlab/{{ $item->id_laboratorium }}" title="Edit" class="btn btn-success btn-sm">
-								<i class="fa fa-edit"></i>
-							</a>
-							<a href="deletelab/{{  $item->id_laboratorium }}" title="Delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure to delete this data ?')">
-								<i class="fa fa-trash"></i>
-							</a>
-						</td>
-                    </tr>
-				<?php
-					$no++;
-				?>
-                </tbody>
-                @endforeach
 			</table>
-			{{ $lab->links() }}
 @endsection

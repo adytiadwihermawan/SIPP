@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Statusform extends Model
 {
     protected $table = 'statusform';
+
+    public $timestamps = false;
 }

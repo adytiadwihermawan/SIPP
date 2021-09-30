@@ -23,17 +23,46 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+
+      public function adminDashboard()
+    {
+        $data = Praktikum::first();
+        return view('admin.home', compact('data'));
+    }
+
     // ---------------------------------------------- CRUD Data User ------------------------------------------------- \\
 
     public function datauser(Request $request){
-        $search = $request->input('search');
-        $user = User::leftJoin('status_user', 'status_user.id_status', '=', 'users.id_status')
-                    ->where('username', 'Like', "%{$search}%")
-                    ->orWhere('nama_user', 'Like', "%{$search}%")
-                    ->orWhere('status_user.status', 'Like', "%{$search}%")
-                    ->orderBy('users.id_status', 'asc')
-                    ->simplePaginate(10);
-        return view('admin.datauser', compact('user'));
+
+        $data = Praktikum::first();
+
+        if ($request->ajax()) {
+            $data = User::join('status_user', 'status_user.id_status', 'users.id_status')
+                        ->get();
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                        if($row->id_status == 1){
+                           $btn = " <a href='edituser/".$row->id."' class='edit btn  btn-success' data-id='" . $row->id . "' title='edit'><i class='fa fa-edit'></i></a>";
+                        }
+                        else{
+                             $btn = " <a href='edituser/".$row->id."' class='edit btn  btn-success' data-id='" . $row->id . "' title='edit'><i class='fa fa-edit'></i></a>";
+
+                             $btn .= " <a href='javascript:void(0)' class='deleteuser btn  btn-danger' data-id='" . $row->id . "' title='delete'><i class='fa fa-trash'></i></a>";
+                        }
+                            return $btn;
+                        
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        return view('admin.datauser', compact('data'));
+    }
+
+    public function tambahuser()
+    {
+        $data = Praktikum::first();
+        return view('admin.tambahuser', compact('data'));
     }
 
 
@@ -106,15 +135,18 @@ class AdminController extends Controller
 
     public function edit($id){  
         $edit = User::where('id', $id)
-                ->find($id);
-
+                ->first();
+        // dd($edit)
         $view = Status_User::get();
-                
-        $data = [
+
+        $data = Praktikum::first();
+
+        // dd($data[0]->id_praktikum);
+        return view('admin.edituser', [
             'Info'=> $edit,
-            'list' => $view
-        ];
-        return view('admin.edituser', $data);
+            'list' => $view,
+            'data'=>$data
+        ]);
     }
 
 
@@ -128,9 +160,9 @@ class AdminController extends Controller
                 'role' => 'required'
             ]);
 
-            $update = User::where('username', $request->input('id'))
+            $update = User::where('id', $request->input('id'))
                         ->update([
-                            'username'=>$request->input('id'),
+                            'id'=>$request->input('id'),
                             'nama_user'=>$request->input('nama_user'),
                             'password'=>Hash::make($request->input('password')),
                             'id_status'=>$request->input('role')
@@ -147,69 +179,116 @@ class AdminController extends Controller
 
     // ----------------------- Delete Data User --------------------- \\
 
-    public function delete($id){
-           $query = User::where('id', $id)->delete();
-            
-            if($query){
-                return back()->with('berhasil', 'Data Berhasil Dihapus');
-            }
-            else{
-                return back()->with('gagal', 'Ada terjadi kesalahan');
-            }
-        }
+        public function deleteuser(Request $request)
+    {
+        $data = User::where('id', $request->id)->delete();
+        return response()->json(['text' => 'User Berhasil Dihapus'], 200);
+    }
 
         
     // ----------------------------------------- End CRUD Data User ------------------------------------------------ \\
 
     // ----------------------------------------- CRUD Data Kelas ----------------------------------------------------- \\
   
-    public function datakelas(){
+    public function datakelas(Request $request){
 
-        $peserta = User::whereNotIn('nama_user', ['admin'])
-                    ->pluck('nama_user', 'id');
+        $data = Praktikum::first();
 
-        $datakelas = Praktikum::simplePaginate(5);
+        if ($request->ajax()) {
+            $data = Praktikum::get();
+            return Datatables::of($data)
+                    ->addColumn('action', function($row){
+                            $btn = "<a href='tambahpeserta/".$row->id_praktikum."' class='btn btn-primary' data-id='" . $row->id_praktikum . "' title='tambahpesertakelas'>
+					                    <i class='fa fa-plus'></i> Peserta Kelas </a>";
 
-        return view('admin.datakelas', [
-            'kelas' => $datakelas,
-            'member' => $peserta
-        ]);
+                            $btn .= "<a href='tambahasisten/".$row->id_praktikum."' class='btn btn-info' data-id='" . $row->id_praktikum . "' title='tambahasistenkelas'>
+					                    <i class='fa fa-plus'></i> Asisten Kelas </a>";
+
+                            $btn .= " <a href='editkelas/".$row->id_praktikum."' class='edit btn  btn-success' data-id='" . $row->id_praktikum . "' title='edit'><i class='fa fa-edit'></i>Edit</a>";
+
+                            $btn .= " <a href='javascript:void(0)' class='deletekelas btn  btn-danger' data-id='" . $row->id_praktikum . "' title='delete'><i class='fa fa-trash'></i>Hapus</a>";
+                            return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        // dd($data);
+
+        return view('admin.datakelas', compact('data'));
     }
     
     
     // ----------------------- Add Kelas, Asisten dan Peserta Kelas --------------------------\\
 
-    public function pesertakelas(){
+    public function pesertakelas(Request $request, $id){
 
-        $peserta = User::whereNotIn('nama_user', ['admin'])
+        $cek = Proses_praktikum::where('id_praktikum', $id)->pluck('id_user')->all();
+
+        $member = User::whereNotIn('nama_user', ['admin'])
+                    ->whereNotIn('id', $cek)
                     ->pluck('nama_user', 'id');
 
-        $kelas = Praktikum::get();
 
-        $datakelas = Proses_praktikum::join('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')
+        $data = Praktikum::where('id_praktikum', $id)->first();
+
+        if ($request->ajax()) {
+            
+        $data = Praktikum::join('proses_praktikum', 'praktikum.id_praktikum', '=', 'proses_praktikum.id_praktikum')
                     ->join('users', 'proses_praktikum.id_user', '=', 'users.id')
+                    ->where('praktikum.id_praktikum', $id)
                     ->where('id_status', '!=', 3)
-                    ->orderBy('proses_praktikum.id_praktikum', 'asc')
-                    ->simplePaginate(10);
-
-
+                    ->get();
+            return Datatables::of($data)
+                    ->addColumn('action', function($row){
+                             $btn = " <a href='javascript:void(0)' class='deletepeserta btn  btn-danger' data-id='" . $row->id_role . "' title='delete'><i class='fa fa-trash'></i></a>";
+                            return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
         return view('admin.addpesertakelas', [
-            'kelas' => $kelas,
-            'member' => $peserta,
-            'data' => $datakelas
+            'member'=>$member,
+            'data'=>$data
         ]);
     }
 
-    public function asistenkelas(){
+    public function deletepeserta(Request $request)
+    {
+        $data = Proses_praktikum::where('id_proses', $request->id)->delete();
+        return response()->json(['text' => 'Data Berhasil Dihapus'], 200);
+    }
 
-        $peserta = User::whereNotIn('nama_user', ['admin'])
+    public function asistenkelas(Request $request, $id){
+
+        $cek = Roles::where('id_praktikum', $id)->pluck('id_user')->all();
+
+        $member = User::whereNotIn('nama_user', ['admin'])
+                    ->whereNotIn('id', $cek)
+                    ->where('id_status', '!=', 2)
                     ->pluck('nama_user', 'id');
 
-        $datakelas = Praktikum::get();
+
+        $data = Praktikum::where('id_praktikum', $id)->first();
+
+        if ($request->ajax()) {
+            
+        $data = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')
+                    ->join('users', 'roles.id_user', '=', 'users.id')
+                    ->where('roles.id_praktikum', $id)
+                    ->where('roles.id_status', '=', 3)
+                    ->get();
+            return Datatables::of($data)
+                    ->addColumn('action', function($row){
+                             $btn = " <a href='javascript:void(0)' class='deleteasisten btn  btn-danger' data-id='" . $row->id_role . "' title='delete'><i class='fa fa-trash'></i></a>";
+                            return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
 
         return view('admin.addasistenkelas', [
-            'kelas' => $datakelas,
-            'member' => $peserta
+            'member'=>$member,
+            'data'=>$data
         ]);
     }
 
@@ -246,26 +325,39 @@ class AdminController extends Controller
         }
      }
 
+     public function tambahkelas()
+     {
+         $data = Praktikum::first();
+
+        return view('admin.tambahkelas', compact('data'));
+     }
+
      public function addasisten(Request $request){
 
         $request->validate([
-            'kelas'=>'required',
-            'peserta'=>'required|unique:roles,id_user',
+            'id'=>'required',
+            'peserta'=>'required',
             'role' => 'required',
         ]);
 
         $query = Roles::insert([
-            'id_praktikum'=>$request->input('kelas'),
+            'id_praktikum'=>$request->input('id'),
             'id_user'=>$request->input('peserta'),
             'id_status'=>$request->input('role')
         ]);
 
         if($query){
-            return redirect('datakelas')->with('berhasil', 'Peserta Kelas Berhasil Ditambahkan');
-        }
+            return response()->json(['status'=>1,'msg'=>'Peserta Kelas berhasil ditambahkan']);
+        }                
         else{
-            return back()->with('gagal', 'Ada terjadi kesalahan');
+            return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
         }
+    }
+
+    public function deleteasisten(Request $request)
+    {
+        $data = Roles::where('id_role', $request->id)->delete();
+        return response()->json(['text' => 'Data Berhasil Dihapus'], 200);
     }
 
     public function fileImportPeserta(Request $request) 
@@ -277,20 +369,20 @@ class AdminController extends Controller
     public function addpeserta(Request $request){
 
         $request->validate([
-            'kelas'=>'required',
+            'id'=>'required',
             'peserta'=>'required'
         ]);
 
         $query = Proses_praktikum::insert([
-            'id_praktikum'=>$request->input('kelas'),
+            'id_praktikum'=>$request->input('id'),
             'id_user'=>$request->input('peserta')
         ]);
 
         if($query){
-            return redirect('datakelas')->with('berhasil', 'Peserta Kelas Berhasil Ditambahkan');
-        }
+            return response()->json(['status'=>1,'msg'=>'Peserta Kelas berhasil ditambahkan']);
+        }                
         else{
-            return back()->with('gagal', 'Ada terjadi kesalahan');
+            return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
         }
     }
 
@@ -301,9 +393,12 @@ class AdminController extends Controller
     public function editkelas($id){  
         $edit = Praktikum::where('id_praktikum', $id)
                 ->first();
+        
+        $data = Praktikum::first();
            
         $data = [
             'Info'=> $edit,
+            'data'=>$data
         ];
         return view('admin.editkelas', $data);
     }
@@ -335,33 +430,46 @@ class AdminController extends Controller
 
     // ----------------------- Delete Data Kelas --------------------- \\
 
-    public function deletekelas($id){
-        $query = Praktikum::where('id_praktikum', $id)->Delete();
-         
-         if($query){
-             return back()->with('berhasil', 'Data Berhasil Dihapus');
-         }
-         else{
-             return back()->with('gagal', 'Ada terjadi kesalahan');
-         }
-     }
+     public function deletekelas(Request $request)
+    {
+        $data = Praktikum::where('id_praktikum', $request->id)->delete();
+        return response()->json(['text' => 'Data Berhasil Dihapus'], 200);
+    }
+     
 
     // ----------------------------------------- End CRUD Data Kelas ------------------------------------------------ \\
 
     // --------------------------------------------------- CRUD Data Lab ------------------------------------------- \\
       
-    public function datalab(){
-        $lab = Lab::leftJoin('users', 'users.id', '=', 'lab.id_kepalalaboratorium')
-                  ->simplePaginate(5);
+    public function datalab(Request $request){
+        $data = Praktikum::first();
+         if ($request->ajax()) {
+            $data = Lab::leftJoin('users', 'users.id', '=', 'lab.id_kepalalaboratorium')
+                        ->get();
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                             $btn = " <a href='editlab/".$row->id_laboratorium."' class='edit btn  btn-success' data-id='" . $row->id_laboratorium . "' title='edit'><i class='fa fa-edit'></i></a>";
+                             $btn .= " <a href='javascript:void(0)' class='deletelab btn  btn-danger' data-id='" . $row->id_laboratorium . "' title='delete'><i class='fa fa-trash'></i></a>";
+                            return $btn;
+                        
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
 
-        return view('admin.datalab', compact('lab'));
+        return view('admin.datalab', compact('data'));
     }
 
     public function lab(){
         $user = User::leftJoin('lab', 'lab.id_kepalalaboratorium', '=', 'users.id')
                     ->where('users.id_status', 2)
                     ->get();
-        return view('admin.tambahlab', compact('user'));
+        $data =  Praktikum::first();
+        return view('admin.tambahlab', [
+            'user'=>$user,
+            'data'=>$data
+        ]);
     }
 
     // ----------------------- Add User --------------------------\\
@@ -393,6 +501,8 @@ class AdminController extends Controller
         $edit = Lab::where('id_laboratorium', $id)
                 ->get();
         
+        $data = Praktikum::first();
+        
         $user = User::leftJoin('lab', 'lab.id_kepalalaboratorium', '=', 'users.id')
                     ->where('users.id_status', 2)
                     ->select('users.id', 'nama_user')
@@ -401,7 +511,8 @@ class AdminController extends Controller
                 
         $data = [
             'Info'=> $edit,
-            'user' => $user
+            'user' => $user,
+            'data'=>$data
         ];
         // dd($data);
         return view('admin.editlab', $data);
@@ -434,16 +545,11 @@ class AdminController extends Controller
 
     // ----------------------- Delete Data Lab --------------------- \\
 
-    public function deletelab($id){
-        $query = Lab::where('id_laboratorium', $id)->Delete();
-         
-         if($query){
-             return back()->with('berhasil', 'Data Berhasil Dihapus');
-         }
-         else{
-             return back()->with('gagal', 'Ada terjadi kesalahan');
-         }
-     }
+    public function deletelab(Request $request)
+    {
+        $data = Lab::where('id_laboratorium', $request->id)->delete();
+        return response()->json(['text' => 'Data Berhasil Dihapus'], 200);
+    }
     // ------------------------------------------------- End CRUD Data Lab --------------------------------------- \\
 
 
@@ -451,8 +557,12 @@ class AdminController extends Controller
     public function openpendaftaran(Request $request)
     {
         $mkwadahform = Wadahform::pluck('id_praktikum')->all();
+
         $mk = Praktikum::whereNotIn('id_praktikum', $mkwadahform)
                     ->get();
+        $data = Praktikum::first();
+
+        $status = Statusform::first();
 
         if ($request->ajax()) {
             $data = Wadahform::join('praktikum', 'wadahform.id_praktikum', 'praktikum.id_praktikum')
@@ -460,10 +570,7 @@ class AdminController extends Controller
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-   
-                           $btn = " <button class='edit btn  btn-success' data-id='" . $row->id_form . "' >Edit</button>";
-
-                           $btn .= " <button class='delete btn  btn-danger' data-id='" . $row->id_form . "' >Delete</button>";
+                           $btn = " <button class='delete btn  btn-danger' data-id='" . $row->id_form . "' >Delete</button>";
                             return $btn;
                     })
                     ->rawColumns(['action'])
@@ -471,7 +578,29 @@ class AdminController extends Controller
         }
       
 
-        return view('admin.bukapendaftaran', compact('mk'));
+        return view('admin.bukapendaftaran', [
+            'mk'=>$mk,
+            'data'=>$data,
+            'status'=>$status
+        ]);
+    }
+
+    public function tambahMK(Request $request)
+    {
+        $request->validate([
+                    'mk1'=>'required'
+                ]);
+        //  dd($request->all());
+        $query = Wadahform::insert([
+                        'id_praktikum'=>$request->input('mk1')
+                    ]);
+        // dd($query);
+        if($query){
+            return response()->json(['status'=>1,'msg'=>'MK Asisten berhasil ditambah']);
+        }                
+        else{
+            return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
+        }
     }
 
     public function hapus(Request $request)
@@ -479,5 +608,26 @@ class AdminController extends Controller
         $data = Wadahform::where('id_form', $request->id)->delete();
         return response()->json(['text' => 'Mata Kuliah Berhasil Dihapus'], 200);
     }
+
+    public function updateform(Request $request){
+            $request->validate([
+                'id'=>'required',
+                'status' => 'required'
+            ]);
+
+            $update = Statusform::where('id_statusform', $request->input('id'))
+                        ->update([
+                            'id_statusform'=>$request->input('id'),
+                            'statusform'=>$request->input('status'),
+                        ]);
+
+            if($update){
+                return redirect('openrekrutasist')->with('berhasil', 'Data Berhasil Diubah');
+            }
+            else{
+                return back()->with('gagal', 'Tidak Ada Perubahan Data yang Dilakukan');
+            }
+
+        }
 
 }

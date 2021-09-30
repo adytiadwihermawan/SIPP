@@ -18,13 +18,10 @@
 						</div>
 					@endif
 
-					<form id="edituser" action="{{route('update')}}" method="post">
+					<form id="edituser" action="/update" method="post">
 						
 						@csrf
-							<div class="form-group">
-								<label for="">Id User</label>
-								<input type="text" class="form-control" name="id" value="{{ old('id', $Info->username) }}" readonly>
-							</div>
+								<input type="text" class="form-control" name="id" value="{{ old('id', $Info->id) }}" hidden>
 
 							<div class="form-group">
 								<label for="">Nama</label>

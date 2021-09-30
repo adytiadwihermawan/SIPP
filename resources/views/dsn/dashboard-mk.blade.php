@@ -290,37 +290,6 @@
 
   });
 
-   $(function(){
-
-    $('#edit-pertemuan').on('submit', function(){
-      location.reload();
-      // e.preventDefault();
-
-      $.ajax({
-        url:$(this).attr('action'),
-        method:$(this).attr('method'),
-        data:new FormData(this),
-        processData: false,
-        dataType: 'json',
-        contentType: false,
-        beforeSend: function(){
-          $(document).find('span.error-text').text('');
-        },
-        success:function(data){
-          if(data.status == 0){
-            $.each(data.error, function(prefix, val){
-              $('span.'+prefix+'_error').text(val[0]);
-            });
-          }else{
-            $('#edit-pertemuan')[0].reset();
-            alert(data.msg);
-          }
-        }
-      });
-      return false;
-    });
-
-  });
 
    $(function(){
     
@@ -374,8 +343,8 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            $('#upload-tugas')[0].reset();
             alert(data.msg);
+            location.reload();
           }
         }
       });
@@ -450,6 +419,33 @@
      $(".modal-body #pertemuan").val( pertemuan );
      $(".modal-body #deskripsi").val( deskripsi );
     });
+
+    
+  $(function(){
+    
+    $('#edit-pertemuan').on('submit', function(e){
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            alert(data.msg);
+          }
+        }
+      });
+    });
+  });
   </script>
 
 </body>

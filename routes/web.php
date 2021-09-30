@@ -20,9 +20,9 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // ----------------------------------------- Admin Dashboard -------------------------------------------------------------------- \\
-Route::get('admin/dashboard', [App\Http\Controllers\HomeController::class, 'adminDashboard'])->name('admin.dashboard')->middleware('adminMid');
+Route::get('admin/dashboard', [AdminController::class, 'adminDashboard'])->name('admin.dashboard')->middleware('adminMid');
 
-Route::get('datauser', [AdminController::class, 'datauser'])->name('search');
+Route::get('datauser', [AdminController::class, 'datauser']);
 
 Route::post('adduser', [AdminController::class, 'adduser'])->name('tambahpengguna');
 
@@ -30,41 +30,45 @@ Route::get('datakelas', [AdminController::class, 'datakelas']);
 
 Route::post('addkelas', [AdminController::class, 'addkelas']);
 
-Route::post('addpeserta', [AdminController::class, 'addpeserta']);
+Route::post('/addpeserta', [AdminController::class, 'addpeserta']);
 
-Route::post('addasisten', [AdminController::class, 'addasisten']);
+Route::post('delete-peserta', [AdminController::class, 'deletepeserta']);
+
+Route::post('/addasisten', [AdminController::class, 'addasisten']);
+
+Route::post('delete-asisten', [AdminController::class, 'deleteasisten']);
 
 Route::get('datalab', [AdminController::class, 'datalab']);
 
 Route::post('addlab', [AdminController::class, 'addlab']);
 
-Route::view('/tambahuser', 'admin.tambahuser');
+Route::get('/tambahuser', [AdminController::class, 'tambahuser']);
 
-Route::view('/tambahkelas', 'admin.tambahkelas');
+Route::get('/tambahkelas', [AdminController::class, 'tambahkelas']);
 
-Route::get('/tambahpeserta', [AdminController::class, 'pesertakelas']);
+Route::get('tambahpeserta/{id}', [AdminController::class, 'pesertakelas']);
 
-Route::get('/tambahasisten', [AdminController::class, 'asistenkelas']);
+Route::get('tambahasisten/{id}', [AdminController::class, 'asistenkelas']);
 
 Route::get('/tambahlab', [AdminController::class, 'lab']);
 
-Route::get('edit/{id}', [AdminController::class, 'edit']);
+Route::get('/edituser/{id}', [AdminController::class, 'edit']);
 
-Route::post('update', [AdminController::class, 'update'])->name('update');
+Route::post('update', [AdminController::class, 'update']);
 
-Route::get('delete/{id}', [AdminController::class, 'delete']);
+Route::post('/delete-user', [AdminController::class, 'deleteuser'])->name('hapus');
 
 Route::get('editkelas/{id}', [AdminController::class, 'editkelas']);
 
 Route::post('updatekelas', [AdminController::class, 'updatekelas']);
 
-Route::get('deletekelas/{id}', [AdminController::class, 'deletekelas']);
+Route::post('deletekelas', [AdminController::class, 'deletekelas']);
 
 Route::get('editlab/{id}', [AdminController::class, 'editlab']);
 
 Route::post('updatelab', [AdminController::class, 'updatelab']);
 
-Route::get('deletelab/{id}', [AdminController::class, 'deletelab']);
+Route::post('/deletelab', [AdminController::class, 'deletelab']);
 
 Route::get('openrekrutasist', [AdminController::class, 'openpendaftaran']);
 
@@ -72,7 +76,12 @@ Route::post('file-import', [AdminController::class, 'fileImport'])->name('file-i
 
 Route::post('file-import-peserta', [AdminController::class, 'fileImportPeserta'])->name('file-import-peserta');
 
+Route::post('tambah-mk', [AdminController::class, 'tambahMK']);
+
 Route::post('delete-mk', [AdminController::class, 'hapus']);
+
+Route::post('status-form', [AdminController::class, 'updateform']);
+
 
 // ----------------------------------------- Dashboard Dosen -------------------------------------------------------------------- \\
 

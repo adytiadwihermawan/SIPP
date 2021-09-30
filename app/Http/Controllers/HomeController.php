@@ -31,10 +31,7 @@ class HomeController extends Controller
         return view('auth.login');
     }
 
-    public function adminDashboard()
-    {
-        return view('admin.home');
-    }
+  
 
     public function dsnDashboard()
     {

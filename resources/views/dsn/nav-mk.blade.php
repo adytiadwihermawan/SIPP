@@ -31,7 +31,7 @@
 
         <li class="nav-item">
             <a href=""
-                class="{{ request()->routeIs('data', [$mk[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
+                class="{{ request()->routeIs() ? 'nav-link active' : 'nav-link' }}">
                 <i class="nav-icon fas fa-tasks"></i>
                 <p>
                      Presensi

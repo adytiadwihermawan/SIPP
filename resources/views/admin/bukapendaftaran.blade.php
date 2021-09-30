@@ -8,32 +8,49 @@
         <h3 class="card-title">
             <i class="fa fa-table"></i> Mata Kuliah Untuk Calon Asisten Praktikum </h3>
     </div>
+    
+        @if(Session::get('berhasil'))
+        <hr>
+        <div class="alert alert-success">
+            {{ Session::get('berhasil')  }}
+        </div>
+        @endif
+
+        @if(Session::get('gagal'))
+        <hr>
+        <div class="alert alert-danger">
+            {{ Session::get('gagal')  }}
+        </div>
+        @endif
+
     <br>
+
     <div class="col-sm">
 
         <button type="button" class="btn blue4h" title="Tambah MK" data-toggle="modal" data-target="#modal-mk">
             <i class="fa fa-plus"></i> Tambah Mata Kuliah Praktikum</button>
     </div>
 
-            <form id="addasisten" action="addasisten" method="post">
-						<table class="mt-3 ml-2">
+    <form id="changestatus" action="status-form" method="post">
+        <table class="mt-3 ml-2">
+            @csrf
+            <tr>
 
-						<tr>
+                <input type="hidden" name="id" value="{{$status->id_statusform}}" readonly>
 
-							
-							<td><select  class="form-control" style="width: 25vw;">
-								<option value="" selected> TUTUP REKRUT ASISTEN</option>
-								
-								<option value="" >BUKA REKRUT ASISTEN</option>
-								
-							</select> </td>
-                            <td class="mt-0"><button type="submit" class="btn btn-primary mt-0">UBAH STATUS</button></td>
-						</tr>
-	
-						</table>					
-						
-					</form>
-    
+                <td><select name="status" class="form-control" style="width: 25vw;">
+                        <option value="0" selected> TUTUP REKRUT ASISTEN</option>
+
+                        <option value="1">BUKA REKRUT ASISTEN</option>
+
+                    </select> </td>
+                <td class="mt-0"><button type="submit" class="btn btn-primary mt-0">UBAH STATUS</button></td>
+            </tr>
+
+        </table>
+
+    </form>
+
 
     <div class="modal fade" id="modal-mk">
         <div class="modal-dialog modal-lg">
@@ -45,8 +62,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="import-user" action="{{ route('file-import') }}" method="POST"
-                        enctype="multipart/form-data">
+                    <form id="tambahmk" action="tambah-mk" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="">Mata Kuliah Tersedia:</label>

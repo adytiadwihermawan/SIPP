@@ -347,7 +347,7 @@
                 <div class="card-header pt-0 ">
        
                    <h3 class="card-title">{{$datas->judul_materi}}</h3>
-                    <a href="/deletemateri/{{  $datas->id_pertemuan }}" title="Delete" class="btn-sm btn-danger btn float-right"
+                    <a href="/deletemateri/{{  $datas->id_materi }}" title="Delete" class="btn-sm btn-danger btn float-right"
                         onclick="return confirm('Are you sure to delete this data ?')">
                         <i class="fa fa-trash"></i> Hapus Materi
                     </a>
@@ -398,7 +398,7 @@
             <div class="card-body col-13 card-outline card-warning mb-0 ml-3 px-0">
                 <div class="card-header pt-0">
                    <h3 class="card-title">{{$datas->judul_tugas}}</h3>
-                    <a href="/deletetugas/{{  $datas->id_pertemuan }}" title="Delete" class="btn-sm btn-danger btn float-right"
+                    <a href="/deletetugas/{{  $datas->id_wadahtugas }}" title="Delete" class="btn-sm btn-danger btn float-right"
                         onclick="return confirm('Are you sure to delete this data ?')">
                         <i class="fa fa-trash"></i> Hapus Tugas
                     </a>
@@ -420,8 +420,8 @@
         <div class="card-footer blue1">
             {{$item->deskripsi}}
             <br> 
-            <a data-toggle="modal" data-id="{{ $item->id_pertemuan }}" data-pertemuan="{{$item->nama_pertemuan}}" data-deskripsi="{{$item->deskripsi}}" class="passingID">
-            <button type="button" class="btn hijau3 panjang1 float-right"  data-toggle="modal" data-target="#edit-pertemuan">
+            <a data-id="{{ $item->id_pertemuan }}" data-pertemuan="{{$item->nama_pertemuan}}" data-deskripsi="{{$item->deskripsi}}" class="passingID">
+            <button type="button" class="btn hijau3 panjang1 float-right" data-toggle="modal" data-target="#edit-pertemuan">
                 <i class="fas fa-edit"></i> Edit Pertemuan </button>
             </a>
         </div>

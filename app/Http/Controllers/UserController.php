@@ -295,7 +295,7 @@ class UserController extends Controller
 
    public function uploadTugas(Request $request){
 
-        $request->validate([
+       $request->validate([
                     'id'=>'required',
                     '_file',
                     'judul_tugas'=>'required',
@@ -304,14 +304,12 @@ class UserController extends Controller
                     'wap'=>'required',
                     'wcp'
                 ]);
-        // dd($request->all());
+        // dd($cek);
         $fileModel = new Wadah_tugas;
-
         if($request->all()) {
             $path = 'uploads/';
             $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
-            // $fileName = time().'_'.$request->_file->getClientOriginalName();
-            // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
+
             $filePath = $request->_file->move(public_path($path), $newname);
 
             $fileModel->id_pertemuan= $request->id;
@@ -456,7 +454,6 @@ class UserController extends Controller
             else{
                 return response()->json(['status'=>1,'msg'=>'Data Berhasil Diperbaharui']);
             }
-
     }
 
         public function dsnPartisipan($id)
@@ -674,7 +671,7 @@ class UserController extends Controller
     }
 
     public function deletemateri($id){
-        $query = Materi::where('id_pertemuan', $id)->Delete();
+        $query = Materi::where('id_materi', $id)->Delete();
          
          if($query){
              return back()->with('berhasil', 'Data Berhasil Dihapus');
@@ -685,7 +682,7 @@ class UserController extends Controller
      }
 
      public function deletetugas($id){
-        $query = Wadah_tugas::where('id_pertemuan', $id)->Delete();
+        $query = Wadah_tugas::where('id_wadahtugas', $id)->Delete();
          
          if($query){
              return back()->with('berhasil', 'Data Berhasil Dihapus');
@@ -804,6 +801,7 @@ class UserController extends Controller
 
    public function dataAbsen($id)
    {
+
        $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
                             ->where('wadahpresensi.id_praktikum', $id)
                             ->simplePaginate(16);
@@ -815,6 +813,8 @@ class UserController extends Controller
                         ->first();
 
         $currentTime = Carbon::now();
+
+        dd($currentTime);
         $absen = [
             'mk'=>$kelas,
             'absen'=>$absen,

@@ -190,6 +190,106 @@
     });
   });
 
+  $(function () {
+     
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    var table = $('#datauser').DataTable({
+        processing: true,
+        serverSide: true,
+        order:[[3, "asc"]],
+        ajax: {
+          url: "datauser"
+        },
+        columnDefs: [
+                        {"className": "dt-center", "targets": [0,3,4]}
+                    ],
+        columns: [
+            {
+              "data": null, "sortable": false,
+              render: function(data, type, row, meta){
+              return meta.row + meta.settings._iDisplayStart + 1
+                    }
+                },
+            {data: 'username', name: 'username'},
+            {data: 'nama_user', name: 'nama_user'},
+            {data: 'status', name: 'status'},
+            {data: 'action', name: 'action'},
+        ]
+    });
+  });
+
+  $(function () {
+     
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    var table = $('#datakelas').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+          url: "datakelas"
+        },
+        columnDefs: [
+                        {"className": "dt-center", "targets": [0,3,4]}
+                    ],
+        columns: [
+            {
+              "data": null, "sortable": false,
+              render: function(data, type, row, meta){
+              return meta.row + meta.settings._iDisplayStart + 1
+                    }
+                },
+            {data: 'id_praktikum', name: 'username'},
+            {data: 'nama_praktikum', name: 'nama_praktikum'},
+            {data: 'tahun_ajaran', name: 'nama_praktikum'},
+            {data: 'action', name: 'action'},
+        ]
+    });
+  });
+
+  
+  $(function () {
+     
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    var table = $('#datalab').DataTable({
+        processing: true,
+        serverSide: true,
+        searching: false,
+        paging: false,
+        info: false,
+        ajax: {
+          url: "datalab"
+        },
+        columnDefs: [
+                        {"className": "dt-center", "targets": [0,1,2,3]}
+                    ],
+        columns: [
+            {
+              "data": null, "sortable": false,
+              render: function(data, type, row, meta){
+              return meta.row + meta.settings._iDisplayStart + 1
+                    }
+                },
+            {data: 'nama_laboratorium', name: 'nama_laboratorium'},
+            {data: 'nama_user', name: 'nama_user'},
+            {data: 'action', name: 'action'},
+        ]
+    });
+  });
+
    $(function(){
 
     $('#adduser').on('submit', function(e){
@@ -217,6 +317,36 @@
         }
       });
     });
+  });
+
+    $(function(){
+
+    $('#tambahmk').on('submit', function(e){
+      e.preventDefault();
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            $('#tambahmk')[0].reset();
+            alert(data.msg);
+            location.reload()
+          }
+        }
+      });
+    });
+  });
 
 // To style only selects with the my-select class
 $('.selectpicker').selectpicker();
@@ -236,6 +366,7 @@ $('.selectpicker').selectpicker();
             data: { id: id },
             dataType: 'json',
             success: function(params){
+              location.reload();
               alert(params.text)
               $('#openasisten').DataTable().ajax.reload()
            }
@@ -243,9 +374,237 @@ $('.selectpicker').selectpicker();
        }
     });
 
+    $('body').on('click', '.deleteuser', function () {
+       if (confirm("Are you sure to delete this data ?") == true) {
+        var id = $(this).data('id');
+         
+        // ajax
+        $.ajax({
+            headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+            type:"POST",
+            url: "{{ url('delete-user')}} ",
+            data: { id: id },
+            dataType: 'json',
+            success: function(params){
+              alert(params.text)
+              $('#datauser').DataTable().ajax.reload()
+           }
+        });
+       }
+    });
+    
+    $('body').on('click', '.deletekelas', function () {
+       if (confirm("Are you sure to delete this data ?") == true) {
+        var id = $(this).data('id');
+         
+        // ajax
+        $.ajax({
+            headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+            type:"POST",
+            url: "{{ url('deletekelas')}} ",
+            data: { id: id },
+            dataType: 'json',
+            success: function(params){
+              alert(params.text)
+              $('#datakelas').DataTable().ajax.reload()
+           }
+        });
+       }
+    });
+
+    $('body').on('click', '.deletelab', function () {
+       if (confirm("Are you sure to delete this data ?") == true) {
+        var id = $(this).data('id');
+         
+        // ajax
+        $.ajax({
+            headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+            type:"POST",
+            url: "{{ url('deletelab')}} ",
+            data: { id: id },
+            dataType: 'json',
+            success: function(params){
+              alert(params.text)
+              $('#datalab').DataTable().ajax.reload()
+           }
+        });
+       }
+    });
+
+    $('body').on('click', '.deletepeserta', function () {
+       if (confirm("Are you sure to delete this data ?") == true) {
+        var id = $(this).data('id');
+         
+        // ajax
+        $.ajax({
+            headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+            type:"POST",
+            url: "{{ url('delete-peserta')}} ",
+            data: { id: id },
+            dataType: 'json',
+            success: function(params){
+              alert(params.text)
+              $('#pesertakelas').DataTable().ajax.reload()
+           }
+        });
+       }
+    });
+
+    $('body').on('click', '.deleteasisten', function () {
+       if (confirm("Are you sure to delete this data ?") == true) {
+        var id = $(this).data('id');
+         
+        // ajax
+        $.ajax({
+            headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+            type:"POST",
+            url: "{{ url('delete-asisten')}} ",
+            data: { id: id },
+            dataType: 'json',
+            success: function(params){
+              alert(params.text)
+              $('#asistenkelas').DataTable().ajax.reload()
+           }
+        });
+       }
+    });
+
+    $(function(){
+    
+    $('#addpeserta').on('submit', function(e){
+      e.preventDefault();
+      
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            location.reload();
+            $('#addpeserta')[0].reset();
+            alert(data.msg);
+          }
+        }
+      });
+    });
+  });
+
+  $(function(){
+    
+    $('#addasisten').on('submit', function(e){
+      e.preventDefault();
+      
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            location.reload();
+            $('#addasisten')[0].reset();
+            alert(data.msg);
+          }
+        }
+      });
+    });
   });
 
 </script>
+
+	<script>
+	$(function () {
+     
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    var table = $('#pesertakelas').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+          url: "{{ url('tambahpeserta', $data->id_praktikum) }}",
+        },
+        columnDefs: [
+                        {"className": "dt-center", "targets": [0,3]}
+                    ],
+        columns: [
+            {
+              "data": null, "sortable": false,
+              render: function(data, type, row, meta){
+              return meta.row + meta.settings._iDisplayStart + 1
+                    }
+                },
+            {data: 'username', name: 'username'},
+            {data: 'nama_user', name: 'nama_user'},
+            {data: 'action', name: 'action'},
+        ]
+    });
+  });
+
+  $(function () {
+     
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    var table = $('#asistenkelas').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+          url: "{{ url('tambahasisten', $data->id_praktikum) }}",
+        },
+        columnDefs: [
+                        {"className": "dt-center", "targets": [0,3]}
+                    ],
+        columns: [
+            {
+              "data": null, "sortable": false,
+              render: function(data, type, row, meta){
+              return meta.row + meta.settings._iDisplayStart + 1
+                    }
+                },
+            {data: 'username', name: 'username'},
+            {data: 'nama_user', name: 'nama_user'},
+            {data: 'action', name: 'action'},
+        ]
+    });
+  });
+
+			</script>
 
 </body>
 </html>

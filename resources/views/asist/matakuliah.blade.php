@@ -317,7 +317,7 @@
             <div class="card col-12">
                 <div class="card-header cold4 ">
                    <h3 class="card-title">{{$datas->judul_materi}}</h3>
-                    <a href="/deletemateri/{{  $datas->id_pertemuan }}" title="Delete" class="btn-sm btn-danger btn float-right"
+                    <a href="/deletemateri/{{  $datas->id_materi }}" title="Delete" class="btn-sm btn-danger btn float-right"
                         onclick="return confirm('Are you sure to delete this data ?')">
                         <i class="fa fa-trash"></i>
                     </a>
@@ -341,7 +341,7 @@
             <div class="card col-12">
                 <div class="card-header cold4 ">
                    <h3 class="card-title">{{$datas->judul_tugas}}</h3>
-                    <a href="/deletetugas/{{  $datas->id_pertemuan }}" title="Delete" class="btn-sm btn-danger btn float-right"
+                    <a href="/deletetugas/{{  $datas->id_wadahtugas }}" title="Delete" class="btn-sm btn-danger btn float-right"
                         onclick="return confirm('Are you sure to delete this data ?')">
                         <i class="fa fa-trash"></i>
                     </a>
