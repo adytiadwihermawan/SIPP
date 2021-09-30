@@ -49,7 +49,7 @@
                         <label for="">Materi Pembahasan</label>
                         <!-- <input type="text" class="form-control" placeholder="Contoh: Cara Menggunakan Framework Laravel"
                             name="deskripsi" required maxlength="2500"> -->
-                            <textarea class="form-control" name="deskripsi" maxlength="2500" required rows="4" form="buat-pertemuan" placeholder="Contoh: Cara Menggunakan Framework Laravel> </textarea>
+                            <textarea class="form-control" name="deskripsi" maxlength="2500" required rows="4" form="buat-pertemuan" required placeholder="Contoh: Cara Menggunakan Framework Laravel"> </textarea>
                      
                         <span class="text-danger error-text deskripsi_error"></span>
                     </div>
@@ -101,7 +101,7 @@
                         <div class="form-group">
                             <label for="">Nama Pertemuan / Pertemuan Ke</label>
                             <input type="text" class="form-control" placeholder="Contoh: Pertemuan 1"
-                                name="nama_pertemuan" required>
+                                name="nama_pertemuan" required maxlength="250">
                             <span class="text-danger error-text nama_pertemuan_error"></span>
                         </div>
 
@@ -109,7 +109,7 @@
                             <label for="">Materi Pembahasan</label>
                             <!-- <input type="text" class="form-control"
                                 placeholder="Contoh: Cara Menggunakan Framework Laravel" name="deskripsi" required> -->
-                                <textarea class="form-control" name="deskripsi" maxlength="2500" required rows="4" form="buat-pertemuan"> </textarea>
+                                <textarea class="form-control" name="deskripsi" maxlength="2500"  rows="4" form="buat-pertemuan" required> </textarea>
                      
                                 <span class="text-danger error-text deskripsi_error"></span>
                         </div>
@@ -144,7 +144,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Upload Materi</h4>
+                    <h4 class="modal-title">Tambah Materi</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -188,7 +188,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Upload Materi</button>
+                            <button type="submit" class="btn btn-primary">Tambah Materi</button>
                         </div>
                     </form>
                 </div>
@@ -202,7 +202,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Upload Tugas</h4>
+                    <h4 class="modal-title">Tambah Tugas</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -259,7 +259,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Upload Tugas</button>
+                            <button type="submit" class="btn btn-primary">Tambah Tugas</button>
                         </div>
                     </form>
                 </div>
@@ -298,7 +298,7 @@
 
                         <div class="form-group">
                             <label for="">Materi</label>
-                            <input type="text" class="form-control" name="materi" required>
+                            <input type="text" class="form-control" name="materi" required maxlength="250">
                             <span class="text-danger error-text materi_error"></span>
                         </div>
 

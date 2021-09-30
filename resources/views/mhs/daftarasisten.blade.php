@@ -40,7 +40,7 @@
 							</div>
 							<div class="form-group">
 								<label for="">IPK</label>
-								<input type="number" step=".01" class="form-control" name="ipk" maxlength="25"  placeholder="Contoh : 3.5">
+								<input type="number" step=".01" class="form-control" name="ipk" maxlength="25" min="0" max="4"  placeholder="Contoh : 3.5">
 								<span class="text-danger error-text ipk_error"></span>
 							</div>
 
