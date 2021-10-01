@@ -113,13 +113,18 @@ Route::post('editpertemuan', [UserController::class, 'updatePertemuan'])->name('
 
 Route::post('absen', [UserController::class, 'buatAbsen'])->name('buatAbsen');
 
+Route::post('editpresensi', [UserController::class, 'updateAbsen'])->name('updateAbsen');
+
 Route::post('nilai', [UserController::class, 'nilai'])->name('nilaiTugas');
 
 Route::get('dsn/partisipan/{id}', [UserController::class, 'dsnPartisipan'])->name('data');
 
 Route::get('dsn/grade/{id}', [UserController::class, 'dsnGrade'])->name('grade');
 
+Route::get('dsn/presensi/{id}', [UserController::class, 'rekapAbsen'])->name('rekap');
+
 Route::get('file-export', [UserController::class, 'fileExport'])->name('file-export');
+
 
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
 

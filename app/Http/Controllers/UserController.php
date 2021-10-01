@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Stroage;
@@ -196,13 +197,6 @@ class UserController extends Controller
 
         return view('dsn.profile', compact('course'));
     }
-
-    public function dsnPresensi()
-    {
-       $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
-
-       return view('dsn.presensi', compact('course'));
-    }
         
     public function dashboardDsn()
     {
@@ -225,40 +219,17 @@ class UserController extends Controller
 
         $data_tugas = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', '=', 'pertemuan.id_pertemuan')
                         ->get();
+
         // dd($data);
         $course = [
             'course'=>$proses_praktikum,
             'mk'=>$kelas,
             'data_materi'=>$data_materi,
-            'data_tugas'=>$data_tugas
+            'data_tugas'=>$data_tugas,
         ];
-                        
-        // $icons = [
-        //         'pdf' => 'pdf',
-        //         'doc' => 'word',
-        //         'docx' => 'word',
-        //         'xls' => 'excel',
-        //         'xlsx' => 'excel',
-        //         'ppt' => 'powerpoint',
-        //         'pptx' => 'powerpoint',
-        //         'txt' => 'text',
-        //         'png' => 'image',
-        //         'jpg' => 'image',
-        //         'jpeg' => 'image',
-        //     ];
-        // dd($course);
         return view('dsn.matakuliah', $course);
 
     }
-    
-
-    // public  function dropZone(Request $request)  
-    // {  
-    //     $file = $request->file('file');  
-    //     $fileName = time().'.'.$file->extension(); 
-    //     $file->move(public_path('file'),$fileName);  
-    //     return response()->json(['success'=>$fileName]);  
-    // }
 
     public function upload(Request $request){
 
@@ -470,6 +441,7 @@ class UserController extends Controller
                                 ->get();
 
             $kelas = Praktikum::where('id_praktikum', $id)->get();
+
             // dd($data);
             if(request()->ajax()){
                 return datatables()->of($data)
@@ -485,7 +457,7 @@ class UserController extends Controller
             $cek = [
                 'mk'=>$kelas,
                 'data'=>$data,
-                'course'=>$course
+                'course'=>$course,
             ];
             return view('dsn.participants', $cek);
         }
@@ -599,6 +571,7 @@ class UserController extends Controller
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
                                 ->where('pertemuan.id_pertemuan', $id)
                                 ->get();
+
             return view('dsn.grades', [
                 'grade'=>$grade,
                 'mk'=>$mk,
@@ -662,14 +635,16 @@ class UserController extends Controller
                     'wap'=>'required'
                 ]);
         //  dd($request->all());
-        $query = Wadahpresensi::insert([
-                        'id_praktikum'=>$request->input('id'),
-                        'urutanpertemuan'=>$request->input('pertemuan'),
-                        'keterangan'=>$request->input('materi'),
-                        'waktu_mulai'=>$request->input('wmp'),
-                        'waktu_berakhir'=>$request->input('wap'),
-                        'tanggal'=>$request->input('tanggal')
-                    ]);
+        $post = $request->all();
+
+        $data = new Wadahpresensi;
+        $data->id_praktikum = $post['id'];
+        $data->urutanpertemuan = $post['pertemuan'];
+        $data->keterangan = $post['materi'];
+        $data->waktu_mulai = $post['wmp'];
+        $data->waktu_berakhir = $post['wap'];
+        $data->tanggal = $post['tanggal'];
+        $query = $data->save();
         // dd($query);
         if($query){
             return response()->json(['status'=>1,'msg'=>'Absen berhasil dibuat']);
@@ -792,22 +767,73 @@ class UserController extends Controller
         }
    }
 
+   public function rekapAbsen($id)
+   {
+       $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
+                            ->where('wadahpresensi.id_praktikum', $id)
+                            ->simplePaginate(16);
+
+        $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+                                ->where('pertemuan.id_praktikum', $id)
+                                ->get();
+        
+        $kelas = Praktikum::where('id_praktikum', $id)->get();
+
+
+        // dd($currentTime);
+        $absen = [
+            'mk'=>$kelas,
+            'absen'=>$absen,
+            'course'=>$course
+        ];
+
+       return view('dsn.presensi',  $absen);
+   }
+
+   public function updateAbsen(Request $request){
+        $request->validate([
+            'id' => 'required',
+            'pertemuan',
+            'tanggal' => 'required',
+            'materi',
+            'wmp' => 'required',
+            'wap' => 'required'
+        ]);
+
+        $update = Wadahpresensi::where('id_wadah', $request->input('id'))
+                            ->update([
+                                'id_wadah'=>$request->input('id'),
+                                'urutanpertemuan'=>$request->input('pertemuan'),
+                                'tanggal'=>$request->input('tanggal'),
+                                'keterangan'=>$request->input('materi'),
+                                'waktu_mulai'=>$request->input('wmp'),
+                                'waktu_berakhir'=>$request->input('wap')
+                        ]);
+        // dd($update);
+        if(!$update){
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal memperbaharui pertemuan']);
+            }                
+            else{
+                return response()->json(['status'=>1,'msg'=>'Data Berhasil Diperbaharui']);
+            }
+    }
+
    public function dataAbsen($id)
    {
 
        $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
                             ->where('wadahpresensi.id_praktikum', $id)
-                            ->simplePaginate(16);
+                            ->simplePaginate();
 
         $kelas = Praktikum::where('id_praktikum', $id)->get();
 
         $cek = Presensi::join('wadahpresensi', 'presensi.id_wadah', 'wadahpresensi.id_wadah')
                         ->where('presensi.id_user', Auth::user()->id)
-                        ->first();
+                        ->get(['presensi.id_wadah', 'fotottd_presensi'])->toArray();
+        // dd($cek);
 
         $currentTime = Carbon::now();
-
-        dd($currentTime);
+        // dd($currentTime);
         $absen = [
             'mk'=>$kelas,
             'absen'=>$absen,

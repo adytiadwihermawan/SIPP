@@ -256,6 +256,7 @@
     });
   });
 
+
     $(function(){
 
     $('#buat-pertemuan').on('submit', function(e){
@@ -423,10 +424,51 @@
      $(".modal-body #deskripsi").val( deskripsi );
     });
 
+    $(document).on("click", ".absen", function () {
+     var ids = $(this).attr('data-id');
+     var pertemuan = $(this).attr('data-pertemuan');
+     var tanggal = $(this).attr('data-tanggal');
+     var keterangan = $(this).attr('data-keterangan');
+     var wm = $(this).attr('data-wm');
+     var wa = $(this).attr('data-wa');
+     $(".modal-body #id").val( ids );
+     $(".modal-body #pertemuan").val( pertemuan );
+     $(".modal-body #tanggal").val( tanggal );
+     $(".modal-body #keterangan").val( keterangan );
+     $(".modal-body #wm").val( wm );
+     $(".modal-body #wa").val( wa );
+    });
+
     
   $(function(){
     
     $('#edit-pertemuan').on('submit', function(e){
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            alert(data.msg);
+          }
+        }
+      });
+    });
+  });
+
+   $(function(){
+    
+    $('#edit-absen').on('submit', function(e){
       $.ajax({
         url:$(this).attr('action'),
         method:$(this).attr('method'),

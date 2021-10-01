@@ -321,9 +321,7 @@
                     </form>
                 </div>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 
     @foreach($course as $item)
@@ -469,12 +467,8 @@
                         </div>
                     </form>
                 </div>
-
-                <!-- /.modal-content -->
             </div>
-            <!-- /.modal-dialog -->
         </div>
-        <!-- /.content -->
     </div>
     </div>
 @endif

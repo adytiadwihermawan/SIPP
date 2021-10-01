@@ -23,7 +23,7 @@ class Wadahpresensi extends Model
         'tanggal'
     ];
 
-    
+    public $timestamps = false;
 
     protected $table = 'wadahpresensi';
     
