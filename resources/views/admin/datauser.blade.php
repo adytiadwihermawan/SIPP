@@ -32,7 +32,9 @@
 
                     <button type="button" class="btn blue4h" title="Buat Pertemuan" data-toggle="modal"
                         data-target="#modal-import">
-                        <i class="fa fa-plus"></i> Import Data User</button></div>
+                        <i class="fa fa-plus"></i> Import Data User</button>
+
+                        </div>
 
                 <div class="modal fade" id="modal-import">
                     <div class="modal-dialog modal-lg">
@@ -53,7 +55,11 @@
                                             <label class="custom-file-label" for="customFile">Choose file</label>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary">Import data</button>
+
+                                    <button type="button" class="btn" >
+
+                        <i class="fa fa-book"></i> <a target="blank" href=""> Download Template Excel</a> </button>
+                                    <button class="btn btn-primary float-right">Import data</button>
                                 </form>
                             </div>
                         </div>
@@ -61,6 +67,7 @@
                 </div>
             </div>
             <table id="datauser" class="table table-bordered table-striped">
+                
                 <thead>
                     <tr style="text-align: center;">
                         <th>NO</th>

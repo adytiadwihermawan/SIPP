@@ -28,8 +28,8 @@
 						</tr>
                     
 						<tr>
-							<td><label for="">Role</label></td>
-							<td><select  class="form-control ml-5" id="role" name="role" value="{{ old('role') }}"  style="width: 25vw;">
+							<!-- <td><label for="">Role</label></td> -->
+							<td><select  class="form-control ml-5" id="role" name="role" value="{{ old('role') }}"  style="width: 25vw;" hidden>
 								<option value="3" selected>asisten</option>
 							</select> </td>
 							<span style="color:red;">@error('role') {{ $message }} @enderror</span>

@@ -44,12 +44,13 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal"><a style="color: white;" href="/datakelas">Kembali</a></button>
 						<button type="submit" class="btn btn-primary">Tambah Peserta Kelas</button>
+						<button type="button" class="btn blue4h float-right py-1 mr-3"  title="Buat Pertemuan"
+                data-toggle="modal" data-target="#modal-import">
+                <i class="fa fa-plus"></i> Import Data User</button>
 					</div>
 				</form>
 
-					<button type="button" class="btn blue4h float-right" style=" padding:1px 4px;" title="Buat Pertemuan"
-                data-toggle="modal" data-target="#modal-import">
-                <i class="fa fa-plus"></i> Import Data User</button>
+				
 
 				<div class="modal fade" id="modal-import">
 				<div class="modal-dialog modal-lg">
@@ -79,10 +80,10 @@
 				</div>
 				<!-- /.content -->
 			</div>
-</div>
+
 	@if (!empty($data->id_praktikum))
 		
-			<table id="pesertakelas" class="table table-bordered table-striped">
+			<table id="pesertakelas" class="table table-bordered table-striped ml-2 mt-4">
 				<thead>
 					<tr style="text-align: center;">
 					<th>NO</th>
@@ -92,6 +93,7 @@
 					</tr>
 				</thead>
 			</table>
+			</div>
 	@endif
 
 		
