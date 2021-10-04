@@ -80,7 +80,7 @@
 </div>
 
 <div class="container fixed-bottom mr-0">
-  <a class="btn bg-info float-right pb-3">
+  <a class="btn bg-info float-right pb-3" href="{{asset('assets/file/Panduan Admin.docx')}}" download="panduan admin">
   <i class="fas fa-address-book"></i> Panduan pengguna
                 </a>
     </div>

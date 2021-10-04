@@ -22,8 +22,8 @@
 						
 						@csrf
 							<div class="form-group">
-								<label for="">Id Laboratorium</label>
-								<input type="text" class="form-control" name="id" value="{{ old('id', $Info[0]->id_laboratorium) }}" readonly>
+								<!-- <label for="">Id Laboratorium</label> -->
+								<input type="text" class="form-control" name="id" value="{{ old('id', $Info[0]->id_laboratorium) }}" hidden>
 							</div>
 
 							<div class="form-group">
