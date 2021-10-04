@@ -150,7 +150,7 @@ Route::get('matkul/{id}', [UserController::class, 'matkulMhs'])->name('mhsMatkul
 
 Route::get('mhs/partisipan/{id}', [UserController::class, 'partisipan'])->name('partisipan');
 
-Route::get('matkul/tugas/{id}', [UserController::class, 'tampilTugas'])->name('tugas');
+Route::get('matkul/{id_praktikum}/tugas/{id_pertemuan}/{id}', [UserController::class, 'tampilTugas'])->name('tugas');
 
 Route::post('send-assignment', [UserController::class, 'kumpulTugas'])->name('assignment');
 

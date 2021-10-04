@@ -44,7 +44,7 @@
 
                             <h5>Nama Asisten</h5>
                             @foreach ($nama_asisten as $nama)
-                            <b>{{$nama->nama_user}}</b>
+                            <b>{{$nama->nama_user}}<br></b>
                             @endforeach
 
                         </div>
@@ -80,16 +80,12 @@
                         <table class="table table-hover text-nowrap">
                             <tbody>
                                 <tr>
-                                    <th>Grading status</th>
-                                    <td>isi data 1</td>
-                                </tr>
-                                <tr>
                                     <th>Due date</th>
-                                    <td>isi data 2</td>
+                                    <td>{{ date('l, j F Y H:i', strtotime($data[0]->waktu_selesai)) }}</td>
                                 </tr>
                                 <tr>
                                     <th>Time remaining</th>
-                                    <td>isi data 3</td>
+                                    <td>{{$time}}</td>
                                 </tr>
                                 <tr>
                                     <th>Last modified</th>
@@ -159,8 +155,9 @@
 
                 <h5>Nama Dosen</h5>
                 @foreach ($nama_dosen as $nama)
-                <b>{{$nama->nama_user}}</b>
+                <b>{{$nama->nama_user}}<br></b>
                 @endforeach
+
 
             </div>
             <!-- ./col -->
@@ -168,7 +165,7 @@
 
                 <h5>Nama Asisten</h5>
                 @foreach ($nama_asisten as $nama)
-                <b>{{$nama->nama_user}}</b>
+                <b>{{$nama->nama_user}}<br></b>
                 @endforeach
 
             </div>
@@ -193,8 +190,12 @@
                     {{$data[0]->deskripsi_tugas}}
                 </p>
             </div>
-
         </div>
+        
+        <tr>
+            <th><a class="ml-2 mt-3"><b>Due date</b></a></th>
+            <td><a class="ml-2 mt-3"><b>{{ date('l, j F Y H:i', strtotime($data[0]->waktu_selesai)) }}</b></a></td>
+        </tr>
         <tr>
             <th> <a class="ml-2 mt-3"><b>FILE</b></a></th>
             <td>
@@ -206,7 +207,7 @@
                     <input type="hidden" class="form-control" name="id_user" value="{{ Auth::user()->id }}" readonly>
 
                     <input type="hidden" class="form-control" name="id_wadahtugas" value="{{$data[0]->id_wadahtugas}}" readonly>
-
+                   
                     <div class="custom-file">
                         <input type="file" name="_file" class="custom-file-input" id="customFile" required>
                         <span class="text-danger error-text _file_error"></span>
