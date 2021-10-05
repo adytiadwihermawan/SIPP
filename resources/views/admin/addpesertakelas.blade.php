@@ -70,6 +70,10 @@
 										<label class="custom-file-label" for="customFile">Choose file</label>
 									</div>
 								</div>
+								
+								<button type="button" class="btn" >
+
+<i class="fa fa-book"></i> <a href="{{asset('assets/file/tambah partisipan kelas.xlsx')}}" download="Template Tambah User"> Download Template Excel</a> </button>
 								<button class="btn btn-primary">Import data</button>
 							</form>
 						</div>
