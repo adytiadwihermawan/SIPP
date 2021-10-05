@@ -63,26 +63,6 @@ class UserController extends Controller
         return view('mhs.profile', $datas);
     }
 
-    // public function mhsPresensi($id)
-    // {
-    //    $data = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')
-    //                 ->where('id_status', '=', 3)
-    //                 ->Where('id_user', '=', Auth::user()->id)
-    //                 ->get();
-
-    //     $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
-
-    //     $kelas = Praktikum::where('id_praktikum', $id)->get();
-
-    //     $datas = [
-    //         'course'=>$course,
-    //         'data'=>$data,
-    //         'mk'=>$kelas
-    //     ];
-    //     return view('mhs.presensi', $datas);
-    // }
-
-
     public function matkulMhs($id)
     {
         $kelas = Praktikum::where('id_praktikum', $id)->get();
@@ -160,38 +140,7 @@ class UserController extends Controller
             'data_materi'=>$data_materi,
             'data_tugas'=>$data_tugas
         ];
-                        
-        // $icons = [
-        //         'pdf' => 'pdf',
-        //         'doc' => 'word',
-        //         'docx' => 'word',
-        //         'xls' => 'excel',
-        //         'xlsx' => 'excel',
-        //         'ppt' => 'powerpoint',
-        //         'pptx' => 'powerpoint',
-        //         'txt' => 'text',
-        //         'png' => 'image',
-        //         'jpg' => 'image',
-        //         'jpeg' => 'image',
-        //     ];
-        // dd($course);
-        return view('asist.matakuliah', $course);
-
     }
-
-    // public function formdaftar()
-    // {
-    //     $status = Statusform::select('statusform')->first();
-    //     if($status == 1)
-    //     {
-    //         return redirect('mhs.dashboard');
-    //     }
-    //     else
-    //     {
-    //         return redirect('mhs.formdaftar');
-    //     }
-    // }
-
     public function dsnProfile()
     {
         $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
@@ -435,6 +384,9 @@ class UserController extends Controller
                          ->join('status_user', 'users.id_status', 'status_user.id_status') 
                          ->where('proses_praktikum.id_praktikum', $id)
                          ->orwhere('roles.id_praktikum', $id)
+                         ->select('nama_user', 'status')
+                         ->groupBy('nama_user', 'status')
+                         ->orderBy('status', 'asc')
                          ->get();
             // dd($data);
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
@@ -470,6 +422,9 @@ class UserController extends Controller
                          ->join('status_user', 'users.id_status', 'status_user.id_status') 
                          ->where('proses_praktikum.id_praktikum', $id)
                          ->orwhere('roles.id_praktikum', $id)
+                         ->select('nama_user', 'status')
+                         ->groupBy('nama_user', 'status')
+                         ->orderBy('status', 'asc')
                          ->get();
             // dd($data);
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
@@ -729,15 +684,13 @@ class UserController extends Controller
         $assign = Uploadtugas::join('wadah_tugas', 'uploadtugas.id_wadahtugas', 'wadah_tugas.id_wadahtugas')
                             ->where('wadah_tugas.id_wadahtugas', $id)
                             ->first();
-        $time = $data[0]->waktu_selesai->diffForHumans();
         //    dd($data);
         $data = [
             'mk'=>$kelas,
             'nama_dosen'=>$nama_dosen,
             'nama_asisten'=>$nama_asisten,
             'data'=>$data,
-            'assign'=>$assign,
-            'time'=>$time
+            'assign'=>$assign
         ];
         return view('mhs.kumpultugas', $data);
     }
@@ -776,7 +729,7 @@ class UserController extends Controller
         }
    }
 
-   public function rekapAbsen($id)
+   public function rekapAbsen(Request $request, $id)
    {
        $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
                             ->where('wadahpresensi.id_praktikum', $id)
@@ -785,9 +738,31 @@ class UserController extends Controller
         $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
                                 ->where('pertemuan.id_praktikum', $id)
                                 ->get();
+                                
+        $presensi = Presensi::rightjoin('users', 'presensi.id_user', 'users.id')
+                                ->leftjoin('roles', 'presensi.id_user', 'roles.id_user')
+                                ->leftjoin('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
+                                ->select('nama_user', 'id', 'username', 'users.id_status')
+                                ->groupBy('nama_user', 'id', 'username', 'users.id_status')
+                                ->where('proses_praktikum.id_praktikum', $id)
+                                ->where('users.id_status', 4)
+                                ->get();
         
+                            // dd($presensi);
         $kelas = Praktikum::where('id_praktikum', $id)->get();
-
+        if ($request->ajax()) {
+            return Datatables::of($presensi)
+                    ->addColumn('keterangan', function($row){
+                        if($row->id_user){
+                            return "Hadir";
+                            
+                        }else{
+                            return "Tanpa Keterangan";
+                        }
+                    })
+                    ->rawColumns(['keterangan'])
+                    ->make(true);
+            }
 
         // dd($currentTime);
         $absen = [
@@ -856,7 +831,6 @@ class UserController extends Controller
 
    public function signature(Request $request)
     {
-
         $request->validate([
                     'signed'=>'required',
                     'id_user'=>'required',
@@ -960,8 +934,6 @@ class UserController extends Controller
             
             $path = 'uploads/';
             $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
-            // $fileName = time().'_'.$request->_file->getClientOriginalName();
-            // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
             $filePath = $request->_file->move(public_path($path, $newname));
 
             $daftar = new Rekrutasisten;

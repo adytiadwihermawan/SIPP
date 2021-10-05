@@ -90,9 +90,35 @@
                           {{ $data->waktu_berakhir->format('H:i')}}
                         </td>
                         <td>
-                           <a href="" class="btn btn-info" data-id="" title="tambahasistenkelas">
-					                    <i class="fa fa-plus"></i> View </a>
-
+                        <a data-pertemuan="{{ $data->urutanpertemuan }}" class="rekap">
+                        <button type="button" class="btn btn-info" data-remote="false" data-toggle="modal" data-target="#view">
+                              <i class="fas fa-edit"></i>View</button>
+                            </a>
+                            
+    <div class="modal fade" id="view">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="pertemuan">REKAP PRESENSI PERTEMUAN {{$data->urutanpertemuan}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                <table style="width: 80%" class="table table-striped hover" id="rekap">
+                        <thead>
+                            <tr style="text-align: center">
+                                <th>No</th>
+                                <th>NAMA</th>
+                                <th>NIM</th>
+                                <th>KETERANGAN</th>
+                            </tr>
+                        </thead>
+                 </table>
+                </div>
+            </div>
+        </div>
+    </div>
                            <a data-id="{{$data->id_wadah}}"  data-pertemuan="{{ $data->urutanpertemuan }}" data-tanggal="{{$data->tanggal->format('mm/dd/yyyy')}}" 
                             data-keterangan="{{$data->keterangan}}" data-wm={{$data->waktu_mulai}} data-wa={{$data->waktu_berakhir}} class="absen">
                           <button type="button" class="btn hijau3" data-remote="false" data-toggle="modal" data-target="#edit-absen">

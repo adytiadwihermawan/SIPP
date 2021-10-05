@@ -70,20 +70,16 @@ class AdminController extends Controller
 
     public function fileImport(Request $request) 
     {
+        $request->validate([
+            'file' => 'required|mimes:xlsx'
+        ]);
+        if($request->all()){
         Excel::import(new UsersImport, $request->file('file')->store('temp'));
         return back();
+        }
     }
 
     public function adduser(Request $request){
-
-        //return $request->input();
-    //     $request->validate([
-    //      'nama_user'=>'required',
-    //      'id'=>'required|unique:users|min:0|not_in:0',
-    //      'password'=>'required',
-    //      'role'=>'required',
-    //  ]);
-
      $rules = [
          'nama_user' => 'required',
          'id' => [

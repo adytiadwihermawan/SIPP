@@ -256,6 +256,54 @@
     });
   });
 
+  $(function () {
+     
+     $.ajaxSetup({
+         headers: {
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
+     });
+     
+     var table = $('#rekap').DataTable({
+         processing: true,
+         serverSide: true,
+         dom: 'Bflrtip',
+         ajax: {
+           url: "{{ route('rekap', [$mk[0]->id_praktikum]) }}"
+         },
+         columnDefs: [
+                         {"className": "dt-center", "targets": [0, 2, 3]}
+                     ],
+         buttons : [
+           {
+             extend: 'excel',
+             text: '<span class="fa fa-file-excel-o"></span> Export Nilai',
+             messageTop: 'PERTEMUAN {{$absen[0]->urutanpertemuan}}',
+             title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$course[0]->nama_praktikum}} ',
+             exportOptions: {
+                 columns: [ 0, 1, 2, 3 ],
+                 format: { 
+                       header: function ( data, columnDefs ) {
+                       return data.toUpperCase();
+                   }
+                 },
+               },
+             }
+           ],
+         columns: [
+             {
+               "data": null, "sortable": false,
+               render: function(data, type, row, meta){
+               return meta.row + meta.settings._iDisplayStart + 1
+                     }
+                 },
+               {data: 'nama_user', name: 'nama_user' },
+               {data: 'username', name: 'username'},
+               {data: 'keterangan', name: 'keterangan'}
+         ]
+     });
+   });
+
 
     $(function(){
 
@@ -422,6 +470,11 @@
      $(".modal-body #id").val( ids );
      $(".modal-body #pertemuan").val( pertemuan );
      $(".modal-body #deskripsi").val( deskripsi );
+    });
+
+    $(document).on("click", ".rekap", function () {
+     var pertemuan = $(this).attr('data-pertemuan');
+     $(".modal-bodal #pertemuan").val( pertemuan );
     });
 
     $(document).on("click", ".absen", function () {

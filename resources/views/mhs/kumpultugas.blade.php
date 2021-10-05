@@ -85,11 +85,7 @@
                                 </tr>
                                 <tr>
                                     <th>Time remaining</th>
-                                    <td>{{$time}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Last modified</th>
-                                    <td>isi data 4</td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <th>FILE</th>
@@ -104,9 +100,6 @@
                                 <tr>
                                     <th>Aksi</th>
                                     <td>
-                                        <a href="" title="Edit" class="btn btn-success btn">
-                                            <i class="fa fa-edit"></i> Edit Submission
-                                        </a>
                                         <a href="/deletesubmission/{{  $assign->id_tugas }}" title="Delete" class="btn btn-danger btn"
                                             onclick="return confirm('Are you sure to delete this data ?')">
                                             <i class="fa fa-trash"></i> Remove Submission

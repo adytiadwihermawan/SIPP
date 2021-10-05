@@ -31,24 +31,4 @@ class HomeController extends Controller
         return view('auth.login');
     }
 
-  
-
-    public function dsnDashboard()
-    {
-        return view('dsn.home');
-    }
-
-   
-
-    public function mhsHome()
-    {
-        $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
-
-        return view('mhs.home', compact('course'));
-    }
-
-    public function mhsDashboard()
-    {
-        return view('asist.halamanawal');
-    }
 }

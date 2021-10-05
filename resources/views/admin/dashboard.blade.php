@@ -612,7 +612,6 @@ $('.selectpicker').selectpicker();
         ]
     });
   });
-
 			</script>
 
 </body>
