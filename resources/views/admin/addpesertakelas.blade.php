@@ -30,7 +30,8 @@
 						<tr>
 							<td><label for="">Peserta Kelas</label> </td>
 							<td  class="ml-5"> :</td>
-							 <td><select  class="selectpicker ml-2" data-live-search="true" id="peserta" name="peserta"  style="width: 25vw;" required>
+							 <td><select  class="selectpicker ml-2" data-live-search="true" id="peserta" name="peserta"
+							   style="width: 25vw;" required>
 								<option value="" selected></option>
 								@foreach ($member as $id => $name)
 								<option value="{{$id}}" >{{ $name}}</option>
@@ -42,7 +43,8 @@
 						</table>	
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal"><a style="color: white;" href="/datakelas">Kembali</a></button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal"><a style="color: white;" href="/datakelas">
+						Kembali</a></button>
 						<button type="submit" class="btn btn-primary">Tambah Peserta Kelas</button>
 						<button type="button" class="btn blue4h float-right py-1 mr-3"  title="Buat Pertemuan"
                 data-toggle="modal" data-target="#modal-import">
@@ -73,7 +75,9 @@
 								
 								<button type="button" class="btn" >
 
-<i class="fa fa-book"></i> <a href="{{asset('assets/file/tambah partisipan kelas.xlsx')}}" download="Template Tambah User"> Download Template Excel</a> </button>
+<i class="fa fa-book"></i> <a href="{{asset('assets/file/tambah partisipan kelas.xlsx')}}" download="Template Tambah User">
+ Download Template Excel</a> 
+</button>
 								<button class="btn btn-primary">Import data</button>
 							</form>
 						</div>

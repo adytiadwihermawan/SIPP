@@ -22,15 +22,12 @@
             {{ Session::get('gagal')  }}
         </div>
         @endif
-
     <br>
-
     <div class="col-sm">
 
         <button type="button" class="btn blue4h" title="Tambah MK" data-toggle="modal" data-target="#modal-mk">
             <i class="fa fa-plus"></i> Tambah Mata Kuliah Praktikum</button>
     </div>
-
     <form id="changestatus" action="status-form" method="post">
         <table class="mt-3 ml-2">
             @csrf
