@@ -87,7 +87,7 @@
             <div class="card-header pt-0  ">
 
             
-               <a style="text-decoration: none" href="{{route('tugas', [$item->id_pertemuan])}}"><h4 style="color: tomato">  <i class="fas fa-file-upload mr-3"></i> <b>  {{$datas->judul_tugas}} </b></h4></a>
+               <a style="text-decoration: none" href="{{route('tugas', [$item->id_praktikum,$item->id_pertemuan,$datas->id_wadahtugas])}}"><h4 style="color: tomato">  <i class="fas fa-file-upload mr-3"></i> <b>  {{$datas->judul_tugas}} </b></h4></a>
             </div>
             <div class="card-body beee">
 

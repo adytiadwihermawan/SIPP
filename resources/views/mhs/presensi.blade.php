@@ -91,41 +91,26 @@
                                     {{ $data->waktu_berakhir->format('H:i')}}
                                 </td>
                                 <td>
-                                    @if($waktu->between(Carbon\Carbon::parse($data->waktu_mulai),
+                                    <?php $a=0 ?>
+                                    @foreach($cek as $tes)
+                                    @if(!empty($tes->id_wadah == $data->id_wadah))
+                                        Hadir
+                                        <?php $a=1 ?>
+                                        @endif
+                                    @endforeach
+
+                                    @if($a==0 &&  $waktu->between(Carbon\Carbon::parse($data->waktu_mulai),
                                     Carbon\Carbon::parse($data->waktu_berakhir)))
-                                    @if($cek)
-                                      @foreach($cek as $check)
-                                        @if($check['fotottd_presensi'] && $check['id_wadah'] == $data->id_wadah)
-                                          @if($check['id_wadah'] == $data->id_wadah)
-                                            Hadir
-                                          @endif
-                                        @else
                                         <a data-toggle="modal" data-id="{{ $data->id_wadah }}" class="passingID">
                                         <button type="button" class="btn btn-block btn-success " data-toggle="modal"
                                           data-target="#modal-default">
                                              Presensi
                                         </button>
                                         </a>
-                                        @endif
-                                      @endforeach
-                                    @else
-                                      <a data-toggle="modal" data-id="{{ $data->id_wadah }}" class="passingID">
-                                      <button type="button" class="btn btn-block btn-success " data-toggle="modal"
-                                          data-target="#modal-default">
-                                          Presensi
-                                      </button>
-                                      </a>
+                                    @elseif($a==0 && $waktu > Carbon\Carbon::parse($data->waktu_berakhir))
+                                        Tanpa Keterangan
                                     @endif
-                                    @else
-                                      @foreach($cek as $check)
-                                        @if($check['fotottd_presensi'] && $check['id_wadah'] == $data->id_wadah)
-                                          @if($check['id_wadah'] == $data->id_wadah)
-                                            Hadir
-                                          @endif
-                                        @endif
-                                      @endforeach
-                                          Tanpa Keterangan
-                                    @endif
+                                    
                                 </td>
                             </tr>
                             @endforeach

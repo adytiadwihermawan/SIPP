@@ -97,6 +97,7 @@ class UserController extends Controller
 
         $data_tugas = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', '=', 'pertemuan.id_pertemuan')
                         ->get();
+
         // dd($data);
         $course = [
             'course'=>$proses_praktikum,
@@ -499,12 +500,14 @@ class UserController extends Controller
 
         public function partisipan($id)
         {
-            $data = User::join('proses_praktikum', 'users.id', '=', 'proses_praktikum.id_user')
-                         ->join('roles', 'users.id', 'roles.id_user')
+            $data = User::join('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
+                         ->leftjoin('roles', 'users.id', 'roles.id_user')
                          ->join('status_user', 'users.id_status', 'status_user.id_status') 
                          ->where('proses_praktikum.id_praktikum', $id)
                          ->orWhere('roles.id_praktikum', $id)
-                         ->where('proses_praktikum.id_proses', $id)
+                         ->select('nama_user', 'status')
+                         ->groupBy('nama_user', 'status')
+                         ->orderBy('status', 'asc')
                          ->get();
             // dd($data);
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
@@ -698,37 +701,43 @@ class UserController extends Controller
 
     }
 
-     public function tampilTugas($id){  
+     public function tampilTugas($id_praktikum, $id_pertemuan, $id){  
         $kelas = Praktikum::join('pertemuan', 'praktikum.id_praktikum', 'pertemuan.id_praktikum')
-                            ->where('id_pertemuan', $id)
+                            ->where('pertemuan.id_pertemuan', $id_pertemuan)
                             ->get();
 
         $nama_dosen = Proses_praktikum::join('users', 'proses_praktikum.id_user', 'users.id')
                                       ->join('pertemuan', 'proses_praktikum.id_praktikum', 'pertemuan.id_praktikum')
-                                      ->where('pertemuan.id_pertemuan', $id)
+                                      ->where('pertemuan.id_praktikum', $id_praktikum)
                                       ->where('id_status', 2)
+                                      ->select('nama_user')
+                                      ->groupBy('nama_user')
                                       ->get();
 
         $nama_asisten = Roles::join('users', 'roles.id_user', 'users.id')
                              ->join('pertemuan', 'roles.id_praktikum', 'pertemuan.id_praktikum')
-                             ->where('pertemuan.id_pertemuan', $id)
+                             ->where('pertemuan.id_praktikum', $id_praktikum)
                              ->where('roles.id_status', 3)
+                             ->select('nama_user')
+                             ->groupBy('nama_user')
                              ->get();
 
         $data = Pertemuan::join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
-                        ->where('wadah_tugas.id_pertemuan', $id)
+                        ->where('wadah_tugas.id_wadahtugas', $id)
                         ->get();
 
         $assign = Uploadtugas::join('wadah_tugas', 'uploadtugas.id_wadahtugas', 'wadah_tugas.id_wadahtugas')
-                            ->where('wadah_tugas.id_pertemuan', $id)
+                            ->where('wadah_tugas.id_wadahtugas', $id)
                             ->first();
-           
+        $time = $data[0]->waktu_selesai->diffForHumans();
+        //    dd($data);
         $data = [
             'mk'=>$kelas,
             'nama_dosen'=>$nama_dosen,
             'nama_asisten'=>$nama_asisten,
             'data'=>$data,
-            'assign'=>$assign
+            'assign'=>$assign,
+            'time'=>$time
         ];
         return view('mhs.kumpultugas', $data);
     }
@@ -829,7 +838,8 @@ class UserController extends Controller
 
         $cek = Presensi::join('wadahpresensi', 'presensi.id_wadah', 'wadahpresensi.id_wadah')
                         ->where('presensi.id_user', Auth::user()->id)
-                        ->get(['presensi.id_wadah', 'fotottd_presensi'])->toArray();
+                        ->get();
+                        // ->get(['presensi.id_wadah', 'fotottd_presensi'])->toArray();
         // dd($cek);
 
         $currentTime = Carbon::now();
