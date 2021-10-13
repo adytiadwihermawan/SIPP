@@ -42,8 +42,6 @@
 			</div>
 				</form>
 		
-	@if (!empty($data->id_praktikum))
-		
 			<table id="asistenkelas" class="table table-bordered table-striped">
 				<thead>
 					<tr style="text-align: center;">
@@ -54,8 +52,30 @@
 					</tr>
 				</thead>
 			</table>
-	@endif
-	</div>				
+		</div>				
+	</div>
 </div>
-
+<br>
+{{-- <div class="card card-info">
+	<div class="card-header">
+		<h3 class="card-title">
+			<i class="fa fa-table"></i>Data Pendaftar Asisten Kelas {{$data->nama_praktikum}}</h3>
+	</div>
+	<!-- /.card-header -->
+	<div class="card-body">
+		<div class="table-responsive mb-5">
+			
+			<table id="calonasistenkelas" class="table table-bordered table-striped">
+				<thead>
+					<tr style="text-align: center;">
+					<th>NO</th>
+                    <th>NIM/NIP</th>
+                    <th>NAMA</th>
+					<th>AKSI</th>
+					</tr>
+				</thead>
+			</table>
+		</div>				
+	</div> --}}
+</div>
 @endsection

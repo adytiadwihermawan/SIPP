@@ -16,11 +16,14 @@ class UsersImport implements ToModel
     */
     public function model(array $row)
     {
-        return new User([
-            'nama_user' => $row[0],
-            'username' => $row[1],
-            'password' => Hash::make($row[2]),
-            'id_status' => $row[3]
-        ]);
+            $user = User::where('username', $row[1])->first();
+            if(is_null($user)){
+                User::insert([    
+                'nama_user' => $row[0],
+                'username' => $row[1],
+                'password' => Hash::make($row[2]),
+                'id_status' => $row[3]
+                ]);
+            }
     }
 }

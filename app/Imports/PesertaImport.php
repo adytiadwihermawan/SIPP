@@ -18,12 +18,19 @@ class PesertaImport implements ToModel
     {
         $user = User::where("username", "like", "%".$row[0]."%")->first();
         $kelas = Praktikum::where("nama_praktikum", "like", "%".$row[1]."%")->first();
+
         // dd($row);
-        $row['id'] = $user->id;
-        $row['id_praktikum'] = $kelas->id_praktikum;
-        return new Proses_praktikum([
-            'id_user' => $row['id'],
-            'id_praktikum' => $row['id_praktikum']
-        ]);
+        $cekuser = $row['id'] = $user->id;
+        $cekpraktikum = $row['id_praktikum'] = $kelas->id_praktikum;
+
+        $cek = Proses_praktikum::where("id_user", "like", "%".$cekuser."%")
+                                ->where("id_praktikum", "like", "%".$cekpraktikum."%")
+                                ->first();
+        if(is_null($cek)){
+                Proses_praktikum::insert([    
+                'id_user' => $cekuser,
+                'id_praktikum' => $cekpraktikum
+                ]);
+            }
     }
 }

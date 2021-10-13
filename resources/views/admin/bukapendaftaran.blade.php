@@ -36,10 +36,13 @@
                 <input type="hidden" name="id" value="{{$status->id_statusform}}" readonly>
 
                 <td><select name="status" class="form-control" style="width: 25vw;">
-                        <option value="0" selected> TUTUP REKRUT ASISTEN</option>
-
-                        <option value="1">BUKA REKRUT ASISTEN</option>
-
+                        @if ($status->statusform == 0)
+                            <option value="0" selected >TUTUP REKRUT ASISTEN</option>
+                            <option value="1"><p>BUKA REKRUT ASISTEN</p></option>
+                        @else
+                            <option value="1" selected >BUKA REKRUT ASISTEN</option>
+                            <option value="0"><p>TUTUP REKRUT ASISTEN</p></option>
+                        @endif
                     </select> </td>
                 <td class="mt-0"><button type="submit" class="btn btn-primary mt-0">UBAH STATUS</button></td>
             </tr>

@@ -51,8 +51,8 @@
                                     @csrf
                                     <div class="form-group mb-4" style="max-width: 500px; margin: 0 auto;">
                                         <div class="custom-file text-left">
-                                            <input type="file" name="file" class="custom-file-input" id="customFile" required>
-                                            <span style="color:red">@error('file') {{ $message }} @enderror</span>
+                                            <input type="file" name="file" class="custom-file-input" id="customFile">
+                                            <span class="text-danger error-text file_error"></span>
                                             <label class="custom-file-label" for="customFile">Choose file</label>
                                         </div>
                                     </div>

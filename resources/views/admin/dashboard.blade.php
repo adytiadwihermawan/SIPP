@@ -28,6 +28,10 @@
 
 <link  href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.2/dist/sweetalert2.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -155,7 +159,9 @@
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
    $(function () {
      
@@ -319,6 +325,64 @@
     });
   });
 
+   $(function(){
+
+    $('#import-user').on('submit', function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            alert(data.msg);
+            location.reload();
+          }
+        }
+      });
+    });
+  });
+
+  $(function(){
+
+    $('#import-peserta').on('submit', function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            alert(data.msg);
+            location.reload();
+          }
+        }
+      });
+    });
+  });
+
     $(function(){
 
     $('#tambahmk').on('submit', function(e){
@@ -375,24 +439,32 @@ $('.selectpicker').selectpicker();
     });
 
     $('body').on('click', '.deleteuser', function () {
-       if (confirm("Are you sure to delete this data ?") == true) {
         var id = $(this).data('id');
-         
-        // ajax
-        $.ajax({
-            headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-            type:"POST",
-            url: "{{ url('delete-user')}} ",
-            data: { id: id },
-            dataType: 'json',
-            success: function(params){
-              alert(params.text)
-              $('#datauser').DataTable().ajax.reload()
-           }
-        });
-       }
+        Swal.fire({
+          title: 'Are you sure delete this data ?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+                headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                type:"POST",
+                url: "{{ url('delete-user')}} ",
+                data: { id: id },
+                dataType: 'json',
+                success: function(params){
+                  toastr.success(params.text)
+                  $('#datauser').DataTable().ajax.reload()
+              }
+            });
+          }
+        })
     });
     
     $('body').on('click', '.deletekelas', function () {

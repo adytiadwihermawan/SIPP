@@ -278,7 +278,7 @@
            {
              extend: 'excel',
              text: '<span class="fa fa-file-excel-o"></span> Export Nilai',
-             messageTop: 'PERTEMUAN {{$absen[0]->urutanpertemuan}}',
+             messageTop: 'PERTEMUAN ',
              title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$course[0]->nama_praktikum}} ',
              exportOptions: {
                  columns: [ 0, 1, 2, 3 ],
@@ -463,15 +463,6 @@
 </script>
  
 <script>
-    $(document).on("click", ".passingID", function () {
-     var ids = $(this).attr('data-id');
-     var pertemuan = $(this).attr('data-pertemuan');
-     var deskripsi = $(this).attr('data-deskripsi');
-     $(".modal-body #id").val( ids );
-     $(".modal-body #pertemuan").val( pertemuan );
-     $(".modal-body #deskripsi").val( deskripsi );
-    });
-
     $(document).on("click", ".rekap", function () {
      var pertemuan = $(this).attr('data-pertemuan');
      $(".modal-bodal #pertemuan").val( pertemuan );
@@ -493,13 +484,13 @@
     });
 
     
-  $(function(){
-    
-    $('#edit-pertemuan').on('submit', function(e){
+  $('#edit-pertemuan').on('submit', function(e){
+      e.preventDefault();
+
       $.ajax({
         url:$(this).attr('action'),
         method:$(this).attr('method'),
-        data:new FormData(),
+        data:new FormData(this),
         processData: false,
         dataType: 'json',
         contentType: false,
@@ -513,11 +504,11 @@
             });
           }else{
             alert(data.msg);
+            location.reload();
           }
         }
       });
     });
-  });
 
    $(function(){
     

@@ -171,12 +171,6 @@
                             <span class="text-danger error-text judul_materi_error"></span>
                         </div>
 
-                        <!-- <div class="form-group">
-                            <label for="">Deskripsi Materi</label>
-                            <input type="text" class="form-control" name="deskripsi" maxlength="30">
-                            <span class="text-danger error-text deskripsi_error"></span>
-                        </div> -->
-
                         <div class="form-group">
                             <label for="">Deskripsi Materi</label>
                              <textarea class="form-control" name="deskripsi" maxlength="1000" rows="4" form="upload-file"> </textarea>
@@ -418,17 +412,17 @@
         <div class="card-footer blue1">
             {{$item->deskripsi}}
             <br> 
-            <a data-id="{{ $item->id_pertemuan }}" data-pertemuan="{{$item->nama_pertemuan}}" data-deskripsi="{{$item->deskripsi}}" class="passingID">
-            <button type="button" class="btn hijau3 panjang1 float-right" data-toggle="modal" data-target="#edit-pertemuan">
+            <a href="" class="btn hijau3 panjang1 float-right" data-toggle="modal" data-target="#edit-pertemuan-{{$item->id_pertemuan}}">
                 <i class="fas fa-edit"></i> Edit Pertemuan </button>
             </a>
         </div>
         </div>
     </div>
-    
+    <br>
     @endforeach
-    
-<div class="modal fade" id="edit-pertemuan">
+
+    @foreach ($course as $data)
+    <div class="modal fade" id="edit-pertemuan-{{$data->id_pertemuan}}">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -442,12 +436,12 @@
                         @csrf
                         <div class="form-group">
                             <!-- <label for="">Pertemuan</label> -->
-                            <input type="text" class="form-control" name="id" id="id" value="{{$item->id_pertemuan}}" hidden>
+                            <input type="text" class="form-control" name="id" value="{{$data->id_pertemuan}}" hidden>
                         </div>
 
                         <div class="form-group">
                             <label for="">Nama Pertemuan / Pertemuan Ke</label>
-                            <input type="text" class="form-control" id="pertemuan" value="{{ $item->nama_pertemuan }}"
+                            <input type="text" class="form-control" value="{{ $data->nama_pertemuan }}"
                                 name="nama_pertemuan" required>
                             <span class="text-danger error-text nama_pertemuan_error"></span>
                         </div>
@@ -455,7 +449,7 @@
                         <div class="form-group">
                             <label for="">Materi Pembahasan</label>
                             <input type="text" class="form-control"
-                                placeholder="Masukkan Deskripsi" name="deskripsi" id="deskripsi"  required>
+                                placeholder="Masukkan Deskripsi" name="deskripsi" value="{{$data->deskripsi}}" required>
                                 <!-- <textarea class="form-control" name="deskripsi" maxlength="1000" required rows="7" form="edit-pertemuan"> </textarea>
                       -->
                             <span class="text-danger error-text deskripsi_error"></span>
@@ -471,7 +465,6 @@
         </div>
     </div>
     </div>
+    @endforeach
 @endif
-
-
 @endsection

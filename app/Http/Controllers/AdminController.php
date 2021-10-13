@@ -10,6 +10,7 @@ use App\Models\Lab;
 use App\Models\Pertemuan;
 use App\Models\Status_user;
 use App\Models\Roles;
+use App\Models\Rekrutasisten;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\UsersImport;
@@ -70,12 +71,28 @@ class AdminController extends Controller
 
     public function fileImport(Request $request) 
     {
-        $request->validate([
-            'file' => 'required|mimes:xlsx'
+        $validator = \Validator::make($request->all(), [
+            'file' => [
+             'required',
+             'mimes:xlsx'
+            ],
+        ], [
+            'file.required' => "Import File Excel",
+            'file.mimes' => "File harus bertipe xlsx"
         ]);
-        if($request->all()){
-        Excel::import(new UsersImport, $request->file('file')->store('temp'));
-        return back();
+    
+        if( $validator->passes()){
+           
+         $query = Excel::import(new UsersImport, $request->file('file')->store('temp'));
+
+            if( !$query ){
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to add user in database']);
+            }else{
+                return response()->json(['status'=>1,'msg'=>'Data Berhasil Ditambahkan']);
+            }
+        }       
+        else{          
+            return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
         }
     }
 
@@ -236,7 +253,7 @@ class AdminController extends Controller
                     ->get();
             return Datatables::of($data)
                     ->addColumn('action', function($row){
-                             $btn = " <a href='javascript:void(0)' class='deletepeserta btn  btn-danger' data-id='" . $row->id_role . "' title='delete'><i class='fa fa-trash'></i></a>";
+                             $btn = " <a href='javascript:void(0)' class='deletepeserta btn  btn-danger' data-id='" . $row->id_proses . "' title='delete'><i class='fa fa-trash'></i></a>";
                             return $btn;
                     })
                     ->rawColumns(['action'])
@@ -266,8 +283,7 @@ class AdminController extends Controller
 
         $data = Praktikum::where('id_praktikum', $id)->first();
 
-        if ($request->ajax()) {
-            
+        if ($request->ajax()) {    
         $data = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')
                     ->join('users', 'roles.id_user', '=', 'users.id')
                     ->where('roles.id_praktikum', $id)
@@ -290,17 +306,11 @@ class AdminController extends Controller
 
     public function addkelas(Request $request){
 
-        //return $request->input();
         $request->validate([
          'nama_praktikum'=>'required',
          'tahun_ajaran'=>'required',
          'nama_pertemuan'=>'required'
      ]);
- 
-        // $query = Praktikum::insert([
-        //     'nama_praktikum'=>$request->input('nama_praktikum'),
-        //     'tahun_ajaran'=>$request->input('tahun_ajaran')
-        // ]);
         $post = $request->all();
 
         $data = new Praktikum;
@@ -358,8 +368,29 @@ class AdminController extends Controller
 
     public function fileImportPeserta(Request $request) 
     {
-        Excel::import(new PesertaImport, $request->file('file')->store('temp'));
-        return back();
+        $validator = \Validator::make($request->all(), [
+            'file' => [
+             'required',
+             'mimes:xlsx'
+            ],
+        ], [
+            'file.required' => "Import File Excel",
+            'file.mimes' => "File harus bertipe xlsx"
+        ]);
+    
+        if( $validator->passes()){
+           
+         $query = Excel::import(new PesertaImport, $request->file('file')->store('temp'));
+
+            if( !$query ){
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to add user in database']);
+            }else{
+                return response()->json(['status'=>1,'msg'=>'Peserta Berhasil Ditambahkan']);
+            }
+        }       
+        else{          
+            return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
+        }
     }
 
     public function addpeserta(Request $request){

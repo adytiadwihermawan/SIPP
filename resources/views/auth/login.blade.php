@@ -45,7 +45,7 @@
                     <div class="text-center">
                         <img src="{{asset('img/logo.png')}}" style="height: 128px; width: 128px;"><br>
                         <a href="#">
-                        <b>SI</b>STEM PEN<b>D</b>ATAAN <b>P</b>RAKTIKUM
+                        <b>S</b>ISTEM <b>I</b>NFORMASI PEN<b>D</b>ATAAN <b>P</b>RAKTIKUM
                         </a>
                     </div>
                     </div>
