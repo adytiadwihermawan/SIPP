@@ -90,40 +90,36 @@
                           {{ $data->waktu_berakhir->format('H:i')}}
                         </td>
                         <td>
-                        <a data-pertemuan="{{ $data->urutanpertemuan }}" class="rekap">
-                        <button type="button" class="btn btn-info" data-remote="false" data-toggle="modal" data-target="#view">
-                              <i class="fas fa-edit"></i>View</button>
+                            <a href="" class="btn btn-info" data-remote="false" data-toggle="modal" data-target="#view-{{$data->id_wadah}}">
+                                <i class="fas fa-edit"></i> View </button>
                             </a>
-                            
-    <div class="modal fade" id="view">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="pertemuan">REKAP PRESENSI PERTEMUAN {{$data->urutanpertemuan}}</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                <table style="width: 80%" class="table table-striped hover" id="rekap">
-                        <thead>
-                            <tr style="text-align: center">
-                                <th>No</th>
-                                <th>NAMA</th>
-                                <th>NIM</th>
-                                <th>KETERANGAN</th>
-                            </tr>
-                        </thead>
-                 </table>
-                </div>
-            </div>
-        </div>
-    </div>
-                           <a data-id="{{$data->id_wadah}}"  data-pertemuan="{{ $data->urutanpertemuan }}" data-tanggal="{{$data->tanggal->format('mm/dd/yyyy')}}" 
-                            data-keterangan="{{$data->keterangan}}" data-wm={{$data->waktu_mulai}} data-wa={{$data->waktu_berakhir}} class="absen">
-                          <button type="button" class="btn hijau3" data-remote="false" data-toggle="modal" data-target="#edit-absen">
-                              <i class="fas fa-edit"></i>Edit</button>
-                          </a>
+                            <div class="modal fade" id="view-{{$data->id_wadah}}">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">REKAP PRESENSI PERTEMUAN {{$data->urutanpertemuan}}</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table table-striped hover" id="rekap">
+                                                    <thead>
+                                                        <tr style="text-align: center">
+                                                            <th>No</th>
+                                                            <th>NAMA</th>
+                                                            <th>NIM</th>
+                                                            <th>KETERANGAN</th>
+                                                        </tr>
+                                                    </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           <a href="" class="btn hijau3 panjang1 float-right" data-toggle="modal" data-target="#edit-absen-{{$data->id_wadah}}">
+                                <i class="fas fa-edit"></i> Edit</button>
+                            </a>
                         </td>
                     </tr>
                 @endforeach
@@ -134,60 +130,64 @@
         </div>
     </div>
 </section>
-<div class="modal fade" id="edit-absen">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Presensi</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="edit-absen" action="{{ route('updateAbsen') }}" method="POST">
-                        @csrf
+    @foreach ($absen as $item)
+                      
+    <div class="modal fade" id="edit-absen-{{$item->id_wadah}}">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Presensi</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-absen" action="{{ route('updateAbsen') }}" method="POST">
+                            @csrf
 
-                        <input type="hidden" class="form-control" id="id" name="id" value="{{$absen[0]->id_wadah}}" readonly>
+                            <input type="hidden" class="form-control" name="id" value="{{$item->id_wadah}}" readonly>
 
-                        <div class="form-group">
-                            <label for="">Pertemuan</label>
-                            <input type="number" class="form-control" id="pertemuan" name="pertemuan" value="{{$absen[0]->urutanpertemuan}}">
-                            <span class="text-danger error-text id_error"></span>
-                        </div>
+                            <div class="form-group">
+                                <label for="">Pertemuan</label>
+                                <input type="number" class="form-control" name="pertemuan" value="{{$item->urutanpertemuan}}">
+                                <span class="text-danger error-text id_error"></span>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="">Tanggal</label>
-                            <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$absen[0]->tanggal}}">
-                            <span class="text-danger error-text tanggal_error"></span>
-                        </div>
+                            <div class="form-group">
+                                <label for="">Tanggal</label>
+                                <input type="date" class="form-control" name="tanggal" value="{{$item->tanggal->format('Y-m-d')}}">
+                                <span class="text-danger error-text tanggal_error"></span>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="">Materi</label>
-                            <input type="text" class="form-control" id="keterangan" name="materi" value="{{$absen[0]->keterangan}}" maxlength="250">
-                            <span class="text-danger error-text materi_error"></span>
-                        </div>
+                            <div class="form-group">
+                                <label for="">Materi</label>
+                                <input type="text" class="form-control" name="materi" value="{{$item->keterangan}}" maxlength="250">
+                                <span class="text-danger error-text materi_error"></span>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="">Waktu Mulai Presensi</label>
-                            <input type="datetime-local" class="form-control" id="wm" name="wmp" value="{{$absen[0]->waktu_mulai}}">
-                            <span class="text-danger error-text wmp_error"></span>
-                        </div>
+                            <div class="form-group">
+                                <label for="">Waktu Mulai Presensi</label>
+                                <input type="datetime-local" class="form-control" name="wmp" value="{{$item->waktu_mulai->toDatetimelocalString()}}">
+                                <span class="text-danger error-text wmp_error"></span>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="">Waktu Akhir Presensi</label>
-                            <input type="datetime-local" class="form-control" id="wa" name="wap" value="{{$absen[0]->waktu_berakhir}}">
-                            <span class="text-danger error-text wap_error"></span>
-                        </div>
+                            <div class="form-group">
+                                <label for="">Waktu Akhir Presensi</label>
+                                <input type="datetime-local" class="form-control" name="wap" value="{{$item->waktu_berakhir->toDatetimelocalString()}}">
+                                <span class="text-danger error-text wap_error"></span>
+                            </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Edit Presensi</button>
-                        </div>
-                    </form>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Edit Presensi</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-  
+        </div>  
+
+    @endforeach
+
 @endif
 @endsection

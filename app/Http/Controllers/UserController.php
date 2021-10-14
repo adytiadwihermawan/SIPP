@@ -742,8 +742,8 @@ class UserController extends Controller
         $presensi = Presensi::rightjoin('users', 'presensi.id_user', 'users.id')
                                 ->leftjoin('roles', 'presensi.id_user', 'roles.id_user')
                                 ->leftjoin('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
-                                ->select('nama_user', 'id', 'username', 'users.id_status')
-                                ->groupBy('nama_user', 'id', 'username', 'users.id_status')
+                                ->select('nama_user', 'id', 'id_wadah', 'username', 'users.id_status')
+                                ->groupBy('nama_user', 'id', 'id_wadah', 'username', 'users.id_status')
                                 ->where('proses_praktikum.id_praktikum', $id)
                                 ->where('users.id_status', 4)
                                 ->get();
@@ -753,7 +753,7 @@ class UserController extends Controller
         if ($request->ajax()) {
             return Datatables::of($presensi)
                     ->addColumn('keterangan', function($row){
-                        if($row->id_user){
+                        if($row->id_wadah){
                             return "Hadir";
                             
                         }else{

@@ -278,7 +278,7 @@
            {
              extend: 'excel',
              text: '<span class="fa fa-file-excel-o"></span> Export Nilai',
-             messageTop: 'PERTEMUAN ',
+             messageTop: 'PERTEMUAN {{$absen[0]->urutanpertemuan}}',
              title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$course[0]->nama_praktikum}} ',
              exportOptions: {
                  columns: [ 0, 1, 2, 3 ],
@@ -463,26 +463,6 @@
 </script>
  
 <script>
-    $(document).on("click", ".rekap", function () {
-     var pertemuan = $(this).attr('data-pertemuan');
-     $(".modal-bodal #pertemuan").val( pertemuan );
-    });
-
-    $(document).on("click", ".absen", function () {
-     var ids = $(this).attr('data-id');
-     var pertemuan = $(this).attr('data-pertemuan');
-     var tanggal = $(this).attr('data-tanggal');
-     var keterangan = $(this).attr('data-keterangan');
-     var wm = $(this).attr('data-wm');
-     var wa = $(this).attr('data-wa');
-     $(".modal-body #id").val( ids );
-     $(".modal-body #pertemuan").val( pertemuan );
-     $(".modal-body #tanggal").val( tanggal );
-     $(".modal-body #keterangan").val( keterangan );
-     $(".modal-body #wm").val( wm );
-     $(".modal-body #wa").val( wa );
-    });
-
     
   $('#edit-pertemuan').on('submit', function(e){
       e.preventDefault();
@@ -510,13 +490,13 @@
       });
     });
 
-   $(function(){
-    
     $('#edit-absen').on('submit', function(e){
+      e.preventDefault();
+
       $.ajax({
         url:$(this).attr('action'),
         method:$(this).attr('method'),
-        data:new FormData(),
+        data:new FormData(this),
         processData: false,
         dataType: 'json',
         contentType: false,
@@ -530,11 +510,11 @@
             });
           }else{
             alert(data.msg);
+            location.reload();
           }
         }
       });
     });
-  });
   </script>
 
 </body>
