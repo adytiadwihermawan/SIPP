@@ -202,7 +202,7 @@
                     <input type="hidden" class="form-control" name="id_wadahtugas" value="{{$data[0]->id_wadahtugas}}" readonly>
                    
                     <div class="custom-file">
-                        <input type="file" name="_file" class="custom-file-input" id="customFile" required>
+                        <input type="file" name="_file[]" class="custom-file-input" id="customFile" multiple required>
                         <span class="text-danger error-text _file_error"></span>
                         <label class="custom-file-label" for="customFile">Choose file</label>
                     </div>

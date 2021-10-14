@@ -395,9 +395,11 @@
                         <i class="fa fa-trash"></i> Hapus Tugas
                     </a>
                 </div>
-                <div class="card-body beee">
-                    <a href="{{route('download', $datas->file_tugas)}}">{{$datas->file_tugas}}</a>
-                </div>
+                    @if (!empty($datas->file_tugas))
+                        <div class="card-body beee">
+                                <a href="{{route('download', $datas->file_tugas)}}">{{$datas->file_tugas}}</a>
+                        </div>
+                    @endif
                 @if($datas->deskripsi_tugas != null)
                 <div class="card-footer">
                     <p>{{$datas->deskripsi_tugas}}</p>

@@ -158,6 +158,10 @@ class UserController extends Controller
     public function matkulDsn($id)
     {
         $kelas = Praktikum::where('id_praktikum', $id)->get();
+
+        $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
+                            ->where('wadahpresensi.id_praktikum', $id)
+                            ->get();
         
         $proses_praktikum = Pertemuan::join('proses_praktikum', 'pertemuan.id_praktikum', '=', 'proses_praktikum.id_praktikum')
                             ->where('pertemuan.id_praktikum', $id)
@@ -175,6 +179,7 @@ class UserController extends Controller
             'course'=>$proses_praktikum,
             'mk'=>$kelas,
             'data_materi'=>$data_materi,
+            'absen'=>$absen,
             'data_tugas'=>$data_tugas,
         ];
         return view('dsn.matakuliah', $course);
@@ -228,20 +233,31 @@ class UserController extends Controller
         // dd($cek);
         $fileModel = new Wadah_tugas;
         if($request->all()) {
-            $path = 'uploads/';
-            $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
+            if(empty($request->input('_file'))){
+                $fileModel->id_pertemuan= $request->id;
+                $fileModel->judul_tugas = $request->judul_tugas;
+                $fileModel->deskripsi_tugas = $request->deskripsi;
+                $fileModel->waktu_mulai = $request->wmp;
+                $fileModel->waktu_selesai = $request->wap;
+                $fileModel->waktu_cutoff = $request->wcp;
+                
+                $query = $fileModel->save(); 
+            }else{
+                $path = 'uploads/';
+                $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
 
-            $filePath = $request->_file->move(public_path($path), $newname);
+                $filePath = $request->_file->move(public_path($path), $newname);
 
-            $fileModel->id_pertemuan= $request->id;
-            $fileModel->file_tugas = $request->_file->getClientOriginalName();
-            $fileModel->judul_tugas = $request->judul_tugas;
-            $fileModel->deskripsi_tugas = $request->deskripsi;
-            $fileModel->waktu_mulai = $request->wmp;
-            $fileModel->waktu_selesai = $request->wap;
-            $fileModel->waktu_cutoff = $request->wcp;
-            
-            $query = $fileModel->save();
+                $fileModel->id_pertemuan= $request->id;
+                $fileModel->file_tugas = $request->_file->getClientOriginalName();
+                $fileModel->judul_tugas = $request->judul_tugas;
+                $fileModel->deskripsi_tugas = $request->deskripsi;
+                $fileModel->waktu_mulai = $request->wmp;
+                $fileModel->waktu_selesai = $request->wap;
+                $fileModel->waktu_cutoff = $request->wcp;
+                
+                $query = $fileModel->save();
+            }
 
             if($query){
                 return response()->json(['status'=>1,'msg'=>'File Berhasil Diunggah']);
@@ -395,6 +411,10 @@ class UserController extends Controller
 
             $kelas = Praktikum::where('id_praktikum', $id)->get();
 
+            $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
+                            ->where('wadahpresensi.id_praktikum', $id)
+                            ->get();
+
             // dd($data);
             if(request()->ajax()){
                 return datatables()->of($data)
@@ -410,6 +430,7 @@ class UserController extends Controller
             $cek = [
                 'mk'=>$kelas,
                 'data'=>$data,
+                'absen'=>$absen,
                 'course'=>$course,
             ];
             return view('dsn.participants', $cek);
@@ -526,6 +547,10 @@ class UserController extends Controller
                                 ->where('pertemuan.id_pertemuan', $id)
                                 ->get();
 
+            $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
+                            ->where('wadahpresensi.id_praktikum', $id)
+                            ->get();
+
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
                                 ->where('pertemuan.id_pertemuan', $id)
                                 ->get();
@@ -533,6 +558,7 @@ class UserController extends Controller
             return view('dsn.grades', [
                 'grade'=>$grade,
                 'mk'=>$mk,
+                'absen'=>$absen,
                 'course'=>$course,
             ]);
         }
@@ -703,20 +729,20 @@ class UserController extends Controller
                     'id_wadahtugas'=>'required',
                     '_file' => 'required'
                 ]);
-        // dd($request->all());
         $fileModel = new Uploadtugas;
-
+        // dd($request->file('_file'));
         if($request->all()) {
-            $path = 'uploads/';
-            $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
-            // $fileName = time().'_'.$request->_file->getClientOriginalName();
-            // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
-            $filePath = $request->_file->move(public_path($path), $newname);
+            foreach($request->file('_file') as $file){
+                $path = 'uploads/';
+                $newname = Helper::renameFile($path, $file->getClientOriginalName());
+                $pathfile = $file->move(public_path($path), $newname);
+                $files[] = $pathfile;
+            }
             
             $fileModel->id_praktikum = $request->id;
             $fileModel->id_user = $request->id_user;
             $fileModel->id_wadahtugas = $request->id_wadahtugas;
-            $fileModel->namafile_tugas = $request->_file->getClientOriginalName();
+            $fileModel->namafile_tugas = $files;
             $fileModel->waktu_submit = Carbon::now()->format('Y-m-d H:i:s');
             $query = $fileModel->save();
 

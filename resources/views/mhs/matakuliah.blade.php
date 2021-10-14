@@ -89,8 +89,9 @@
             
                <a style="text-decoration: none" href="{{route('tugas', [$item->id_praktikum,$item->id_pertemuan,$datas->id_wadahtugas])}}"><h4 class="tomatoh">  <i class="fas fa-file-upload mr-3"></i> <b>  {{$datas->judul_tugas}} </b></h4></a>
             </div>
-            <div class="card-body beee">
-
+            
+            @if (!empty($datas->file_tugas))
+                <div class="card-body beee">
             <?php
                 $pecah = explode(".", $datas->file_tugas);
                 $ekstensi = $pecah[1];
@@ -120,6 +121,8 @@
 
                 <a href="{{route('download', $datas->file_tugas)}}">{{$datas->file_tugas}}</a>
             </div>
+            @endif
+            
             @if($datas->deskripsi_tugas != null)
             <div class="card-footer">
                 <p>{{$datas->deskripsi_tugas}}</p>
