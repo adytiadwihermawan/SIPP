@@ -43,7 +43,9 @@
                             <option value="1" selected >BUKA REKRUT ASISTEN</option>
                             <option value="0"><p>TUTUP REKRUT ASISTEN</p></option>
                         @endif
-                    </select> </td>
+                    </select>
+                    <span class="text-danger error-text status_error"></span>
+                </td>
                 <td class="mt-0"><button type="submit" class="btn btn-primary mt-0">UBAH STATUS</button></td>
             </tr>
 

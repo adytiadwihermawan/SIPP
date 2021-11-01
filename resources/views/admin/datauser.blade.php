@@ -10,20 +10,6 @@
     <!-- /.card-header -->
     <div class="card-body">
         <div class="table-responsive">
-            @if(Session::get('berhasil'))
-            <hr>
-            <div class="alert alert-success">
-                {{ Session::get('berhasil')  }}
-            </div>
-            @endif
-
-            @if(Session::get('gagal'))
-            <hr>
-            <div class="alert alert-danger">
-                {{ Session::get('gagal')  }}
-            </div>
-            @endif
-
 
             <div class="row mb-5">
                 <div class="col-sm">
@@ -50,17 +36,14 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group mb-4" style="max-width: 500px; margin: 0 auto;">
-                                        <div class="custom-file text-left">
-                                            <input type="file" name="file" class="custom-file-input" id="customFile">
+                                            <input type="file" name="file" class="form-control" id="customFile">
                                             <span class="text-danger error-text file_error"></span>
-                                            <label class="custom-file-label" for="customFile">Choose file</label>
-                                        </div>
                                     </div>
 
                                     <button type="button" class="btn" >
 
                         <i class="fa fa-book"></i> <a href="{{asset('assets/file/tambah data user.xlsx')}}" download="Template Tambah User"> Download Template Excel</a> </button>
-                                    <button class="btn btn-primary float-right">Import data</button>
+                                    <button onclick="reload()" class="btn btn-primary float-right">Import data</button>
                                 </form>
                             </div>
                         </div>

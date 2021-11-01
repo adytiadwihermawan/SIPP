@@ -19,13 +19,13 @@
                         <div class="form-group">
                             <label for="">Nama Kelas</label>
                             <input type="text" class="form-control" name="nama_praktikum" maxlength="50">
-                            <span style="color:red">@error('nama_praktikum') {{ $message }} @enderror</span>
+                            <span class="text-danger error-text nama_praktikum_error"></span>
                         </div>
                         
                         <div class="form-group">
                             <label for="">Tahun Ajaran</label>
                             <input type="text" class="form-control" name="tahun_ajaran" maxlength="20">
-                            <span style="color:red">@error('tahun_ajaran') {{ $message }} @enderror</span>
+                            <span class="text-danger error-text tahun_ajaran_error"></span>
                         </div>
 						
 					<div class="modal-footer">

@@ -11,10 +11,15 @@ class Wadah_tugas extends Model
         'id_pertemuan',
         'judul_tugas',
         'file_tugas',
-        'deskripsi'
+        'deskripsi', 
+        'waktu_mulai',
+        'waktu_selesai',
+        'waktu_cutoff'
     ];
 
     protected $table = 'wadah_tugas';
+
+    protected $dates = ['waktu_mulai', 'waktu_selesai', 'waktu_cutoff'];
 
     public $timestamps = false;
     

@@ -3,8 +3,8 @@
 @section('Judul', 'Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat')
 
 @section('content')
-@if($assign)
-    @if ($assign->namafile_tugas && $assign->id_wadahtugas == $data[0]->id_wadahtugas)
+@if(!empty($assign[0]))
+    @if ($assign[0]->namafile_tugas && $assign[0]->id_wadahtugas == $data[0]->id_wadahtugas)
 
             <div class="col-12 row-3">
                 <div class="card ml-3 ">
@@ -35,7 +35,7 @@
 
                             <h5>Nama Dosen</h5>
                             @foreach ($nama_dosen as $nama)
-                            <b>{{$nama->nama_user}}</b>
+                            <b>{{$nama->nama_user}}<br></b>
                             @endforeach
 
                         </div>
@@ -85,14 +85,60 @@
                                 </tr>
                                 <tr>
                                     <th>Time remaining</th>
-                                    <td></td>
+                                    <td>
+                                        <?php 
+                                            $shortVariant = 'en_Short';
+                                            $translator = Carbon\Translator::get($shortVariant);
+                                            $translator->setTranslations([
+                                                'h' => ':count hrs',
+                                                'min' => ':count mins',
+                                                's' => ':count secs'
+                                            ]);
+?>
+                                        @if (Carbon\Carbon::parse($data[0]->waktu_selesai) > Carbon\Carbon::parse($assign[0]->waktu_submit))      
+                                            Assignment was submitted {{str_replace(['after', 'before'], ['late', 'early'], $data[0]->waktu_selesai->locale($shortVariant)->diffForHumans($assign[0]->waktu_submit, ['short'=> true, 'parts' => 3]))}}
+                                        @else
+                                            Assignment was submitted {{str_replace(['after', 'before'], ['late', 'early'], $assign[0]->waktu_submit->locale($shortVariant)->diffForHumans($data[0]->waktu_selesai, ['short'=> true, 'parts' => 3]))}}
+                                        @endif
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>FILE</th>
                                     <td>
                                         <div class="custom-file">
-                                        <a style="text-decoration: none; color:indianred"  href="{{route('download', $assign->namafile_tugas)}}"> {{$assign->namafile_tugas}}</a>
-                                            {{$assign->waktu_submit->format('j F Y, H:i A')}}
+                                            @foreach ($assign as $file)
+                                            <?php
+                                                $pecah = explode(".", $file->namafile_tugas);
+                                                $ekstensi = $pecah[1];
+                                            ?>
+                                            @if ($ekstensi == 'zip' or $ekstensi == 'rar')
+                                                <i class="fa fa-file-zip-o mr-2" style="font-size:23px;color:gray"> </i>
+
+                                            @elseif ($ekstensi == 'docx' or $ekstensi == 'doc')
+                                                <i class="fa fa-file-word-o mr-2" style="font-size:23px;color:blue"></i>
+                                            
+                                            @elseif ($ekstensi == 'pdf')
+                                            <i class="fa fa-file-pdf-o mr-2" style="font-size:23px;color:red"></i>
+                                            
+                                            @elseif ($ekstensi == 'ppt' or $ekstensi == 'pptx')
+                                                <i class="fa fa-file-powerpoint-o mr-2" style="font-size:23px;color:orange"></i>
+                                            
+
+                                            @elseif ($ekstensi == 'jpg' or $ekstensi == 'png' or $ekstensi == 'jpeg')
+                                                <i class="fa fa-file-photo-o mr-2" style="font-size:23px;color:green"></i>
+                                            
+                                            @elseif ($ekstensi == 'html')
+                                                <i class="fa fa-file-code-o mr-2" style="font-size:23px;color:green"></i>
+
+                                                @else
+                                                <i class="fa fa-file-text-o mr-2" style="font-size:23px;color:black"> </i>
+                                            @endif
+                                        <a style="text-decoration: none; color:indianred"  href="{{route('download', $file->namafile_tugas)}}"> 
+                                            {{$file->namafile_tugas}}
+                                            <br>
+                                        </a>
+                                            @endforeach
+                                         {{ date('j F Y, H:i', strtotime($assign[0]->waktu_submit)) }}
                                         </div>
                                     </td>
 
@@ -100,7 +146,7 @@
                                 <tr>
                                     <th>Aksi</th>
                                     <td>
-                                        <a href="/deletesubmission/{{  $assign->id_tugas }}" title="Delete" class="btn btn-danger btn"
+                                        <a href="/deletesubmission/{{  $assign[0]->id_tugas }}" title="Delete" class="btn btn-danger btn"
                                             onclick="return confirm('Are you sure to delete this data ?')">
                                             <i class="fa fa-trash"></i> Remove Submission
                                         </a>

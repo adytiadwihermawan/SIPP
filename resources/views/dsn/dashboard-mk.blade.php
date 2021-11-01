@@ -191,7 +191,7 @@
                 url: "{{ route('data', [$mk[0]->id_praktikum]) }}"
             },
             columnDefs: [
-                        {"className": "dt-center", "targets": [0,2,3]}
+                        {"className": "dt-center", "targets": [0]}
                     ],
             columns:[
                 {
@@ -200,9 +200,9 @@
                         return meta.row + meta.settings._iDisplayStart + 1
                     }
                 },
+                {data: 'username', name: 'username'},
                 {data: 'nama_user', name: 'nama_user'},
-                {data: 'status', name: 'status'},
-                {data: 'Aksi', name: 'aksi'}
+                {data: 'status', name: 'status'}
             ]
         })
     }
@@ -263,7 +263,6 @@
            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
          }
      });
-     
      var table = $('#rekap').DataTable({
          processing: true,
          serverSide: true,
@@ -277,8 +276,8 @@
          buttons : [
            {
              extend: 'excel',
-             text: '<span class="fa fa-file-excel-o"></span> Export Nilai',
-             messageTop: 'PERTEMUAN {{$absen[0]->urutanpertemuan}}',
+             text: '<span class="fa fa-file-excel-o"></span> Export Rekap Presensi',
+            
              title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$course[0]->nama_praktikum}} ',
              exportOptions: {
                  columns: [ 0, 1, 2, 3 ],
@@ -304,7 +303,7 @@
      });
    });
 
-
+   
     $(function(){
 
     $('#buat-pertemuan').on('submit', function(e){

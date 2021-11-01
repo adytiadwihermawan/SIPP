@@ -86,9 +86,9 @@ class AdminController extends Controller
          $query = Excel::import(new UsersImport, $request->file('file')->store('temp'));
 
             if( !$query ){
-                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to add user in database']);
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to add user in database', 'timeOut' => 5000]);
             }else{
-                return response()->json(['status'=>1,'msg'=>'Data Berhasil Ditambahkan']);
+                return response()->json(['status'=>1,'msg'=>'Data Berhasil Ditambahkan', 'timeOut' => 3000]);
             }
         }       
         else{          
@@ -133,9 +133,9 @@ class AdminController extends Controller
                 'id_status'=>$request->input('role')
             ]);
             if( !$query ){
-                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to add user in database']);
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to add user in database', 'timeOut' => 5000]);
             }else{
-                return response()->json(['status'=>1,'msg'=>'Data Berhasil Ditambahkan']);
+                return response()->json(['status'=>1,'msg'=>'Data Berhasil Ditambahkan', 'timeOut' => 3000]);
             }
         }       
         else{          
@@ -166,28 +166,48 @@ class AdminController extends Controller
     // -------------------- Update Data User----------------------- \\
    
     public function update(Request $request){
-            $request->validate([
+
+            $rules = [
                 'id' => 'required',
                 'nama_user' => 'required',
-                'password' => 'required',
+                'password',
                 'role' => 'required'
-            ]);
+                ];
 
-            $update = User::where('id', $request->input('id'))
+            $validator = \Validator::make($request->all(), $rules, [
+                    'nama_user.required' => "Masukkan Nama Pengguna"
+            ]);
+            if( $validator->passes()){
+           
+            
+            if(empty($request->input('password'))){
+                $update = User::where('id', $request->input('id'))
+                        ->update([
+                            'id'=>$request->input('id'),
+                            'nama_user'=>$request->input('nama_user'),
+                            'id_status'=>$request->input('role')
+                        ]);
+            }
+            else{
+                $update = User::where('id', $request->input('id'))
                         ->update([
                             'id'=>$request->input('id'),
                             'nama_user'=>$request->input('nama_user'),
                             'password'=>Hash::make($request->input('password')),
                             'id_status'=>$request->input('role')
                         ]);
-
-            if($update){
-                return redirect('datauser')->with('berhasil', 'Data Berhasil Diubah');
             }
-            else{
-                return back()->with('gagal', 'Tidak Ada Perubahan Data yang Dilakukan');
+                if($update){
+                    return response()->json(['status'=>1,'msg'=>'Data User Berhasil Diperbaharui', 'timeOut' => 3000]);
+                }
+                else{
+                    return response()->json(['status'=>0,'msg'=>'Tidak Ada Perubahan Data yang Dilakukan', 'timeOut' => 5000]);
+                }
+            }       
+            else{          
+                return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
             }
-
+            
         }
 
     // ----------------------- Delete Data User --------------------- \\
@@ -306,11 +326,17 @@ class AdminController extends Controller
 
     public function addkelas(Request $request){
 
-        $request->validate([
-         'nama_praktikum'=>'required',
-         'tahun_ajaran'=>'required',
-         'nama_pertemuan'=>'required'
-     ]);
+     $validator = \Validator::make($request->all(), [
+         'nama_praktikum' => 'required',
+         'tahun_ajaran' => 'required',
+         'nama_pertemuan' => 'required'
+        ], [
+            'nama_praktikum.required' => "Masukkan Nama Praktikum",
+            'tahun_ajaran.required' => "Masukkan Tahun Ajaran"
+    ]);
+
+    if( $validator->passes()){
+           
         $post = $request->all();
 
         $data = new Praktikum;
@@ -322,12 +348,15 @@ class AdminController extends Controller
                 'id_praktikum'=>DB::getPdo()->lastInsertId(),
                 'nama_pertemuan'=>$request->input('nama_pertemuan')
             ]);
-        // dd($query);
-        if($query){
-            return redirect('datakelas')->with('berhasil', 'Data Berhasil Ditambahkan');
-        }
-        else{
-            return back()->with('gagal', 'Ada terjadi kesalahan');
+
+            if( !$query ){
+                return response()->json(['status'=>0,'msg'=>'Something went wrong, Failed to add user in database', 'timeOut' => 5000]);
+            }else{
+                return response()->json(['status'=>1,'msg'=>'Kelas Berhasil Ditambahkan', 'timeOut' => 3000]);
+            }
+        }       
+        else{          
+            return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
         }
      }
 
@@ -637,10 +666,18 @@ class AdminController extends Controller
     }
 
     public function updateform(Request $request){
-            $request->validate([
-                'id'=>'required',
-                'status' => 'required'
+
+            $validator = \Validator::make($request->all(), [
+                'id' => 'required',
+                'status' => [
+                    'required',
+                    'unique:statusform,statusform'
+                    ]
+                ], [
+                    'status.unique'=>'Status Masih Sama'
             ]);
+
+        if( $validator->passes()){
 
             $update = Statusform::where('id_statusform', $request->input('id'))
                         ->update([
@@ -649,11 +686,15 @@ class AdminController extends Controller
                         ]);
 
             if($update){
-                return redirect('openrekrutasist')->with('berhasil', 'Data Berhasil Diubah');
+                return response()->json(['status'=>1,'msg'=>'Data Berhasil Diubah']);
             }
             else{
-                return back()->with('gagal', 'Tidak Ada Perubahan Data yang Dilakukan');
+                return response()->json(['status'=>0,'msg'=>'Tidak Ada Perubahan Data']);
             }
+        }
+        else{
+            return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
+        }
 
         }
 

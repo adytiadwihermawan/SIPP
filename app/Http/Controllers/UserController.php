@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Stroage;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Praktikum;
 use App\Models\Pertemuan;
 use App\Models\Proses_praktikum;
@@ -27,6 +27,7 @@ use DataTables;
 use App\DataTables\NilaiDataTable;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\UsersImport;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -182,6 +183,8 @@ class UserController extends Controller
             'absen'=>$absen,
             'data_tugas'=>$data_tugas,
         ];
+
+        // dd($course);
         return view('dsn.matakuliah', $course);
 
     }
@@ -198,7 +201,7 @@ class UserController extends Controller
         $fileModel = new Materi;
 
         if($request->all()) {
-            $path = 'uploads/';
+            $path = 'storage';
             $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
             // $fileName = time().'_'.$request->_file->getClientOriginalName();
             // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
@@ -243,7 +246,7 @@ class UserController extends Controller
                 
                 $query = $fileModel->save(); 
             }else{
-                $path = 'uploads/';
+                $path = 'storage';
                 $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
 
                 $filePath = $request->_file->move(public_path($path), $newname);
@@ -270,7 +273,7 @@ class UserController extends Controller
 
    public function downloadFile(Request $request, $file)
    {
-        $path = 'uploads/'.$file;
+        $path = 'storage/'.$file;
         // dd($path);
         return response()->download(public_path($path));
    }
@@ -400,8 +403,8 @@ class UserController extends Controller
                          ->join('status_user', 'users.id_status', 'status_user.id_status') 
                          ->where('proses_praktikum.id_praktikum', $id)
                          ->orwhere('roles.id_praktikum', $id)
-                         ->select('nama_user', 'status')
-                         ->groupBy('nama_user', 'status')
+                         ->select('nama_user', 'status', 'username')
+                         ->groupBy('nama_user', 'status', 'username')
                          ->orderBy('status', 'asc')
                          ->get();
             // dd($data);
@@ -519,6 +522,12 @@ class UserController extends Controller
                                     'nama_user', 
                                     'namafile_tugas', 
                                     'uploadtugas.id_wadahtugas')
+                                ->groupBy('uploadtugas.id_tugas', 
+                                    'nilai', 
+                                    'username', 
+                                    'nama_user', 
+                                    'namafile_tugas', 
+                                    'uploadtugas.id_wadahtugas')
                                 ->get();
             // dd($grade);
             if ($request->ajax()) {
@@ -537,7 +546,13 @@ class UserController extends Controller
                         }
                     })
                     ->addColumn('file', function($row){
-                        $btn = "<a href='/downloadfile".$row->namafile_tugas."' data-id='" . $row->id_tugas . "' title='edit'>$row->namafile_tugas</a>";
+                        $pecah = explode(".", $row->namafile_tugas);
+                        $ekstensi = $pecah[1];
+                        if ($ekstensi == "docx" || $ekstensi == "pdf" || $ekstensi == "ppt"){
+                            $btn = "<a href='/downloadfile".$row->namafile_tugas."' data-id='" . $row->id_tugas . "' title='download'>$row->namafile_tugas</a>";
+                        } else {
+                            $btn = "<a href='/storage/$row->namafile_tugas' target='_blank' data-id='" . $row->id_tugas . "' title='view'>$row->namafile_tugas</a>";
+                        }
                         return $btn;
                     })
                     ->rawColumns(['grade', 'file'])
@@ -708,9 +723,9 @@ class UserController extends Controller
                         ->get();
 
         $assign = Uploadtugas::join('wadah_tugas', 'uploadtugas.id_wadahtugas', 'wadah_tugas.id_wadahtugas')
-                            ->where('wadah_tugas.id_wadahtugas', $id)
-                            ->first();
-        //    dd($data);
+                            ->where('uploadtugas.id_wadahtugas', $id)
+                            ->where('id_user', Auth::user()->id)
+                            ->get();
         $data = [
             'mk'=>$kelas,
             'nama_dosen'=>$nama_dosen,
@@ -729,22 +744,23 @@ class UserController extends Controller
                     'id_wadahtugas'=>'required',
                     '_file' => 'required'
                 ]);
-        $fileModel = new Uploadtugas;
-        // dd($request->file('_file'));
+
         if($request->all()) {
-            foreach($request->file('_file') as $file){
-                $path = 'uploads/';
-                $newname = Helper::renameFile($path, $file->getClientOriginalName());
-                $pathfile = $file->move(public_path($path), $newname);
-                $files[] = $pathfile;
-            }
-            
-            $fileModel->id_praktikum = $request->id;
-            $fileModel->id_user = $request->id_user;
-            $fileModel->id_wadahtugas = $request->id_wadahtugas;
-            $fileModel->namafile_tugas = $files;
-            $fileModel->waktu_submit = Carbon::now()->format('Y-m-d H:i:s');
-            $query = $fileModel->save();
+            $files = [];
+            foreach ($request->file('_file') as $file) {
+                $fileName = $file->getClientOriginalName();
+                $file->move(public_path('storage'), $fileName); 
+                $files = $fileName;
+                
+             $query = Uploadtugas::create([
+                    'id_praktikum'=>$request->id,
+                    'id_user'=>$request->id_user,
+                    'id_wadahtugas'=>$request->id_wadahtugas,
+                    'namafile_tugas'=> $files,
+                    'waktu_submit'=>Carbon::now()->format('Y-m-d H:i:s')
+            ]);
+         }
+
 
             if($query){
                 return response()->json(['status'=>1,'msg'=>'File Berhasil Diunggah']);
@@ -764,18 +780,18 @@ class UserController extends Controller
         $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
                                 ->where('pertemuan.id_praktikum', $id)
                                 ->get();
-                                
-        $presensi = Presensi::rightjoin('users', 'presensi.id_user', 'users.id')
-                                ->leftjoin('roles', 'presensi.id_user', 'roles.id_user')
-                                ->leftjoin('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
-                                ->select('nama_user', 'id', 'id_wadah', 'username', 'users.id_status')
-                                ->groupBy('nama_user', 'id', 'id_wadah', 'username', 'users.id_status')
-                                ->where('proses_praktikum.id_praktikum', $id)
-                                ->where('users.id_status', 4)
-                                ->get();
-        
-                            // dd($presensi);
+
+        $presensi =  Presensi::join('wadahpresensi', 'presensi.id_wadah', 'wadahpresensi.id_wadah')
+                                    ->rightjoin('users', 'presensi.id_user', 'users.id')
+                                    ->join('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
+                                    ->where('proses_praktikum.id_praktikum', $id)
+                                    ->where('users.id_status', 4)
+                                    ->get();
+
+        // dd($presensi);
+
         $kelas = Praktikum::where('id_praktikum', $id)->get();
+
         if ($request->ajax()) {
             return Datatables::of($presensi)
                     ->addColumn('keterangan', function($row){
@@ -790,10 +806,10 @@ class UserController extends Controller
                     ->make(true);
             }
 
-        // dd($currentTime);
         $absen = [
             'mk'=>$kelas,
             'absen'=>$absen,
+            'presensi'=>$presensi,
             'course'=>$course
         ];
 
@@ -863,7 +879,7 @@ class UserController extends Controller
                     'id_wadah'=>'required'
                 ]);
 
-        $folderPath = public_path('uploads/');
+        $folderPath = public_path('storage');
         
         $image_parts = explode(";base64,", $request->signed);
               
@@ -896,7 +912,18 @@ class UserController extends Controller
     }
 
     public function deletesubmission($id){
-        $query = uploadtugas::where('id_tugas', $id)->Delete();
+        $query = Uploadtugas::where('id_tugas', $id)->Delete();
+         
+         if($query){
+             return back()->with('berhasil', 'Data Berhasil Dihapus');
+         }
+         else{
+             return back()->with('gagal', 'Ada terjadi kesalahan');
+         }
+     }
+
+     public function deleteabsen($id){
+        $query = Wadahpresensi::where('id_wadah', $id)->Delete();
          
          if($query){
              return back()->with('berhasil', 'Data Berhasil Dihapus');
@@ -958,7 +985,7 @@ class UserController extends Controller
 
         }else{          
             
-            $path = 'uploads/';
+            $path = 'storage';
             $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
             $filePath = $request->_file->move(public_path($path, $newname));
 

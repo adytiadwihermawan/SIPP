@@ -18,6 +18,7 @@ class Uploadtugas extends Model
         'id_materi',
         'id_praktikum',
         'id_user',
+        'id_wadahtugas',
         'waktu_submit'
     ];
 

@@ -316,11 +316,129 @@
             $.each(data.error, function(prefix, val){
               $('span.'+prefix+'_error').text(val[0]);
             });
+              if(!data.error){
+                toastr.options =
+                  {
+                    "closeButton" : true
+                  }
+                toastr.error(data.msg)
+              }
           }else{
             $('#adduser')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
           }
         }
+      });
+    });
+  });
+
+  $(function(){
+
+    $('#addkelas').on('submit', function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+              if(!data.error){
+                toastr.options =
+                  {
+                    "closeButton" : true
+                  }
+                toastr.error(data.msg)
+              }
+          }else{
+            $('#addkelas')[0].reset();
+            toastr.success(data.msg)
+          }
+        }
+      });
+    });
+  });
+
+
+  $(function(){
+
+    $('#edituser').on('submit', function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+              if(!data.error){
+                toastr.options =
+                  {
+                    "closeButton" : true
+                  }
+                toastr.error(data.msg)
+              }
+          }
+          else{
+            toastr.success(data.msg)
+            window.location = '/datauser'
+          }
+        }
+      });
+    });
+  });
+
+  $(function(){
+
+    $('#changestatus').on('submit', function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+              if(!data.error){
+                toastr.options =
+                  {
+                    "closeButton" : true
+                  }
+                toastr.error(data.msg)
+              }
+          }
+          else{
+            toastr.success(data.msg)
+            window.location = '/openrekrutasist'
+            }
+          }
       });
     });
   });
@@ -346,7 +464,7 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            alert(data.msg);
+            toastr.success(data.msg)
             location.reload();
           }
         }
@@ -399,13 +517,20 @@
         },
         success:function(data){
           if(data.status == 0){
-            $.each(data.error, function(prefix, val){
+             $.each(data.error, function(prefix, val){
               $('span.'+prefix+'_error').text(val[0]);
             });
+              if(!data.error){
+                toastr.options =
+                  {
+                    "closeButton" : true
+                  }
+                toastr.error(data.msg)
+              }
           }else{
-            $('#tambahmk')[0].reset();
-            alert(data.msg);
-            location.reload()
+            toastr.success(data.msg)
+            $('.fade').modal( 'hide' );
+            $('#openasisten').DataTable().ajax.reload()
           }
         }
       });
@@ -415,27 +540,33 @@
 // To style only selects with the my-select class
 $('.selectpicker').selectpicker();
 
-
     $('body').on('click', '.delete', function () {
-       if (confirm("Are you sure to delete this data ?") == true) {
         var id = $(this).data('id');
-         
-        // ajax
-        $.ajax({
-            headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-            type:"POST",
-            url: "{{ url('delete-mk')}} ",
-            data: { id: id },
-            dataType: 'json',
-            success: function(params){
-              location.reload();
-              alert(params.text)
-              $('#openasisten').DataTable().ajax.reload()
-           }
-        });
-       }
+        Swal.fire({
+          title: 'Are you sure delete this data ?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+                headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                type:"POST",
+                url: "{{ url('delete-mk')}} ",
+                data: { id: id },
+                dataType: 'json',
+                success: function(params){
+                  toastr.success(params.text)
+                  $('#openasisten').DataTable().ajax.reload()
+              }
+            });
+          }
+        })
     });
 
     $('body').on('click', '.deleteuser', function () {

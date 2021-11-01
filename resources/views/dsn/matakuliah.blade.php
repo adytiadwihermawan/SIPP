@@ -412,7 +412,7 @@
         
 
         <div class="card-footer blue1">
-            {{$item->deskripsi}}
+            <textarea class="form-control" style="border-style: none; border-color: Transparent; overflow: auto;">{{$item->deskripsi}}</textarea>
             <br> 
             <a href="" class="btn hijau3 panjang1 float-right" data-toggle="modal" data-target="#edit-pertemuan-{{$item->id_pertemuan}}">
                 <i class="fas fa-edit"></i> Edit Pertemuan </button>
@@ -450,10 +450,7 @@
 
                         <div class="form-group">
                             <label for="">Materi Pembahasan</label>
-                            <input type="text" class="form-control"
-                                placeholder="Masukkan Deskripsi" name="deskripsi" value="{{$data->deskripsi}}" required>
-                                <!-- <textarea class="form-control" name="deskripsi" maxlength="1000" required rows="7" form="edit-pertemuan"> </textarea>
-                      -->
+                                <textarea class="form-control"  placeholder="Masukkan Deskripsi" name="deskripsi" maxlength="1000" required rows="5"> {{$data->deskripsi}}</textarea>
                             <span class="text-danger error-text deskripsi_error"></span>
                         </div>
 

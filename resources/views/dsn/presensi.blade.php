@@ -54,14 +54,14 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <table id="example1" class="table table-bordered table-striped">
+            <table id="presensi" class="table table-bordered table-striped">
 				<thead>
 					<tr style="text-align: center;">
-					          <th>No</th>
+					<th>No</th>
                     <th>Hari</th>
                     <th>Jam</th>
                     <th>Pertemuan</th>
-					          <th>Tanggal</th>
+					<th>Tanggal</th>
                     <th>Pokok Bahasan</th>
                     <th>Waktu Presensi</th>
                     <th>Aksi</th>
@@ -91,34 +91,14 @@
                         </td>
                         <td>
                             <a href="" class="btn btn-info" data-remote="false" data-toggle="modal" data-target="#view-{{$data->id_wadah}}">
-                                <i class="fas fa-edit"></i> View </button>
+                                <i class="fas fa-edit"></i> View
                             </a>
-                            <div class="modal fade" id="view-{{$data->id_wadah}}">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">REKAP PRESENSI PERTEMUAN {{$data->urutanpertemuan}}</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <table class="table table-striped hover" id="rekap">
-                                                    <thead>
-                                                        <tr style="text-align: center">
-                                                            <th>No</th>
-                                                            <th>NAMA</th>
-                                                            <th>NIM</th>
-                                                            <th>KETERANGAN</th>
-                                                        </tr>
-                                                    </thead>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                           <a href="" class="btn hijau3 panjang1 float-right" data-toggle="modal" data-target="#edit-absen-{{$data->id_wadah}}">
-                                <i class="fas fa-edit"></i> Edit</button>
+                            <a href="" class="btn hijau3 panjang1" data-toggle="modal" data-target="#edit-absen-{{$data->id_wadah }}">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="/deleteabsen/{{$data->id_wadah}}" title="Delete" class="btn-sm btn-danger btn float-right"
+                                onclick="return confirm('Are you sure to delete this data ?')">
+                                <i class="fa fa-trash"></i> Hapus 
                             </a>
                         </td>
                     </tr>
@@ -129,7 +109,6 @@
           </div>
         </div>
     </div>
-</section>
     @foreach ($absen as $item)
                       
     <div class="modal fade" id="edit-absen-{{$item->id_wadah}}">
@@ -187,6 +166,33 @@
             </div>
         </div>  
 
+    @endforeach
+
+    @foreach ($presensi as $cek)
+                            <div class="modal fade" id="view-{{$cek->id_wadah}}">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">REKAP PRESENSI PERTEMUAN {{$cek->urutanpertemuan}}</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table table-striped hover" id="rekap">
+                                                    <thead>
+                                                        <tr style="text-align: center">
+                                                            <th>No</th>
+                                                            <th>NAMA</th>
+                                                            <th>NIM</th>
+                                                            <th>KETERANGAN</th>
+                                                        </tr>
+                                                    </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
     @endforeach
 
 @endif

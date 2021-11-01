@@ -105,6 +105,8 @@ Route::get('deletemateri/{id}', [UserController::class, 'deletemateri']);
 
 Route::get('deletetugas/{id}', [UserController::class, 'deletetugas']);
 
+Route::get('deleteabsen/{id}', [UserController::class, 'deleteabsen']);
+
 Route::get('downloadfile{file}', [UserController::class, 'downloadFile'])->name('download');
 
 Route::post('pertemuan', [UserController::class, 'buatPertemuan'])->name('pertemuan');

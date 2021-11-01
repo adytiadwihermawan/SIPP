@@ -18,10 +18,10 @@
 <table style="width: 100%" class="table table-bordered table-striped my-5" id="partisipan">
             <thead>
                 <tr style="text-align: center">
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Role</th>
-                    <th>Aksi</th>
+                    <th>NO</th>
+                    <th>NIM/NIP</th>
+                    <th>NAMA</th>
+                    <th>ROLE</th>
                 </tr>
             </thead>
 </table>

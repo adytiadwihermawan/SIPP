@@ -10,12 +10,6 @@
 	<div class="card-body">
 		<div class="table-responsive">
 			
-			@if(Session::get('gagal'))
-			<hr>
-				<div class="alert alert-danger">
-					{{ Session::get('gagal')  }}
-				</div>
-			@endif
 					<form id="adduser" action="{{route('tambahpengguna')}}" method="POST">
 					
 						@csrf

@@ -10,14 +10,6 @@
 	<div class="card-body">
 		<div class="table-responsive">
 
-					
-					@if(Session::get('gagal'))
-					<hr>
-						<div class="alert alert-danger">
-							{{ Session::get('gagal')  }}
-						</div>
-					@endif
-
 					<form id="edituser" action="/update" method="post">
 						
 						@csrf
@@ -26,13 +18,12 @@
 							<div class="form-group">
 								<label for="">Nama</label>
 								<input type="text" class="form-control" name="nama_user" value="{{ old('nama_user', $Info->nama_user) }}">
-								<span style="color:red">@error('nama_user') {{ $message }} @enderror</span>
+								<span class="text-danger error-text nama_user_error"></span>
 							</div>
 							
 							<div class="form-group">
 								<label for="">Password</label>
-								<input type="password" class="form-control" name="password" value="{{ old('password', $Info->password) }}">
-								<span style="color:red">@error('password') {{ $message }} @enderror</span>
+								<input type="password" class="form-control" name="password" value="">
 							</div>
 
 							<div class="form-group">
@@ -42,7 +33,7 @@
                                     <option value="{{$data->id_status}}" {{ old('role', $data->id_status) == $Info->id_status ? 'selected' : null}}>{{ $data->status}}</option>
                                     @endforeach
 								</select>
-								<span style="color:red">@error('role') {{ $message }} @enderror</span>
+								<span class="text-danger error-text role_error"></span>
 							</div>
 						
 					<div class="modal-footer">
