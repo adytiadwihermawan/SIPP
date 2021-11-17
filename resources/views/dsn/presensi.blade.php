@@ -76,12 +76,13 @@
                             <a href="" class="btn btn-info" data-remote="false" data-toggle="modal" data-target="#view-{{$data->id_wadah}}">
                                 <i class="fas fa-edit"></i> View
                             </a>
-                            <a href="" class="btn hijau3 panjang1" data-toggle="modal" data-target="#edit-absen-{{$data->id_wadah }}">
+                            <br>
+                            <a href="" class="btn hijau3 panjang1 mt-2" data-toggle="modal" data-target="#edit-absen-{{$data->id_wadah }}">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
-                            <a href="/deleteabsen/{{$data->id_wadah}}" title="Delete" class="btn-sm btn-danger btn float-right"
-                                onclick="return confirm('Are you sure to delete this data ?')">
-                                <i class="fa fa-trash"></i> Hapus 
+                            <br>
+                            <a href="/deleteabsen/{{$data->id_wadah}}" title="Delete" class="btn btn-danger mt-2" onclick="return confirm('Are you sure to delete this data ?')">
+                                <i class="fa fa-trash"></i> Hapus
                             </a>
                         </td>
                     </tr>
