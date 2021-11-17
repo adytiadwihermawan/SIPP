@@ -17,6 +17,10 @@
 
    <link rel="stylesheet" href="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.css')}}">
 
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.2/dist/sweetalert2.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 
    <link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
    
@@ -167,6 +171,10 @@
 
 <script src="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.js')}}"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 <script>
 
   // $.ajaxSetup({
@@ -190,10 +198,10 @@
           processUrl:'{{ route("updateFotoUser") }}',
           withCSRF:['_token','{{ csrf_token() }}'],
           onSuccess:function(message, element, status){
-             alert(message);
+             toastr.success(message)
           },
           onError:function(message, element, status){
-            alert(message);
+            toastr.error(message);
           }
        });
 
@@ -217,7 +225,7 @@
             });
           }else{
             $('#gantiPass')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
           }
         }
       });
@@ -242,7 +250,7 @@
             });
           }else{
             $('#daftar')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
           }
         }
       });

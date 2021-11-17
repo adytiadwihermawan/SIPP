@@ -217,7 +217,7 @@ $(document).ready(function(){
             });
           }else{
             location.reload();
-            alert(data.msg);
+            toastr.success(data.msg)
           }
         }
       });
