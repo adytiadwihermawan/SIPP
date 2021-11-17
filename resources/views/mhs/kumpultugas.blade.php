@@ -106,8 +106,9 @@
                                     <th>FILE</th>
                                     <td>
                                         <div class="custom-file">
-                                            @foreach ($assign as $file)
+                                            @foreach (explode(',', $assign) as $file)
                                             <?php
+                                                
                                                 $pecah = explode(".", $file->namafile_tugas);
                                                 $ekstensi = $pecah[1];
                                             ?>
@@ -133,9 +134,11 @@
                                                 @else
                                                 <i class="fa fa-file-text-o mr-2" style="font-size:23px;color:black"> </i>
                                             @endif
+                                            
+                                            <?php $files = json_decode($file->namafile_tugas); ?>
                                         <a style="text-decoration: none; color:indianred"  href="{{route('download', $file->namafile_tugas)}}"> 
-                                            {{$file->namafile_tugas}}
-                                            <br>
+                                            {{-- {!!  $files->namafile_tugas !!}    --}}
+                                            <br>                                     
                                         </a>
                                             @endforeach
                                          {{ date('j F Y, H:i', strtotime($assign[0]->waktu_submit)) }}

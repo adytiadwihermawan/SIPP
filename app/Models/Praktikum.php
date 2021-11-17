@@ -18,4 +18,9 @@ class Praktikum extends Model
         'id_praktikum', 'tahun_ajaran', 'nama_praktikum', 'jam_praktikum', 'id_lab', 'hari_praktikum'
     ];
     
+    public function praktikum(){
+    	return $this->hasMany(Rekrutasisten::class);
+    }
+
+    
 }

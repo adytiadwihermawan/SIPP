@@ -19,6 +19,6 @@ class Proses_praktikum extends Model
     
     public function praktikum()
     {
-        return $this->belongsTo(Praktikum::class);
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 }

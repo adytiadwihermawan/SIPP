@@ -426,13 +426,6 @@
             $.each(data.error, function(prefix, val){
               $('span.'+prefix+'_error').text(val[0]);
             });
-              if(!data.error){
-                toastr.options =
-                  {
-                    "closeButton" : true
-                  }
-                toastr.error(data.msg)
-              }
           }
           else{
             toastr.success(data.msg)
@@ -534,6 +527,42 @@
           }
         }
       });
+    });
+  });
+
+   $(function () {
+     
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    var table = $('#viewcalonasisten').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+          url: "daftarcalonasisten"
+        },
+        columnDefs: [
+                        {"className": "dt-center", "targets": [0,2, 3,4]}
+                    ],
+        columns: [
+            {
+              "data": null, "sortable": false,
+              render: function(data, type, row, meta){
+              return meta.row + meta.settings._iDisplayStart + 1
+                    }
+                },
+            {data: 'nama_user', name: 'nama_user'},
+            {data: 'praktikumpilihan1', name: 'praktikum_pilihan1'},
+            {data: 'nilai_pilihan1', name: 'nilai_pilihan1'},
+            {data: 'praktikumpilihan2', name: 'praktikum_pilihan2'},
+            {data: 'nilai_pilihan2', name: 'nilai_pilihan2'},
+            {data: 'IPK', name: 'IPK'},
+            {data: 'Nohp', name: 'Nohp'},
+            {data: 'filetranskripnilai', name: 'filetranskripnilai'},
+        ]
     });
   });
 

@@ -17,4 +17,12 @@ class Presensi extends Model
         'waktu_presensi',
         'id_wadah' 
     ];
+
+    protected  $primaryKey = 'id_presensi';
+
+    public function presensi()
+    {
+        return $this->belongsTo(Wadahpresensi::class, 'id_wadah', 'id_wadah');
+    }
+
 }

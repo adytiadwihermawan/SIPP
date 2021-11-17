@@ -532,6 +532,12 @@ class UserController extends Controller
             // dd($grade);
             if ($request->ajax()) {
             return Datatables::of($grade)
+                    ->addColumn('nama', function($row){
+                                return $row->nama_user;
+                            })
+                    ->addColumn('nim', function($row){
+                                return $row->username;
+                            })
                     ->addColumn('grade', function($row){
                         if($row->nilai){
                             $nilai = $row->nilai;
@@ -546,16 +552,16 @@ class UserController extends Controller
                         }
                     })
                     ->addColumn('file', function($row){
-                        $pecah = explode(".", $row->namafile_tugas);
-                        $ekstensi = $pecah[1];
-                        if ($ekstensi == "docx" || $ekstensi == "pdf" || $ekstensi == "ppt"){
-                            $btn = "<a href='/downloadfile".$row->namafile_tugas."' data-id='" . $row->id_tugas . "' title='download'>$row->namafile_tugas</a>";
-                        } else {
-                            $btn = "<a href='/storage/$row->namafile_tugas' target='_blank' data-id='" . $row->id_tugas . "' title='view'>$row->namafile_tugas</a>";
-                        }
-                        return $btn;
+                            $pecah = explode(".", $row->namafile_tugas);
+                            $ekstensi = $pecah[1];
+                            if ($ekstensi == "docx" || $ekstensi == "pdf" || $ekstensi == "ppt"){
+                                $btn = "<a href='/downloadfile".$row->namafile_tugas."' data-id='" . $row->id_user . "' title='download'>$row->namafile_tugas</a>";
+                            } else {
+                                $btn = "<a href='/storage/$row->namafile_tugas' target='_blank' data-id='" . $row->id_user . "' title='view'>$row->namafile_tugas</a>";
+                            }
+                            return $btn;
                     })
-                    ->rawColumns(['grade', 'file'])
+                    ->rawColumns(['nama', 'nim','grade', 'file'])
                     ->make(true);
             }
             $mk = Praktikum::join('pertemuan', 'praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
@@ -644,6 +650,10 @@ class UserController extends Controller
         $data->waktu_berakhir = $post['wap'];
         $data->tanggal = $post['tanggal'];
         $query = $data->save();
+
+        Presensi::insert([
+                'id_wadah'=>DB::getPdo()->lastInsertId()
+            ]);
         // dd($query);
         if($query){
             return response()->json(['status'=>1,'msg'=>'Absen berhasil dibuat']);
@@ -738,29 +748,33 @@ class UserController extends Controller
 
     public function kumpulTugas(Request $request){
 
-        $request->validate([
-                    'id'=>'required',
-                    'id_user'=>'required',
-                    'id_wadahtugas'=>'required',
-                    '_file' => 'required'
-                ]);
+        $input_data = $request->all();
 
-        if($request->all()) {
+        $validator = \Validator::make(
+        $input_data, [
+        '_file.*' => 'required|file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,doc,docx,pdf,tif,tiff'
+        ],[
+            '_file.*.required' => 'Please upload file',
+            '_file.*.mimes' => 'Only xlsx,xls,csv,jpg,jpeg,png,bmp,doc,docx,pdf,tif,tiff images are allowed',
+
+        ]
+        );
+
+        if($request->hasFile('_file')) {
             $files = [];
             foreach ($request->file('_file') as $file) {
                 $fileName = $file->getClientOriginalName();
                 $file->move(public_path('storage'), $fileName); 
-                $files = $fileName;
+                $files[] = $fileName;
                 
-             $query = Uploadtugas::create([
+         }
+         $query = Uploadtugas::create([
                     'id_praktikum'=>$request->id,
                     'id_user'=>$request->id_user,
                     'id_wadahtugas'=>$request->id_wadahtugas,
-                    'namafile_tugas'=> $files,
+                    'namafile_tugas'=> json_encode($files),
                     'waktu_submit'=>Carbon::now()->format('Y-m-d H:i:s')
             ]);
-         }
-
 
             if($query){
                 return response()->json(['status'=>1,'msg'=>'File Berhasil Diunggah']);
@@ -781,19 +795,27 @@ class UserController extends Controller
                                 ->where('pertemuan.id_praktikum', $id)
                                 ->get();
 
-        $presensi =  Presensi::join('wadahpresensi', 'presensi.id_wadah', 'wadahpresensi.id_wadah')
-                                    ->rightjoin('users', 'presensi.id_user', 'users.id')
-                                    ->join('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
-                                    ->where('proses_praktikum.id_praktikum', $id)
-                                    ->where('users.id_status', 4)
-                                    ->get();
 
+        $presensi = Presensi::rightjoin('wadahpresensi', 'presensi.id_wadah', 'wadahpresensi.id_wadah')
+                    ->rightjoin('users','presensi.id_user','=','users.id')
+                    ->join('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
+                    ->where('proses_praktikum.id_praktikum', $id)
+                    ->where('users.id_status', 4)
+                    ->get();
         // dd($presensi);
+
+
 
         $kelas = Praktikum::where('id_praktikum', $id)->get();
 
         if ($request->ajax()) {
             return Datatables::of($presensi)
+                    ->addColumn('nama', function($row){
+                        return $row->nama_user;
+                    })
+                    ->addColumn('nim', function($row){
+                        return $row->username;
+                    })
                     ->addColumn('keterangan', function($row){
                         if($row->id_wadah){
                             return "Hadir";

@@ -26,5 +26,12 @@ class Wadahpresensi extends Model
     public $timestamps = false;
 
     protected $table = 'wadahpresensi';
+
+    protected  $primaryKey = 'id_wadah';
     
+    public function wadahpresensi(){
+    	return $this->hasMany(Presensi::class);
+    }
+
+
 }

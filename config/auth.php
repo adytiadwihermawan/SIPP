@@ -71,6 +71,81 @@ return [
             'model' => App\Models\User::class,
         ],
 
+        'labs' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Lab::class,
+        ],
+
+        'materis' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Materi::class,
+        ],
+
+        'nilais' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Nilai::class,
+        ],
+
+        'pertemuans' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Pertemuan::class,
+        ],
+
+        'praktikums' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Praktikum::class,
+        ],
+
+        'presensis' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Presensi::class,
+        ],
+
+        'proses_praktikums' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Proses_praktikum::class,
+        ],
+
+        'rekrutasistens' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Rekrutasisten::class,
+        ],
+
+        'roles' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Roles::class,
+        ],
+
+        'status_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Status_user::class,
+        ],
+
+        'statusforms' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Statusorm::class,
+        ],
+
+        'uploadtugas' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Uploadtugas::class,
+        ],
+
+        'wadah_tugas' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Wadah_tugas::class,
+        ],
+
+        'wadahforms' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Wadahform::class,
+        ],
+
+        'Wadahpresensis' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Wadahpresensi::class,
+        ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

@@ -698,4 +698,29 @@ class AdminController extends Controller
 
         }
 
+    public function viewcalon(Request $request){
+        $data = Praktikum::first();
+
+         $datas = Rekrutasisten::with(['praktikum1', 'praktikum2'])->get();
+        // foreach ($datas as $key) {
+        //     dd($key->praktikum2->nama_praktikum);
+        // }
+
+         if ($request->ajax()) {
+            $data = Rekrutasisten::with(['praktikum1', 'praktikum2'])
+                             ->join('users', 'rekrutasisten.id_user', 'users.id')
+                             ->get();
+            return Datatables::of($data)
+                    ->addColumn('praktikumpilihan1', function($row){
+                           return $row->praktikum1->nama_praktikum;
+                    })
+                    ->addColumn('praktikumpilihan2', function($row){
+                           return $row->praktikum2->nama_praktikum;
+                    })
+                    ->rawColumns(['praktikumpilihan1', 'praktikumpilihan2'])
+                    ->make(true);
+        }
+        return view('admin.daftarcalonasisten', compact('data'));
+    }
+
 }

@@ -8,25 +8,14 @@
         <h3 class="card-title">
             <i class="fa fa-table"></i> Mata Kuliah Untuk Calon Asisten Praktikum </h3>
     </div>
-    
-        @if(Session::get('berhasil'))
-        <hr>
-        <div class="alert alert-success">
-            {{ Session::get('berhasil')  }}
-        </div>
-        @endif
-
-        @if(Session::get('gagal'))
-        <hr>
-        <div class="alert alert-danger">
-            {{ Session::get('gagal')  }}
-        </div>
-        @endif
-    <br>
+<br>
     <div class="col-sm">
 
         <button type="button" class="btn blue4h" title="Tambah MK" data-toggle="modal" data-target="#modal-mk">
             <i class="fa fa-plus"></i> Tambah Mata Kuliah Praktikum</button>
+
+        <a class="btn blue4h" title="Daftar Calon Asisten" href="daftarcalonasisten">
+            Daftar Calon Asisten</a>
     </div>
     <form id="changestatus" action="status-form" method="post">
         <table class="mt-3 ml-2">

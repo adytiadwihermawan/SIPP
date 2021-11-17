@@ -248,8 +248,8 @@
               return meta.row + meta.settings._iDisplayStart + 1
                     }
                 },
-              {data: 'nama_user', name: 'nama_user' },
-              {data: 'username', name: 'username'},
+              {data: 'nama', name: 'nama' },
+              {data: 'nim', name: 'nim'},
               {data: 'grade', name: 'grade'},
               {data: 'file', name: 'file'}
         ]
@@ -277,7 +277,7 @@
            {
              extend: 'excel',
              text: '<span class="fa fa-file-excel-o"></span> Export Rekap Presensi',
-            
+             
              title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$course[0]->nama_praktikum}} ',
              exportOptions: {
                  columns: [ 0, 1, 2, 3 ],
@@ -296,8 +296,8 @@
                return meta.row + meta.settings._iDisplayStart + 1
                      }
                  },
-               {data: 'nama_user', name: 'nama_user' },
-               {data: 'username', name: 'username'},
+               {data: 'nama', name: 'nama_user' },
+               {data: 'nim', name: 'username'},
                {data: 'keterangan', name: 'keterangan'}
          ]
      });

@@ -82,6 +82,8 @@ Route::post('delete-mk', [AdminController::class, 'hapus']);
 
 Route::post('status-form', [AdminController::class, 'updateform']);
 
+Route::get('daftarcalonasisten', [AdminController::class, 'viewcalon']);
+
 
 // ----------------------------------------- Dashboard Dosen -------------------------------------------------------------------- \\
 

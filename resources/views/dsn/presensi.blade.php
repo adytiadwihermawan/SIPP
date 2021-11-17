@@ -12,25 +12,8 @@
 
 
 @section('content')
-@if(empty($absen[0]->id_wadah))
+@if(!empty($absen[0]->id_wadah))
 
-<div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="error-template">
-                    <h1>
-                        Oops!</h1>
-                    <h2>
-                        Belum Ada Absen untuk Mata Kuliah Sekarang</h2>
-                    <div class="error-details">
-                        Mohon menunggu sampai dosen atau asisten kelas membuat absen untuk mata kuliah ini
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-@else
 <div class="card col-12 blue1">
         <div class="card-header">
             <h3 class="card-title">
@@ -195,5 +178,24 @@
                             </div>
     @endforeach
 
+@else
+
+<div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="error-template">
+                    <h1>
+                        Oops!</h1>
+                    <h2>
+                        Belum Ada Absen untuk Mata Kuliah Sekarang</h2>
+                    <div class="error-details">
+                        Mohon menunggu sampai dosen atau asisten kelas membuat absen untuk mata kuliah ini
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endif
+
 @endsection

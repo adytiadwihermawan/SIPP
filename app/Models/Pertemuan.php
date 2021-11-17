@@ -17,8 +17,4 @@ class Pertemuan extends Model
 
     public $timestamps = false;
     
-    public function pertemuan()
-    {
-        return $this->hasOne(Praktikum::class);
-    }
 }

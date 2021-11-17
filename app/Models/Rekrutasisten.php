@@ -21,4 +21,15 @@ class Rekrutasisten extends Model
         'nilai_pilihan1',
         'nilai_pilihan2'
     ];
+
+    public function praktikum1()
+    {
+        return $this->belongsTo(Praktikum::class, 'praktikum_pilihan1', 'id_praktikum');
+    }
+
+    public function praktikum2()
+    {
+        return $this->belongsTo(Praktikum::class, 'praktikum_pilihan2', 'id_praktikum');
+    }
+    
 }
