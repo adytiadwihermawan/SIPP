@@ -48,7 +48,7 @@
 						<button type="submit" class="btn btn-primary">Tambah Peserta Kelas</button>
 						<button type="button" class="btn blue4h float-right py-1 mr-3"  title="Buat Pertemuan"
                 data-toggle="modal" data-target="#modal-import">
-                <i class="fa fa-plus"></i> Import Data User</button>
+                <i class="fa fa-plus"></i> Import Peserta Kelas</button>
 					</div>
 				</form>
 
@@ -58,7 +58,7 @@
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title">Import Data User</h4>
+							<h4 class="modal-title">Import Peserta Kelas</h4>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -67,11 +67,9 @@
 							<form id="import-peserta" action="{{ route('file-import-peserta') }}" method="POST" enctype="multipart/form-data">
 								@csrf
 								<div class="form-group mb-4" style="max-width: 500px; margin: 0 auto;">
-									<div class="custom-file text-left">
-										<input type="file" name="file" class="custom-file-input" id="customFile">
+										<input type="file" name="file" class="form-control" id="customFile">
 										<span class="text-danger error-text file_error"></span>
-										<label class="custom-file-label" for="customFile">Choose file</label>
-									</div>
+										
 								</div>
 								
 								<button type="button" class="btn" >
@@ -79,7 +77,7 @@
 <i class="fa fa-book"></i> <a href="{{asset('assets/file/tambah partisipan kelas.xlsx')}}" download="Template Tambah User">
  Download Template Excel</a> 
 </button>
-								<button class="btn btn-primary">Import data</button>
+								<button class="btn btn-primary float-right">Import data</button>
 							</form>
 						</div>
 
