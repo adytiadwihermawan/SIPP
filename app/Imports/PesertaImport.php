@@ -4,10 +4,12 @@ namespace App\Imports;
 
 use App\Models\Proses_praktikum;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use App\Models\User;
 use App\Models\Praktikum;
 
-class PesertaImport implements ToModel
+
+class PesertaImport implements ToModel, WithHeadingRow
 {
     /**
     * @param array $row
@@ -16,8 +18,8 @@ class PesertaImport implements ToModel
     */
     public function model(array $row)
     {
-        $user = User::where("username", "like", "%".$row[0]."%")->first();
-        $kelas = Praktikum::where("nama_praktikum", "like", "%".$row[1]."%")->first();
+        $user = User::where("username", "like", "%".$row['nimnip']."%")->first();
+        $kelas = Praktikum::where("nama_praktikum", "like", "%".$row['kelas']."%")->first();
 
         // dd($row);
         $cekuser = $row['id'] = $user->id;

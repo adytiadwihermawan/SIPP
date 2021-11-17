@@ -46,47 +46,9 @@
 						<button type="button" class="btn btn-secondary" data-dismiss="modal"><a style="color: white;" href="/datakelas">
 						Kembali</a></button>
 						<button type="submit" class="btn btn-primary">Tambah Peserta Kelas</button>
-						<button type="button" class="btn blue4h float-right py-1 mr-3"  title="Buat Pertemuan"
-                data-toggle="modal" data-target="#modal-import">
-                <i class="fa fa-plus"></i> Import Peserta Kelas</button>
+						
 					</div>
 				</form>
-
-				
-
-				<div class="modal fade" id="modal-import">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title">Import Peserta Kelas</h4>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<form id="import-peserta" action="{{ route('file-import-peserta') }}" method="POST" enctype="multipart/form-data">
-								@csrf
-								<div class="form-group mb-4" style="max-width: 500px; margin: 0 auto;">
-										<input type="file" name="file" class="form-control" id="customFile">
-										<span class="text-danger error-text file_error"></span>
-										
-								</div>
-								
-								<button type="button" class="btn" >
-
-<i class="fa fa-book"></i> <a href="{{asset('assets/file/tambah partisipan kelas.xlsx')}}" download="Template Tambah User">
- Download Template Excel</a> 
-</button>
-								<button class="btn btn-primary float-right">Import data</button>
-							</form>
-						</div>
-
-						<!-- /.modal-content -->
-					</div>
-					<!-- /.modal-dialog -->
-				</div>
-				<!-- /.content -->
-			</div>
 
 	@if (!empty($data->id_praktikum))
 		

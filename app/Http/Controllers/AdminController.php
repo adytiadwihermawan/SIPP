@@ -169,12 +169,14 @@ class AdminController extends Controller
 
             $rules = [
                 'id' => 'required',
+                'username'=>'required',
                 'nama_user' => 'required',
                 'password',
                 'role' => 'required'
                 ];
 
             $validator = \Validator::make($request->all(), $rules, [
+                    'username.required' => "Masukkan NIM/NIP Pengguna",
                     'nama_user.required' => "Masukkan Nama Pengguna"
             ]);
             if( $validator->passes()){
@@ -184,6 +186,7 @@ class AdminController extends Controller
                 $update = User::where('id', $request->input('id'))
                         ->update([
                             'id'=>$request->input('id'),
+                            'username'=>$request->input('username'),
                             'nama_user'=>$request->input('nama_user'),
                             'id_status'=>$request->input('role')
                         ]);
@@ -192,6 +195,7 @@ class AdminController extends Controller
                 $update = User::where('id', $request->input('id'))
                         ->update([
                             'id'=>$request->input('id'),
+                            'username'=>$request->input('username'),
                             'nama_user'=>$request->input('nama_user'),
                             'password'=>Hash::make($request->input('password')),
                             'id_status'=>$request->input('role')
@@ -327,11 +331,12 @@ class AdminController extends Controller
     public function addkelas(Request $request){
 
      $validator = \Validator::make($request->all(), [
-         'nama_praktikum' => 'required',
+         'nama_praktikum' => 'required|unique:praktikum,nama_praktikum',
          'tahun_ajaran' => 'required',
          'nama_pertemuan' => 'required'
         ], [
             'nama_praktikum.required' => "Masukkan Nama Praktikum",
+            'nama_praktikum.unique'=>"Kelas Sudah Terdaftar",
             'tahun_ajaran.required' => "Masukkan Tahun Ajaran"
     ]);
 
@@ -476,7 +481,7 @@ class AdminController extends Controller
                         ]);
         // dd($update);
         if($update){
-            return redirect('datakelas')->with('berhasil', 'Data Berhasil Diubah');
+              return response()->json(['status'=>1,'msg'=>'Data Berhasil Diubah']);
         }
         else{
             return back()->with('gagal', 'Tidak Ada Perubahan Data yang Dilakukan');
@@ -544,7 +549,7 @@ class AdminController extends Controller
         ]);
     
         if($query){
-            return redirect('datalab')->with('berhasil', 'Data Berhasil Ditambahkan');
+            return response()->json(['status'=>1,'msg'=>'Lab Berhasil Ditambahkan', 'timeOut' => 3000]);
         }
         else{
             return back()->with('gagal', 'Ada terjadi kesalahan');
@@ -591,7 +596,7 @@ class AdminController extends Controller
                     ]);
         // dd($update);
         if($update){
-            return redirect('datalab')->with('berhasil', 'Data Berhasil Diubah');
+            return response()->json(['status'=>1,'msg'=>'Data Berhasil Diubah']);
         }
         else{
             return back()->with('gagal', 'Tidak Ada Perubahan Data yang Dilakukan');
@@ -717,7 +722,10 @@ class AdminController extends Controller
                     ->addColumn('praktikumpilihan2', function($row){
                            return $row->praktikum2->nama_praktikum;
                     })
-                    ->rawColumns(['praktikumpilihan1', 'praktikumpilihan2'])
+                    ->addColumn('file', function($row){
+                           return $btn = "<a href='/downloadfile".$row->filetranskripnilai."' data-id='" . $row->id_user . "' title='download'>$row->filetranskripnilai</a>";
+                    })
+                    ->rawColumns(['praktikumpilihan1', 'praktikumpilihan2', 'file'])
                     ->make(true);
         }
         return view('admin.daftarcalonasisten', compact('data'));

@@ -796,7 +796,7 @@ class UserController extends Controller
                                 ->get();
 
 
-        $presensi = Presensi::rightjoin('wadahpresensi', 'presensi.id_wadah', 'wadahpresensi.id_wadah')
+        $presensi = Presensi::leftjoin('wadahpresensi', 'presensi.id_wadah', 'wadahpresensi.id_wadah')
                     ->rightjoin('users','presensi.id_user','=','users.id')
                     ->join('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
                     ->where('proses_praktikum.id_praktikum', $id)
@@ -1010,6 +1010,9 @@ class UserController extends Controller
             $path = 'storage';
             $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
             $filePath = $request->_file->move(public_path($path, $newname));
+
+            // $fileName = $file->getClientOriginalName();
+            //     $file->move(public_path('storage'), $fileName);     
 
             $daftar = new Rekrutasisten;
 

@@ -16,6 +16,12 @@
 								<input type="text" class="form-control" name="id" value="{{ old('id', $Info->id) }}" hidden>
 
 							<div class="form-group">
+								<label for="">NIM/NIP</label>
+								<input type="text" class="form-control" name="username" value="{{ old('username', $Info->username) }}">
+								<span class="text-danger error-text username_error"></span>
+							</div>
+
+							<div class="form-group">
 								<label for="">Nama</label>
 								<input type="text" class="form-control" name="nama_user" value="{{ old('nama_user', $Info->nama_user) }}">
 								<span class="text-danger error-text nama_user_error"></span>

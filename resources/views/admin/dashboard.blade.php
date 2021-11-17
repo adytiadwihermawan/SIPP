@@ -368,6 +368,41 @@
     });
   });
 
+  $(function(){
+
+    $('#addlab').on('submit', function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+              if(!data.error){
+                toastr.options =
+                  {
+                    "closeButton" : true
+                  }
+                toastr.error(data.msg)
+              }
+          }else{
+            $('#addlab')[0].reset();
+            toastr.success(data.msg)
+          }
+        }
+      });
+    });
+  });
 
   $(function(){
 
@@ -398,8 +433,80 @@
               }
           }
           else{
-            toastr.success(data.msg)
             window.location = '/datauser'
+            toastr.success(data.msg)
+          }
+        }
+      });
+    });
+  });
+
+  $(function(){
+
+    $('#editkelas').on('submit', function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+              if(!data.error){
+                toastr.options =
+                  {
+                    "closeButton" : true
+                  }
+                toastr.error(data.msg)
+              }
+          }
+          else{
+            toastr.success(data.msg)
+          }
+        }
+      });
+    });
+  });
+
+   $(function(){
+
+    $('#editlab').on('submit', function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+              if(!data.error){
+                toastr.options =
+                  {
+                    "closeButton" : true
+                  }
+                toastr.error(data.msg)
+              }
+          }
+          else{
+            toastr.success(data.msg)
           }
         }
       });
@@ -458,7 +565,7 @@
             });
           }else{
             toastr.success(data.msg)
-            location.reload();
+            $('#pesertakelas').DataTable().ajax.reload()
           }
         }
       });
@@ -481,13 +588,13 @@
           $(document).find('span.error-text').text('');
         },
         success:function(data){
-          if(data.status == 0){
+         if(data.status == 0){
             $.each(data.error, function(prefix, val){
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            alert(data.msg);
-            location.reload();
+            toastr.success(data.msg)
+            $('#datakelas').DataTable().ajax.reload()
           }
         }
       });
@@ -561,7 +668,7 @@
             {data: 'nilai_pilihan2', name: 'nilai_pilihan2'},
             {data: 'IPK', name: 'IPK'},
             {data: 'Nohp', name: 'Nohp'},
-            {data: 'filetranskripnilai', name: 'filetranskripnilai'},
+            {data: 'file', name: 'filetranskripnilai'},
         ]
     });
   });
@@ -626,96 +733,128 @@ $('.selectpicker').selectpicker();
           }
         })
     });
-    
-    $('body').on('click', '.deletekelas', function () {
-       if (confirm("Are you sure to delete this data ?") == true) {
+
+     $('body').on('click', '.deletekelas', function () {
         var id = $(this).data('id');
-         
-        // ajax
-        $.ajax({
-            headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-            type:"POST",
-            url: "{{ url('deletekelas')}} ",
-            data: { id: id },
-            dataType: 'json',
-            success: function(params){
-              alert(params.text)
-              $('#datakelas').DataTable().ajax.reload()
-           }
-        });
-       }
+        Swal.fire({
+          title: 'Are you sure delete this data ?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+                headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                type:"POST",
+                url: "{{ url('deletekelas')}} ",
+                data: { id: id },
+                dataType: 'json',
+                success: function(params){
+                  toastr.success(params.text)
+                  $('#datakelas').DataTable().ajax.reload()
+              }
+            });
+          }
+        })
     });
 
-    $('body').on('click', '.deletelab', function () {
-       if (confirm("Are you sure to delete this data ?") == true) {
+     $('body').on('click', '.deletelab', function () {
         var id = $(this).data('id');
-         
-        // ajax
-        $.ajax({
-            headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-            type:"POST",
-            url: "{{ url('deletelab')}} ",
-            data: { id: id },
-            dataType: 'json',
-            success: function(params){
-              alert(params.text)
-              $('#datalab').DataTable().ajax.reload()
-           }
-        });
-       }
+        Swal.fire({
+          title: 'Are you sure delete this data ?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+                headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                type:"POST",
+                url: "{{ url('deletelab')}} ",
+                data: { id: id },
+                dataType: 'json',
+                success: function(params){
+                  toastr.success(params.text)
+                  $('#datalab').DataTable().ajax.reload()
+              }
+            });
+          }
+        })
     });
 
-    $('body').on('click', '.deletepeserta', function () {
-       if (confirm("Are you sure to delete this data ?") == true) {
+     $('body').on('click', '.deletepeserta', function () {
         var id = $(this).data('id');
-         
-        // ajax
-        $.ajax({
-            headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-            type:"POST",
-            url: "{{ url('delete-peserta')}} ",
-            data: { id: id },
-            dataType: 'json',
-            success: function(params){
-              alert(params.text)
-              $('#pesertakelas').DataTable().ajax.reload()
-           }
-        });
-       }
+        Swal.fire({
+          title: 'Are you sure delete this data ?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+                headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                type:"POST",
+                url: "{{ url('delete-peserta')}} ",
+                data: { id: id },
+                dataType: 'json',
+                success: function(params){
+                  toastr.success(params.text)
+                  $('#pesertakelas').DataTable().ajax.reload()
+              }
+            });
+          }
+        })
     });
 
     $('body').on('click', '.deleteasisten', function () {
-       if (confirm("Are you sure to delete this data ?") == true) {
         var id = $(this).data('id');
-         
-        // ajax
-        $.ajax({
-            headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-            type:"POST",
-            url: "{{ url('delete-asisten')}} ",
-            data: { id: id },
-            dataType: 'json',
-            success: function(params){
-              alert(params.text)
-              $('#asistenkelas').DataTable().ajax.reload()
-           }
-        });
-       }
+        Swal.fire({
+          title: 'Are you sure delete this data ?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+                headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                type:"POST",
+                url: "{{ url('delete-asisten')}} ",
+                data: { id: id },
+                dataType: 'json',
+                success: function(params){
+                  toastr.success(params.text)
+                  $('#asistenkelas').DataTable().ajax.reload()
+              }
+            });
+          }
+        })
     });
 
     $(function(){
-    
+
     $('#addpeserta').on('submit', function(e){
       e.preventDefault();
-      
+
       $.ajax({
         url:$(this).attr('action'),
         method:$(this).attr('method'),
@@ -732,9 +871,8 @@ $('.selectpicker').selectpicker();
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            location.reload();
-            $('#addpeserta')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
+            $('#pesertakelas').DataTable().ajax.reload()
           }
         }
       });
@@ -762,9 +900,8 @@ $('.selectpicker').selectpicker();
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            location.reload();
-            $('#addasisten')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
+            $('#asistenkelas').DataTable().ajax.reload()
           }
         }
       });
