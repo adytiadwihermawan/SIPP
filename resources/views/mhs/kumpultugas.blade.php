@@ -4,7 +4,7 @@
 
 @section('content')
 @if(!empty($assign[0]))
-    @if ($assign[0]->namafile_tugas && $assign[0]->id_wadahtugas == $data[0]->id_wadahtugas)
+    @if ($assign[0]->namafile_tugas && ($assign[0]->id_wadahtugas == $data[0]->id_wadahtugas))
 
             <div class="col-12 row-3">
                 <div class="card ml-3 ">
@@ -94,7 +94,7 @@
                                                 'min' => ':count mins',
                                                 's' => ':count secs'
                                             ]);
-?>
+                                        ?>
                                         @if (Carbon\Carbon::parse($data[0]->waktu_selesai) > Carbon\Carbon::parse($assign[0]->waktu_submit))      
                                             Assignment was submitted {{str_replace(['after', 'before'], ['late', 'early'], $data[0]->waktu_selesai->locale($shortVariant)->diffForHumans($assign[0]->waktu_submit, ['short'=> true, 'parts' => 3]))}}
                                         @else
@@ -106,7 +106,7 @@
                                     <th>FILE</th>
                                     <td>
                                         <div class="custom-file">
-                                            @foreach (explode(',', $assign) as $file)
+                                            @foreach ($assign as $file)
                                             <?php
                                                 
                                                 $pecah = explode(".", $file->namafile_tugas);
@@ -135,12 +135,12 @@
                                                 <i class="fa fa-file-text-o mr-2" style="font-size:23px;color:black"> </i>
                                             @endif
                                             
-                                            <?php $files = json_decode($file->namafile_tugas); ?>
                                         <a style="text-decoration: none; color:indianred"  href="{{route('download', $file->namafile_tugas)}}"> 
-                                            {{-- {!!  $files->namafile_tugas !!}    --}}
+                                            {{  $file->namafile_tugas }}   
                                             <br>                                     
                                         </a>
-                                            @endforeach
+                                        
+                                        @endforeach
                                          {{ date('j F Y, H:i', strtotime($assign[0]->waktu_submit)) }}
                                         </div>
                                     </td>
@@ -239,6 +239,8 @@
             <td><a class="ml-2 mt-3"><b>{{ date('l, j F Y H:i', strtotime($data[0]->waktu_selesai)) }}</b></a></td>
         </tr>
         <tr>
+            @if (!empty(Carbon\Carbon::parse($data[0]->waktu_cutoff)))
+                @if (Carbon\Carbon::now() < Carbon\Carbon::parse($data[0]->waktu_cutoff))
             <th> <a class="ml-2 mt-3"><b>FILE</b></a></th>
             <td>
                 <form id="kumpul-tugas" action="{{ route('assignment') }}" method="POST" enctype="multipart/form-data">
@@ -249,8 +251,29 @@
                     <input type="hidden" class="form-control" name="id_user" value="{{ Auth::user()->id }}" readonly>
 
                     <input type="hidden" class="form-control" name="id_wadahtugas" value="{{$data[0]->id_wadahtugas}}" readonly>
-                   
-                    <div class="custom-file">
+                
+                         <div class="custom-file">
+                            <input type="file" name="_file[]" class="custom-file-input" id="customFile" multiple required>
+                            <span class="text-danger error-text _file_error"></span>
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='{{ route('mhsMatkul', [$mk[0]->id_praktikum]) }}'">Back</button>
+                            <button type="submit" class="btn btn-primary">Upload Tugas</button>
+                        </div>
+                    @endif
+                @else
+                <th> <a class="ml-2 mt-3"><b>FILE</b></a></th>
+            <td>
+                <form id="kumpul-tugas" action="{{ route('assignment') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <input type="hidden" class="form-control" name="id" value="{{$mk[0]->id_praktikum}}" readonly>
+
+                    <input type="hidden" class="form-control" name="id_user" value="{{ Auth::user()->id }}" readonly>
+
+                    <input type="hidden" class="form-control" name="id_wadahtugas" value="{{$data[0]->id_wadahtugas}}" readonly>
+                     <div class="custom-file">
                         <input type="file" name="_file[]" class="custom-file-input" id="customFile" multiple required>
                         <span class="text-danger error-text _file_error"></span>
                         <label class="custom-file-label" for="customFile">Choose file</label>
@@ -259,6 +282,8 @@
                         <button type="button" class="btn btn-secondary" onclick="window.location.href='{{ route('mhsMatkul', [$mk[0]->id_praktikum]) }}'">Back</button>
                         <button type="submit" class="btn btn-primary">Upload Tugas</button>
                     </div>
+                @endif
+                   
                 </form>
             </td>
         </tr>

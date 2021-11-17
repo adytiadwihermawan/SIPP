@@ -224,18 +224,27 @@ class UserController extends Controller
 
    public function uploadTugas(Request $request){
 
-       $request->validate([
-                    'id'=>'required',
-                    '_file',
-                    'judul_tugas'=>'required',
-                    'deskripsi',
-                    'wmp'=>'required',
-                    'wap'=>'required',
-                    'wcp'
-                ]);
+         $validator = \Validator::make($request->all(),[
+                'id'=>'required',
+                '_file',
+                'judul_tugas'=>'required',
+                'deskripsi',
+                'wmp'=>'required|after:' . Carbon::now(),
+                'wap'=>'required|after:wmp',
+                'wcp'=>'nullable|after:wap'
+            ],[
+                'id.required'=>"Pertemuan tidak boleh kosong",
+                'judul_tugas.required'=>"Judul tugas tidak boleh kosong",
+                'wmp.required'=>"Waktu mulai pengumpulan tidak boleh kosong",
+                'wmp.after'=>"Waktu pengumpulan tidak boleh melewati waktu anda sekarang",
+                'wap.required'=>"Waktu akhir pengumpulan tidak boleh kosong",
+                'wap.after'=>"Waktu akhir pengumpulan tidak boleh mendahului waktu mulai pengumpulan",
+                'wcp.after'=>"Waktu cut-offf tidak boleh mendahului waktu akhir pengumpulan"
+        ]);
         // dd($cek);
         $fileModel = new Wadah_tugas;
-        if($request->all()) {
+       
+        if($validator->passes()) {
             if(empty($request->input('_file'))){
                 $fileModel->id_pertemuan= $request->id;
                 $fileModel->judul_tugas = $request->judul_tugas;
@@ -268,6 +277,8 @@ class UserController extends Controller
             else{
                 return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
             }
+        }else{
+                return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
         }
    }
 
@@ -395,6 +406,68 @@ class UserController extends Controller
                 return response()->json(['status'=>1,'msg'=>'Data Berhasil Diperbaharui']);
             }
     }
+
+    public function updateTugas(Request $request){
+
+          $validator = \Validator::make($request->all(),[
+                'id',
+                'id_pertemuan',
+                '_file',
+                'judul_tugas'=>'required',
+                'deskripsi',
+                'wmp'=>'required|after:yesterday',
+                'wap'=>'required|after:wmp',
+                'wcp'=>'nullable|after:wap'
+            ],[
+                'judul_tugas.required'=>"Judul tugas tidak boleh kosong",
+                'wmp.required'=>"Waktu mulai pengumpulan tidak boleh kosong",
+                'wmp.after'=>"Waktu pengumpulan tidak boleh melewati waktu kemarin",
+                'wap.required'=>"Waktu akhir pengumpulan tidak boleh kosong",
+                'wap.after'=>"Waktu akhir pengumpulan tidak boleh mendahului waktu mulai pengumpulan",
+                'wcp.after'=>"Waktu cut-offf tidak boleh mendahului waktu akhir pengumpulan"
+        ]);
+        // dd($cek);
+       
+        if($validator->passes()) {
+            if(empty($request->input('_file'))){
+                $update = Wadah_tugas::where('id_wadahtugas', $request->input('id'))
+                            ->update([
+                                'id_pertemuan'=>$request->input('id_pertemuan'),
+                                'judul_tugas'=>$request->input('judul_tugas'),
+                                'deskripsi_tugas'=>$request->input('deskripsi'),
+                                'waktu_mulai'=>$request->input('wmp'),
+                                'waktu_selesai'=>$request->input('wap'),
+                                'waktu_cutoff'=>$request->input('wcp')
+                        ]);
+
+            }else{
+                $path = 'storage';
+                $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
+
+                $filePath = $request->_file->move(public_path($path), $newname);
+
+                $update = Wadah_tugas::where('id_wadahtugas', $request->input('id'))
+                            ->update([
+                                'id_pertemuan'=>$request->input('id_pertemuan'),
+                                'file_tugas'=>$request->input('_file')->getClientOriginalName(),
+                                'judul_tugas'=>$request->input('judul_tugas'),
+                                'deskripsi_tugas'=>$request->input('deskripsi'),
+                                'waktu_mulai'=>$request->input('wmp'),
+                                'waktu_selesai'=>$request->input('wap'),
+                                'waktu_cutoff'=>$request->input('wcp')
+                        ]);
+            }
+
+            if($update){
+                return response()->json(['status'=>1,'msg'=>'Data Berhasil Diubah']);
+            }                
+            else{
+                return response()->json(['status'=>0,'msg'=>'Tidak Ada Perubahan Data']);
+            }
+        }else{
+                return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
+        }
+    } 
 
         public function dsnPartisipan($id)
         {
@@ -765,16 +838,17 @@ class UserController extends Controller
             foreach ($request->file('_file') as $file) {
                 $fileName = $file->getClientOriginalName();
                 $file->move(public_path('storage'), $fileName); 
-                $files[] = $fileName;
+                $files = $fileName;
                 
-         }
          $query = Uploadtugas::create([
                     'id_praktikum'=>$request->id,
                     'id_user'=>$request->id_user,
                     'id_wadahtugas'=>$request->id_wadahtugas,
-                    'namafile_tugas'=> json_encode($files),
+                    'namafile_tugas'=> $files,
                     'waktu_submit'=>Carbon::now()->format('Y-m-d H:i:s')
             ]);
+                
+         }
 
             if($query){
                 return response()->json(['status'=>1,'msg'=>'File Berhasil Diunggah']);
@@ -839,14 +913,18 @@ class UserController extends Controller
    }
 
    public function updateAbsen(Request $request){
-        $request->validate([
+        $validator =   \Validator::make($request->all(),[
             'id' => 'required',
             'pertemuan',
             'tanggal' => 'required',
             'materi',
             'wmp' => 'required',
             'wap' => 'required'
+        ],[
+            'tanggal.required'=>"jangan kosong"
         ]);
+
+    if($validator->passes()){
 
         $update = Wadahpresensi::where('id_wadah', $request->input('id'))
                             ->update([
@@ -864,6 +942,10 @@ class UserController extends Controller
             else{
                 return response()->json(['status'=>1,'msg'=>'Data Berhasil Diperbaharui']);
             }
+        }
+    else{
+           return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
+        }
     }
 
    public function dataAbsen($id)

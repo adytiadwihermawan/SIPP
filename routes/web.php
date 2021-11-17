@@ -103,6 +103,8 @@ Route::post('upload', [UserController::class, 'upload'])->name('fileUpload');
 
 Route::post('uploadtugas', [UserController::class, 'uploadTugas'])->name('uploadTugas');
 
+Route::post('updatetugas', [UserController::class, 'updateTugas'])->name('updateTugas');
+
 Route::get('deletemateri/{id}', [UserController::class, 'deletemateri']);
 
 Route::get('deletetugas/{id}', [UserController::class, 'deletetugas']);

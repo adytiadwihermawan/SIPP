@@ -24,6 +24,11 @@
    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
 
    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css">
+
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.2/dist/sweetalert2.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
    <script src="//cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
  
     
@@ -177,6 +182,10 @@
 
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 
 <script>
     $(document).ready(function(){
@@ -327,7 +336,7 @@
             });
           }else{
             $('#buat-pertemuan')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
           }
         }
       });
@@ -359,7 +368,7 @@
             });
           }else{
             $('#upload-file')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
           }
         }
       });
@@ -388,13 +397,15 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            alert(data.msg);
+            toastr.success(data.msg)
             location.reload();
           }
         }
       });
     });
+
   });
+
 
   $(function(){
     
@@ -418,7 +429,7 @@
             });
           }else{
             $('#absen')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
           }
         }
       });
@@ -447,7 +458,7 @@
           }else{
             location.reload();
             $('#nilai-tugas')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
           }
         }
       });
@@ -482,14 +493,43 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            alert(data.msg);
+            toastr.success(data.msg)
             location.reload();
           }
         }
       });
     });
 
+    $(function(){
+    
     $('#edit-absen').on('submit', function(e){
+      e.preventDefault();
+      
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            toastr.success(data.msg)
+          }
+        }
+      });
+    });
+  });
+
+
+    $('#edit-tugas').on('submit', function(e){
       e.preventDefault();
 
       $.ajax({
@@ -507,13 +547,21 @@
             $.each(data.error, function(prefix, val){
               $('span.'+prefix+'_error').text(val[0]);
             });
+            if(!data.error){
+                toastr.options =
+                  {
+                    "closeButton" : true
+                  }
+                toastr.error(data.msg)
+              }
           }else{
-            alert(data.msg);
+            toastr.success(data.msg)
             location.reload();
           }
         }
       });
     });
+
   </script>
 
 </body>
