@@ -188,10 +188,9 @@
 
 
 <script>
-    $(document).ready(function(){
+   $(document).ready(function(){
         data()
     })
-
     function data() {
         $('#partisipan').DataTable({
             serverside: true,
@@ -215,7 +214,6 @@
             ]
         })
     }
-
     $(function () {
      
     $.ajaxSetup({
@@ -264,14 +262,15 @@
         ]
     });
   });
-
+  
   $(function () {
-     
+
      $.ajaxSetup({
          headers: {
            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
          }
      });
+
      var table = $('#rekap').DataTable({
          processing: true,
          serverSide: true,
@@ -311,7 +310,6 @@
          ]
      });
    });
-
    
     $(function(){
 
@@ -500,8 +498,6 @@
       });
     });
 
-    $(function(){
-    
     $('#edit-absen').on('submit', function(e){
       e.preventDefault();
       
@@ -520,13 +516,19 @@
             $.each(data.error, function(prefix, val){
               $('span.'+prefix+'_error').text(val[0]);
             });
+            if(!data.error){
+                toastr.options =
+                  {
+                    "closeButton" : true
+                  }
+                toastr.error(data.msg);
+            }
           }else{
             toastr.success(data.msg)
           }
         }
       });
     });
-  });
 
 
     $('#edit-tugas').on('submit', function(e){

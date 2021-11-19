@@ -402,10 +402,6 @@
                         </h4>
                     </a>
 
-                    {{-- <a href="" class="btn-sm btn-info float-right" >
-                        <i class="fas fa-edit"></i> Edit Tugas
-                    </a> --}}
-
                     <a href="/deletetugas/{{  $datas->id_wadahtugas }}" title="Delete"
                         class="btn-sm btn-danger btn float-right"
                         onclick="return confirm('Are you sure to delete this data ?')">
@@ -441,9 +437,7 @@
 
                         <div class="form-group">
                             <label for="">Deskripsi Tugas</label>
-                            <!-- <input type="text" class="form-control" name="deskripsi" maxlength="10000"> -->
-                            <textarea class="form-control" name="deskripsi" maxlength="1000" rows="4"
-                                > {{$datas->deskripsi_tugas}}</textarea>
+                            <textarea class="form-control" name="deskripsi" maxlength="1000" rows="4"> {{$datas->deskripsi_tugas}}</textarea>
                             <span class="text-danger error-text deskripsi_error"></span>
                         </div>
 
@@ -481,8 +475,6 @@
             </div>
         </div>
     </div>
-    
-                
     
                 @if (!empty($datas->file_tugas))
                 <div class="card-body beee">

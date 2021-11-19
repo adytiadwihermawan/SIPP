@@ -115,7 +115,7 @@ class UserController extends Controller
 
     public function asistPresensi()
     {
-       $course = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
+       $course = Proses_praktikum::leftJoin('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
 
         return view('asist.presensi', compact('course'));
     }
@@ -123,24 +123,34 @@ class UserController extends Controller
    public function matkulAsisten($id)
     {
         $kelas = Praktikum::where('id_praktikum', $id)->get();
+
+        $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
+                            ->where('wadahpresensi.id_praktikum', $id)
+                            ->get();
         
         $proses_praktikum = Pertemuan::join('roles', 'pertemuan.id_praktikum', '=', 'roles.id_praktikum')
                             ->where('pertemuan.id_praktikum', $id)
                             ->where('id_user', Auth::user()->id)
                             ->get();
-        // dd($proses_praktikum);
-         $data_materi = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
+    
+        $data_materi = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
                         ->get();
 
         $data_tugas = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', '=', 'pertemuan.id_pertemuan')
                         ->get();
+
         // dd($data);
         $course = [
             'course'=>$proses_praktikum,
             'mk'=>$kelas,
             'data_materi'=>$data_materi,
-            'data_tugas'=>$data_tugas
+            'absen'=>$absen,
+            'data_tugas'=>$data_tugas,
         ];
+
+        // dd($course);
+        return view('asist.matakuliah', $course);
+
     }
     public function dsnProfile()
     {
@@ -519,8 +529,8 @@ class UserController extends Controller
                          ->join('status_user', 'users.id_status', 'status_user.id_status') 
                          ->where('proses_praktikum.id_praktikum', $id)
                          ->orwhere('roles.id_praktikum', $id)
-                         ->select('nama_user', 'status')
-                         ->groupBy('nama_user', 'status')
+                         ->select('username', 'nama_user', 'status')
+                         ->groupBy('username', 'nama_user', 'status')
                          ->orderBy('status', 'asc')
                          ->get();
             // dd($data);
@@ -657,49 +667,79 @@ class UserController extends Controller
             ]);
         }
         
-        public function asistGrade($id)
+        public function asistGrade(Request $request, $id)
         {
-            $data = Uploadtugas::join('materi', 'uploadtugas.id_materi', '=', 'materi.id_materi')
-                         ->join('users', 'uploadtugas.id_user', 'users.id') 
-                         ->where('materi.id_pertemuan', $id)
-                         ->get();
+            $grade = Uploadtugas::join('wadah_tugas', 'uploadtugas.id_wadahtugas', 'wadah_tugas.id_wadahtugas')
+                                ->join('users', 'uploadtugas.id_user', 'users.id')
+                                ->leftjoin('nilai', 'uploadtugas.id_tugas', 'nilai.id_tugas')
+                                ->where('wadah_tugas.id_pertemuan', $id)
+                                ->select(
+                                    'uploadtugas.id_tugas', 
+                                    'nilai', 
+                                    'username', 
+                                    'nama_user', 
+                                    'namafile_tugas', 
+                                    'uploadtugas.id_wadahtugas')
+                                ->groupBy('uploadtugas.id_tugas', 
+                                    'nilai', 
+                                    'username', 
+                                    'nama_user', 
+                                    'namafile_tugas', 
+                                    'uploadtugas.id_wadahtugas')
+                                ->get();
+            // dd($grade);
+            if ($request->ajax()) {
+            return Datatables::of($grade)
+                    ->addColumn('nama', function($row){
+                                return $row->nama_user;
+                            })
+                    ->addColumn('nim', function($row){
+                                return $row->username;
+                            })
+                    ->addColumn('grade', function($row){
+                        if($row->nilai){
+                            $nilai = $row->nilai;
+                            return $nilai;
+                            
+                        }else{
+                            $btn =  "
+                             <a data-id='".$row->id_tugas."' class='idtugas'>
+                             <button class='grade btn btn-info' data-toggle='modal' data-target='#nilai' style='text-align: center' id='".$row->id_tugas."'>Grade</button>
+                             </a>";
+                            return $btn;
+                        }
+                    })
+                    ->addColumn('file', function($row){
+                            $pecah = explode(".", $row->namafile_tugas);
+                            $ekstensi = $pecah[1];
+                            if ($ekstensi == "docx" || $ekstensi == "pdf" || $ekstensi == "ppt"){
+                                $btn = "<a href='/downloadfile".$row->namafile_tugas."' data-id='" . $row->id_user . "' title='download'>$row->namafile_tugas</a>";
+                            } else {
+                                $btn = "<a href='/storage/$row->namafile_tugas' target='_blank' data-id='" . $row->id_user . "' title='view'>$row->namafile_tugas</a>";
+                            }
+                            return $btn;
+                    })
+                    ->rawColumns(['nama', 'nim','grade', 'file'])
+                    ->make(true);
+            }
+            $mk = Praktikum::join('pertemuan', 'praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
+                                ->where('pertemuan.id_pertemuan', $id)
+                                ->get();
 
-            // $nilai = Nilai::join('uploadtugas', 'nilai.id_user')
+            $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
+                            ->where('wadahpresensi.id_praktikum', $id)
+                            ->get();
 
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
                                 ->where('pertemuan.id_pertemuan', $id)
                                 ->get();
 
-            $kelas = Praktikum::join('pertemuan', 'praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
-                                ->where('pertemuan.id_pertemuan', $id)
-                                ->get();
-            // dd($data);
-        
-            if(request()->ajax()){
-                
-                return datatables()->of($data)
-                ->addColumn('Grade', function($data)
-                {
-                    if($data)
-                    $button = "<button class='edit btn btn-danger' data-toggle='modal' data-target='#nilai' style='text-align: center' id='".$data->id_materi."'>Grade</button>";
-                    return $button;
-                })
-                ->addColumn('Edit', function($data)
-                {
-                    $btn = "<button class='edit btn btn-success' style='text-align: center' id='".$data->id_materi."'>Edit</button>";
-                    return $btn;
-                })
-                ->rawColumns(['Grade', 'Edit']) 
-                ->make(true);
-            }
-
-            $cek = [
-                'mk'=>$kelas,
-                'grade'=>$data,
-                'course'=>$course
-            ];
-            // dd($cek);
-            return view('asist.grades', $cek);
+            return view('asist.grades', [
+                'grade'=>$grade,
+                'mk'=>$mk,
+                'absen'=>$absen,
+                'course'=>$course,
+            ]);
         }
 
     public function buatAbsen(Request $request)
@@ -870,15 +910,13 @@ class UserController extends Controller
                                 ->get();
 
 
-        $presensi = Presensi::leftjoin('wadahpresensi', 'presensi.id_wadah', 'wadahpresensi.id_wadah')
+        $presensi = Wadahpresensi::rightjoin('presensi', 'wadahpresensi.id_wadah', 'presensi.id_wadah')
                     ->rightjoin('users','presensi.id_user','=','users.id')
                     ->join('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
                     ->where('proses_praktikum.id_praktikum', $id)
                     ->where('users.id_status', 4)
                     ->get();
         // dd($presensi);
-
-
 
         $kelas = Praktikum::where('id_praktikum', $id)->get();
 
@@ -912,6 +950,58 @@ class UserController extends Controller
        return view('dsn.presensi',  $absen);
    }
 
+    public function rekapAsisten(Request $request, $id)
+   {
+       $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
+                            ->where('wadahpresensi.id_praktikum', $id)
+                            ->simplePaginate(16);
+
+        $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+                                ->where('pertemuan.id_praktikum', $id)
+                                ->get();
+
+
+        $presensi = Wadahpresensi::rightjoin('presensi', 'wadahpresensi.id_wadah', 'presensi.id_wadah')
+                    ->rightjoin('users','presensi.id_user','=','users.id')
+                    ->join('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
+                    ->where('proses_praktikum.id_praktikum', $id)
+                    ->where('users.id_status', 4)
+                    ->get();
+        // dd($presensi);
+
+        $kelas = Praktikum::where('id_praktikum', $id)->get();
+
+        if ($request->ajax()) {
+            return Datatables::of($presensi)
+                    ->addColumn('nama', function($row){
+                        return $row->nama_user;
+                    })
+                    ->addColumn('nim', function($row){
+                        return $row->username;
+                    })
+                    ->addColumn('keterangan', function($row){
+                        if($row->id_wadah){
+                            return "Hadir";
+                            
+                        }else{
+                            return "Tanpa Keterangan";
+                        }
+                    })
+                    ->rawColumns(['keterangan'])
+                    ->make(true);
+            }
+
+        $absen = [
+            'mk'=>$kelas,
+            'absen'=>$absen,
+            'presensi'=>$presensi,
+            'course'=>$course
+        ];
+
+       return view('asist.presensi',  $absen);
+   }
+
+
    public function updateAbsen(Request $request){
         $validator =   \Validator::make($request->all(),[
             'id' => 'required',
@@ -937,7 +1027,7 @@ class UserController extends Controller
                         ]);
         // dd($update);
         if(!$update){
-                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal memperbaharui pertemuan']);
+                return response()->json(['status'=>0,'msg'=>'Tidak Ada Perubahan Data yang Dilakukan']);
             }                
             else{
                 return response()->json(['status'=>1,'msg'=>'Data Berhasil Diperbaharui']);

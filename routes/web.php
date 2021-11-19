@@ -144,6 +144,8 @@ Route::get('asist/partisipan/{id}', [UserController::class, 'asistPartisipan'])-
 
 Route::get('asist/grade/{id}', [UserController::class, 'asistGrade'])->name('gradeAsisten');
 
+Route::get('asist/presensi/{id}', [UserController::class, 'rekapAsisten'])->name('asistenRekap');
+
 // -----------------------------------------  Dashboard Mahasiswa -------------------------------------------------------------------- \\
 
 Route::get('dashboard', [UserController::class, 'dashboardMhs'])->name('mhs.dashboard')->middleware('mhsMid');

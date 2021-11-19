@@ -19,7 +19,18 @@
    
    <link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
 
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+
+   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css">
+
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.2/dist/sweetalert2.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+   <script src="//cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+ 
     
     <style>
 
@@ -31,7 +42,10 @@
             padding: 0;
             list-style: none;
         }
-
+      .dataTables_wrapper .dt-buttons {
+        float:none;  
+        text-align:left;
+      }
     
     </style>
   </head>
@@ -83,8 +97,8 @@
         
           <!-- Brand Logo -->
           <a href="index3.html" class="brand-link">
-            <img src="{{asset('dist/img/logoulm.png')}}" alt="logoulm" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">SIPP-TI</span>
+            <img src="{{asset('dist/img/logo.png')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">SIDP-TI</span>
           </a>
 
           <!-- Sidebar -->
@@ -159,22 +173,33 @@
 
 <script src="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.js')}}"></script>
 
+
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
 
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script> 
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
 <script>
-    $(document).ready(function(){
+   $(document).ready(function(){
         data()
     })
-
     function data() {
         $('#partisipan').DataTable({
             serverside: true,
             responsive: true,
             ajax: {
-                url: "{{ route('data', [$mk[0]->id_praktikum]) }}"
+                url: "{{ route('asistenPart', [$mk[0]->id_praktikum]) }}"
             },
             columnDefs: [
-                        {"className": "dt-center", "targets": [0,2,3]}
+                        {"className": "dt-center", "targets": [0]}
                     ],
             columns:[
                 {
@@ -183,44 +208,110 @@
                         return meta.row + meta.settings._iDisplayStart + 1
                     }
                 },
-                {data: 'nama_user', name: 'nama_user'},
-                {data: 'status', name: 'status'},
-                {data: 'Aksi', name: 'aksi'}
-            ]
-        })
-    }
-
-      $(document).ready(function(){
-        grade()
-    })
-
-    function grade() {
-        $('#grade').DataTable({
-            serverside: true,
-            responsive: true,
-            ajax: {
-                url: "{{ route('grade', [$course[0]->id_pertemuan]) }}"
-            },
-            columnDefs: [
-                        {"className": "dt-center", "targets": [0,2,3]}
-                    ],
-            columns:[
-                {
-                    "data": null, "sortable": false,
-                    render: function(data, type, row, meta){
-                        return meta.row + meta.settings._iDisplayStart + 1
-                    }
-                },
-                {data: 'fotouser', name: 'fotouser'},
-                {data: 'nama_user', name: 'nama_user'},
                 {data: 'username', name: 'username'},
-                {data: 'Grade', name: 'grade'},
-                {data: 'Edit', name: 'edit'},
-                {data: 'namafile_tugas', name: 'namafile_tugas'}
+                {data: 'nama_user', name: 'nama_user'},
+                {data: 'status', name: 'status'}
             ]
         })
     }
+    
+    $(function () {
+     
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    var table = $('#grade').DataTable({
+        processing: true,
+        serverSide: true,
+        dom: 'Bflrtip',
+        ajax: {
+          url: "{{ route('gradeAsisten', [$course[0]->id_pertemuan]) }}"
+        },
+        columnDefs: [
+                        {"className": "dt-center", "targets": [0, 2, 3]}
+                    ],
+        buttons : [
+          {
+            extend: 'excel',
+            text: '<span class="fa fa-file-excel-o"></span> Export Nilai',
+            messageTop: 'Tugas {{$course[0]->nama_pertemuan}}',
+            title: 'Rekap Nilai untuk Praktikum {{$course[0]->nama_praktikum}} ',
+            exportOptions: {
+                columns: [ 0, 1, 2, 3 ],
+                format: { 
+                      header: function ( data, columnDefs ) {
+                      return data.toUpperCase();
+                  }
+                },
+              },
+            }
+          ],
+        columns: [
+            {
+              "data": null, "sortable": false,
+              render: function(data, type, row, meta){
+              return meta.row + meta.settings._iDisplayStart + 1
+                    }
+                },
+              {data: 'nama', name: 'nama' },
+              {data: 'nim', name: 'nim'},
+              {data: 'grade', name: 'grade'},
+              {data: 'file', name: 'file'}
+        ]
+    });
+  });
 
+  $(function () {
+
+     $.ajaxSetup({
+         headers: {
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
+     });
+
+     var table = $('#rekap').DataTable({
+         processing: true,
+         serverSide: true,
+         dom: 'Bflrtip',
+         ajax: {
+           url: "{{ route('asistenRekap', [$mk[0]->id_praktikum]) }}"
+         },
+         columnDefs: [
+                         {"className": "dt-center", "targets": [0, 2, 3]}
+                     ],
+         buttons : [
+           {
+             extend: 'excel',
+             text: '<span class="fa fa-file-excel-o"></span> Export Rekap Presensi',
+             
+             title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$course[0]->nama_praktikum}} ',
+             exportOptions: {
+                 columns: [ 0, 1, 2, 3 ],
+                 format: { 
+                       header: function ( data, columnDefs ) {
+                       return data.toUpperCase();
+                   }
+                 },
+               },
+             }
+           ],
+         columns: [
+             {
+               "data": null, "sortable": false,
+               render: function(data, type, row, meta){
+               return meta.row + meta.settings._iDisplayStart + 1
+                     }
+                 },
+               {data: 'nama', name: 'nama_user' },
+               {data: 'nim', name: 'username'},
+               {data: 'keterangan', name: 'keterangan'}
+         ]
+     });
+   });
+   
     $(function(){
 
     $('#buat-pertemuan').on('submit', function(e){
@@ -244,7 +335,7 @@
             });
           }else{
             $('#buat-pertemuan')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
           }
         }
       });
@@ -252,37 +343,6 @@
 
   });
 
-   $(function(){
-
-    $('#edit-pertemuan').on('submit', function(){
-      location.reload();
-      e.preventDefault();
-
-      $.ajax({
-        url:$(this).attr('action'),
-        method:$(this).attr('method'),
-        data:new FormData(this),
-        processData: false,
-        dataType: 'json',
-        contentType: false,
-        beforeSend: function(){
-          $(document).find('span.error-text').text('');
-        },
-        success:function(data){
-          if(data.status == 0){
-            $.each(data.error, function(prefix, val){
-              $('span.'+prefix+'_error').text(val[0]);
-            });
-          }else{
-            $('#edit-pertemuan')[0].reset();
-            alert(data.msg);
-          }
-        }
-      });
-      return false;
-    });
-
-  });
 
    $(function(){
     
@@ -307,7 +367,7 @@
             });
           }else{
             $('#upload-file')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
           }
         }
       });
@@ -336,13 +396,15 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            $('#upload-tugas')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
+            location.reload();
           }
         }
       });
     });
+
   });
+
 
   $(function(){
     
@@ -366,7 +428,7 @@
             });
           }else{
             $('#absen')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
           }
         }
       });
@@ -393,25 +455,116 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
+            location.reload();
             $('#nilai-tugas')[0].reset();
-            alert(data.msg);
+            toastr.success(data.msg)
           }
         }
       });
     });
   });
 
+  $(document).on("click", ".idtugas", function () {
+     var ids = $(this).attr('data-id');
+     $(".modal-body #idtugas").val( ids );
+    });
+
 </script>
  
 <script>
-    $(document).on("click", ".passingID", function () {
-     var ids = $(this).attr('data-id');
-     var pertemuan = $(this).attr('data-pertemuan');
-     var deskripsi = $(this).attr('data-deskripsi');
-     $(".modal-body #id").val( ids );
-     $(".modal-body #pertemuan").val( pertemuan );
-     $(".modal-body #deskripsi").val( deskripsi );
+    
+  $('#edit-pertemuan').on('submit', function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+          }else{
+            toastr.success(data.msg)
+            location.reload();
+          }
+        }
+      });
     });
+
+    $('#edit-absen').on('submit', function(e){
+      e.preventDefault();
+      
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+            if(!data.error){
+                toastr.options =
+                  {
+                    "closeButton" : true
+                  }
+                toastr.error(data.msg);
+            }
+          }else{
+            toastr.success(data.msg)
+          }
+        }
+      });
+    });
+
+
+    $('#edit-tugas').on('submit', function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+            if(!data.error){
+                toastr.options =
+                  {
+                    "closeButton" : true
+                  }
+                toastr.error(data.msg)
+              }
+          }else{
+            toastr.success(data.msg)
+            location.reload();
+          }
+        }
+      });
+    });
+
   </script>
 
 </body>
