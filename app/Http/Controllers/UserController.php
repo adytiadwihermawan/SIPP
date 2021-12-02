@@ -175,10 +175,13 @@ class UserController extends Controller
                             ->get();
         
         $proses_praktikum = Pertemuan::join('proses_praktikum', 'pertemuan.id_praktikum', '=', 'proses_praktikum.id_praktikum')
+                            ->join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
                             ->where('pertemuan.id_praktikum', $id)
                             ->where('id_user', Auth::user()->id)
                             ->get();
     
+        // dd($proses_praktikum);
+
         $data_materi = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
                         ->get();
 
@@ -538,6 +541,7 @@ class UserController extends Controller
                          ->get();
             // dd($data);
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+                                ->join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
                                 ->where('pertemuan.id_praktikum', $id)
                                 ->get();
 
@@ -643,20 +647,7 @@ class UserController extends Controller
             $grade = Uploadtugas::join('wadah_tugas', 'uploadtugas.id_wadahtugas', 'wadah_tugas.id_wadahtugas')
                                 ->join('users', 'uploadtugas.id_user', 'users.id')
                                 ->leftjoin('nilai', 'uploadtugas.id_tugas', 'nilai.id_tugas')
-                                ->where('wadah_tugas.id_pertemuan', $id)
-                                ->select(
-                                    'uploadtugas.id_tugas', 
-                                    'nilai', 
-                                    'username', 
-                                    'nama_user', 
-                                    'namafile_tugas', 
-                                    'uploadtugas.id_wadahtugas')
-                                ->groupBy('uploadtugas.id_tugas', 
-                                    'nilai', 
-                                    'username', 
-                                    'nama_user', 
-                                    'namafile_tugas', 
-                                    'uploadtugas.id_wadahtugas')
+                                ->where('uploadtugas.id_wadahtugas', $id)
                                 ->get();
             // dd($grade);
             if ($request->ajax()) {
@@ -681,6 +672,7 @@ class UserController extends Controller
                         }
                     })
                     ->addColumn('file', function($row){
+                        
                             $pecah = explode(".", $row->namafile_tugas);
                             $ekstensi = $pecah[1];
                             if ($ekstensi == "docx" || $ekstensi == "pdf" || $ekstensi == "ppt"){
@@ -694,14 +686,16 @@ class UserController extends Controller
                     ->make(true);
             }
             $mk = Praktikum::join('pertemuan', 'praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
-                                ->where('pertemuan.id_pertemuan', $id)
+                                ->join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
+                                ->where('wadah_tugas.id_wadahtugas', $id)
                                 ->get();
 
             $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
                             ->get();
 
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
-                                ->where('pertemuan.id_pertemuan', $id)
+                                ->join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
+                                ->where('wadah_tugas.id_wadahtugas', $id)
                                 ->get();
 
             return view('dsn.grades', [
@@ -959,9 +953,9 @@ class UserController extends Controller
                             ->simplePaginate(16);
 
         $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+                                ->join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
                                 ->where('pertemuan.id_praktikum', $id)
                                 ->get();
-
 
         $presensi = Presensi::rightjoin('users', 'presensi.id_user', 'users.id')
                     ->join('proses_praktikum', 'users.id', 'proses_praktikum.id_user')

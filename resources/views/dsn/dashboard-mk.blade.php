@@ -224,7 +224,7 @@
             responsive: true,
             rowGroup: [0],
             ajax: {
-                url: "{{ route('grade', [$course[0]->id_pertemuan]) }}"
+                url: "{{ route('grade', [$course[0]->id_wadahtugas]) }}"
             },
             columnDefs: [
                         {"className": "dt-center", "targets": [0,2,3]}

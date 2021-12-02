@@ -40,7 +40,7 @@
         </li>
 
         <li class="nav-item mt-5 ml-3">
-            <a href="{{ route('matkulDsn', [$mk[0]->id_praktikum]) }}" class="nav-link' }}">
+            <a href="{{ route('matkulDsn', [$mk[0]->id_praktikum]) }}" class="nav-link">
                 <p>
                     
                 <i class="nav-icon fas fa-book"></i> Grades
@@ -49,10 +49,10 @@
             <ul>
                 @foreach ($course as $pertemuan)
                 <li class="nav-item">
-                    <a href=" {{ route('grade', [$pertemuan->id_pertemuan]) }} "
-                        class="{{ request()->routeIs('grade', [$pertemuan->id_pertemuan]) ? 'nav-link active' : 'nav-link' }}">
+                    <a href=" {{ route('grade', [$pertemuan->id_wadahtugas]) }} "
+                        class="{{ request()->routeIs('grade', [$pertemuan->id_wadahtugas]) ? 'nav-link active' : 'nav-link' }}">
                         <p>
-                            * {{$pertemuan->nama_pertemuan}}
+                            * {{$pertemuan->judul_tugas}}
                         </p>
                     </a>
                 </li>

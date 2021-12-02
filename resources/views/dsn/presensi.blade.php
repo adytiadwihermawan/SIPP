@@ -158,16 +158,14 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h4 class="modal-title" id="head"></h4>
+                                            <h4 class="modal-title" id="head">Pertemuan {{$data->urutanpertemuan}}</h4>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
+                                            <input type="hidden" id="id_wadah" name="id_wadah">
 
-                                             <div class="form-group">
-                                                <input type="text" id="id_wadah" name="id_wadah">
-                                            </div>
                                             <table class="table table-striped hover" id="rekap">
                                                     <thead>
                                                         <tr style="text-align: center">
