@@ -159,8 +159,9 @@
 
                                                 <button type="button" class="btn btn-primary btn-flat mt-1" onclick="window.location.href='/dashboard'"></i>
                                                     Kunjungi Situs</button>
-                                                <button type="button" class="btn btn-outline-info btn-flat mt-1"><i
-                                                        class="fa fa-book"></i> Panduan pengguna</button>
+                                               <a class="btn btn-outline-info btn-flat mt-1" href="{{asset('assets/file/Panduan Mahasiswa.docx')}}" download="panduan mahasiswa">
+  <i class="fas fa-address-book"></i> Panduan pengguna
+                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -195,8 +196,10 @@
 
                                                 <button type="button" class="btn btn-primary btn-flat mt-1" onclick="window.location.href='/asist/dashboard'"></i>
                                                     Kunjungi Situs</button>
-                                                <button type="button" class="btn btn-outline-info btn-flat mt-1"><i
-                                                        class="fa fa-book"></i> Panduan pengguna</button>
+                                               
+                                                <a class="btn btn-outline-info btn-flat mt-1" href="{{asset('assets/file/Panduan Dosen Asisten.docx')}}" download="panduan asisten">
+  <i class="fas fa-address-book"></i> Panduan pengguna
+                </a>
                                             </div>
                                         </div>
                                     </div>

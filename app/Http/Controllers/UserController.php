@@ -395,26 +395,72 @@ class UserController extends Controller
             }
         }
 
+    public function editpertemuan(Request $request){
+
+        $data = Pertemuan::where('id_pertemuan', $request->id)
+                ->first();
+        return response()->json($data);
+    }
+
+    public function editabsen(Request $request){
+
+        $data = Wadahpresensi::where('id_wadah', $request->id)
+                ->first();
+        return response()->json($data);
+    }
+
+    public function edittugas(Request $request){
+
+        $data = Wadah_tugas::where('id_wadahtugas', $request->id)
+                ->first();
+        return response()->json($data);
+    }
+
+    public function viewrekap(Request $request){
+
+        $data = Wadahpresensi::where('id_wadah', $request->id)
+                ->first();
+        return response()->json($data);
+    }
+
     public function updatePertemuan(Request $request){
-        $request->validate([
-            'id' => 'required',
-            'nama_pertemuan' => 'required',
-            'deskripsi' => 'required'
+
+        $validator = \Validator::make($request->all(),[
+                'id_pertemuan',
+                'nama_pertemuan'=>'required',
+                'deskripsi'
+            ],[
+                'nama_pertemuan.required'=>"Nama pertemuan tidak boleh kosong",
         ]);
 
-        $update = Pertemuan::where('id_pertemuan', $request->input('id'))
-                            ->update([
-                                'id_pertemuan'=>$request->input('id'),
-                                'nama_pertemuan'=>$request->input('nama_pertemuan'),
-                                'deskripsi'=>$request->input('deskripsi')
-                        ]);
-        // dd($update);
-        if(!$update){
-                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal memperbaharui pertemuan']);
-            }                
-            else{
-                return response()->json(['status'=>1,'msg'=>'Data Berhasil Diperbaharui']);
+        
+        if($validator->passes()) {
+
+            $update = Pertemuan::where('id_pertemuan', $request->input('id_pertemuan'))
+                                ->update([
+                                    'id_pertemuan'=>$request->input('id_pertemuan'),
+                                    'nama_pertemuan'=>$request->input('nama_pertemuan'),
+                                    'deskripsi'=>$request->input('deskripsi')
+                            ]);
+
+            // $update = Pertemuan::updateOrCreate([
+            //     'id_pertemuan'=>$request->id
+            //     ],
+            //     [
+            //         'nama_pertemuan'=>$request->nama_pertemuan,
+            //         'deskripsi'=>$request->deskripsi,
+            //     ]);
+            // dd($update);
+            if(!$update){
+                    return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal memperbaharui pertemuan']);
+                }                
+                else{
+                    return response()->json(['status'=>1,'msg'=>'Data Berhasil Diperbaharui']);
+                }
             }
+        else{
+            return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
+        }
     }
 
     public function updateTugas(Request $request){
@@ -652,7 +698,6 @@ class UserController extends Controller
                                 ->get();
 
             $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
-                            ->where('wadahpresensi.id_praktikum', $id)
                             ->get();
 
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
@@ -874,21 +919,29 @@ class UserController extends Controller
         );
 
         if($request->hasFile('_file')) {
-            $files = [];
             foreach ($request->file('_file') as $file) {
                 $fileName = $file->getClientOriginalName();
                 $file->move(public_path('storage'), $fileName); 
                 $files = $fileName;
-                
-         $query = Uploadtugas::create([
-                    'id_praktikum'=>$request->id,
-                    'id_user'=>$request->id_user,
-                    'id_wadahtugas'=>$request->id_wadahtugas,
-                    'namafile_tugas'=> $files,
-                    'waktu_submit'=>Carbon::now()->format('Y-m-d H:i:s')
-            ]);
-                
+                $save = new Uploadtugas;
+        
+
+        $save->id_praktikum = $request->id;
+        $save->id_user = $request->id_user;
+        $save->id_wadahtugas = $request->id_wadahtugas;
+        $save->namafile_tugas = $files;
+        $save->waktu_submit = Carbon::now()->format('Y-m-d H:i:s');
+        $query = $save->save();
          }
+
+
+        //  $query = Uploadtugas::create([
+        //             'id_praktikum'=>$request->id,
+        //             'id_user'=>$request->id_user,
+        //             'id_wadahtugas'=>$request->id_wadahtugas,
+        //             'namafile_tugas'=> $files,
+        //             'waktu_submit'=>Carbon::now()->format('Y-m-d H:i:s')
+        //     ]);
 
             if($query){
                 return response()->json(['status'=>1,'msg'=>'File Berhasil Diunggah']);
@@ -910,17 +963,18 @@ class UserController extends Controller
                                 ->get();
 
 
-        $presensi = Wadahpresensi::rightjoin('presensi', 'wadahpresensi.id_wadah', 'presensi.id_wadah')
-                    ->rightjoin('users','presensi.id_user','=','users.id')
+        $presensi = Presensi::rightjoin('users', 'presensi.id_user', 'users.id')
                     ->join('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
+                    ->groupBy(['nama_user'])
+                    ->where('id_status', 4)
                     ->where('proses_praktikum.id_praktikum', $id)
-                    ->where('users.id_status', 4)
                     ->get();
         // dd($presensi);
 
-        $kelas = Praktikum::where('id_praktikum', $id)->get();
+        $mk = Praktikum::where('id_praktikum', $id)->get();
 
         if ($request->ajax()) {
+            
             return Datatables::of($presensi)
                     ->addColumn('nama', function($row){
                         return $row->nama_user;
@@ -929,7 +983,7 @@ class UserController extends Controller
                         return $row->username;
                     })
                     ->addColumn('keterangan', function($row){
-                        if($row->id_wadah){
+                        if($row->fotottd_presensi){
                             return "Hadir";
                             
                         }else{
@@ -940,14 +994,7 @@ class UserController extends Controller
                     ->make(true);
             }
 
-        $absen = [
-            'mk'=>$kelas,
-            'absen'=>$absen,
-            'presensi'=>$presensi,
-            'course'=>$course
-        ];
-
-       return view('dsn.presensi',  $absen);
+       return view('dsn.presensi',  compact(['mk', 'absen', 'presensi', 'course']));
    }
 
     public function rekapAsisten(Request $request, $id)
@@ -961,9 +1008,9 @@ class UserController extends Controller
                                 ->get();
 
 
-        $presensi = Wadahpresensi::rightjoin('presensi', 'wadahpresensi.id_wadah', 'presensi.id_wadah')
+        $presensi = Presensi::join('presensi', 'wadahpresensi.id_wadah', 'presensi.id_wadah')
                     ->rightjoin('users','presensi.id_user','=','users.id')
-                    ->join('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
+                    ->leftjoin('proses_praktikum', 'wadahpresensi.id_praktikum', 'proses_praktikum.id_praktikum')
                     ->where('proses_praktikum.id_praktikum', $id)
                     ->where('users.id_status', 4)
                     ->get();
@@ -971,34 +1018,27 @@ class UserController extends Controller
 
         $kelas = Praktikum::where('id_praktikum', $id)->get();
 
-        if ($request->ajax()) {
-            return Datatables::of($presensi)
-                    ->addColumn('nama', function($row){
-                        return $row->nama_user;
-                    })
-                    ->addColumn('nim', function($row){
-                        return $row->username;
-                    })
-                    ->addColumn('keterangan', function($row){
-                        if($row->id_wadah){
-                            return "Hadir";
-                            
-                        }else{
-                            return "Tanpa Keterangan";
-                        }
-                    })
-                    ->rawColumns(['keterangan'])
-                    ->make(true);
-            }
+            if ($request->ajax()) {
+                return Datatables::of($presensi)
+                        ->addColumn('nama', function($row){
+                            return $row->nama_user;
+                        })
+                        ->addColumn('nim', function($row){
+                            return $row->username;
+                        })
+                        ->addColumn('keterangan', function($row){
+                            if($row->id_wadah){
+                                return "Hadir";
+                                
+                            }else{
+                                return "Tanpa Keterangan";
+                            }
+                        })
+                        ->rawColumns(['keterangan'])
+                        ->make(true);
+                }
 
-        $absen = [
-            'mk'=>$kelas,
-            'absen'=>$absen,
-            'presensi'=>$presensi,
-            'course'=>$course
-        ];
-
-       return view('asist.presensi',  $absen);
+       return view('asist.presensi',  compact(['kelas', 'absen', 'presensi', 'course']));
    }
 
 
@@ -1008,10 +1048,14 @@ class UserController extends Controller
             'pertemuan',
             'tanggal' => 'required',
             'materi',
-            'wmp' => 'required',
-            'wap' => 'required'
+            'wmp' => 'required|after:' . Carbon::now(),
+            'wap' => 'required|after:wmp'
         ],[
-            'tanggal.required'=>"jangan kosong"
+            'tanggal.required'=>"tanggal tidak boleh kosong",
+            'wmp.required'=>"waktu mulai presensi tidak boleh kosong",
+            'wmp.after'=>"Waktu pengumpulan tidak boleh melewati waktu anda sekarang",
+            'wap.required'=>"waktu akhir presensi tidak boleh kosong",
+            'wap.after'=>"Waktu akhir pengumpulan tidak boleh mendahului waktu mulai pengumpulan",
         ]);
 
     if($validator->passes()){

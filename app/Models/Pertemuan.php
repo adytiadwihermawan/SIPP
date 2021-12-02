@@ -14,6 +14,8 @@ class Pertemuan extends Model
         'deskripsi',
         'id_praktikum'
     ];
+    
+    protected $primaryKey = 'id_pertemuan';
 
     public $timestamps = false;
     

@@ -134,9 +134,10 @@
                                                 @else
                                                 <i class="fa fa-file-text-o mr-2" style="font-size:23px;color:black"> </i>
                                             @endif
-                                            
-                                        <a style="text-decoration: none; color:indianred"  href="{{route('download', $file->namafile_tugas)}}"> 
-                                            {{  $file->namafile_tugas }}   
+                                             
+
+                                        <a style="text-decoration: none; color:indianred" id="cek"  href="{{route('download', $file->namafile_tugas)}}"> 
+                                           {{  $file->namafile_tugas }}   
                                             <br>                                     
                                         </a>
                                         
@@ -252,11 +253,10 @@
 
                     <input type="hidden" class="form-control" name="id_wadahtugas" value="{{$data[0]->id_wadahtugas}}" readonly>
                 
-                         <div class="custom-file">
-                            <input type="file" name="_file[]" class="custom-file-input" id="customFile" multiple required>
+                         
+                            <input type="file" name="_file[]" class="form-control" id="customFile" multiple required>
                             <span class="text-danger error-text _file_error"></span>
-                            <label class="custom-file-label" for="customFile">Choose file</label>
-                        </div>
+                          
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" onclick="window.location.href='{{ route('mhsMatkul', [$mk[0]->id_praktikum]) }}'">Back</button>
                             <button type="submit" class="btn btn-primary">Upload Tugas</button>

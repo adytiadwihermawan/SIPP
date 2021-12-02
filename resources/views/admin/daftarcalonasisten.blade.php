@@ -20,7 +20,6 @@
             </tr>
         </thead>
     </table>
-<button type="button" class="btn btn-secondary" data-dismiss="modal"><a style="color: white;" href="openrekrutasist">Kembali</a></button>
 </div>
-
+<a class="btn blue4h btn-lg float-right" href="openrekrutasist"> Kembali </a>
 @endsection

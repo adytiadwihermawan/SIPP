@@ -12,12 +12,12 @@
 
 
 @section('content')
-@if(!empty($absen[0]->id_wadah))
+@if($absen->count() > 0)
 
 <div class="card col-12 blue1">
         <div class="card-header">
             <h3 class="card-title">
-                <b> {{$mk[0]->nama_praktikum}} </b>
+                <b> {{$kelas[0]->nama_praktikum}} </b>
             </h3>
 
         </div>

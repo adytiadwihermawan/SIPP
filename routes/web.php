@@ -105,6 +105,8 @@ Route::post('uploadtugas', [UserController::class, 'uploadTugas'])->name('upload
 
 Route::post('updatetugas', [UserController::class, 'updateTugas'])->name('updateTugas');
 
+Route::get('edittugas', [UserController::class, 'edittugas']);
+
 Route::get('deletemateri/{id}', [UserController::class, 'deletemateri']);
 
 Route::get('deletetugas/{id}', [UserController::class, 'deletetugas']);
@@ -115,9 +117,13 @@ Route::get('downloadfile{file}', [UserController::class, 'downloadFile'])->name(
 
 Route::post('pertemuan', [UserController::class, 'buatPertemuan'])->name('pertemuan');
 
+Route::get('edit', [UserController::class, 'editpertemuan']);
+
 Route::post('editpertemuan', [UserController::class, 'updatePertemuan'])->name('updatepertemuan');
 
 Route::post('absen', [UserController::class, 'buatAbsen'])->name('buatAbsen');
+
+Route::get('editabsen', [UserController::class, 'editabsen']);
 
 Route::post('editpresensi', [UserController::class, 'updateAbsen'])->name('updateAbsen');
 
@@ -131,6 +137,7 @@ Route::get('dsn/presensi/{id}', [UserController::class, 'rekapAbsen'])->name('re
 
 Route::get('file-export', [UserController::class, 'fileExport'])->name('file-export');
 
+Route::get('view', [UserController::class, 'viewrekap']);
 
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
 

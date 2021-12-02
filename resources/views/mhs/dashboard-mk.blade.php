@@ -240,6 +240,7 @@ $(document).ready(function(){
      var ids = $(this).attr('data-id');
      $(".modal-body #id").val( ids );
     });
+
   </script>
 
 </body>
