@@ -49,10 +49,10 @@
             <ul>
                 @foreach ($course as $pertemuan)
                 <li class="nav-item">
-                    <a href=" {{ route('grade', [$pertemuan->id_wadahtugas]) }} "
-                        class="{{ request()->routeIs('grade', [$pertemuan->id_wadahtugas]) ? 'nav-link active' : 'nav-link' }}">
+                    <a href=" {{ route('grade', [$pertemuan->id_pertemuan]) }} "
+                        class="{{ request()->routeIs('grade', [$pertemuan->id_pertemuan]) ? 'nav-link active' : 'nav-link' }}">
                         <p>
-                            * {{$pertemuan->judul_tugas}}
+                            * {{$pertemuan->nama_pertemuan}}
                         </p>
                     </a>
                 </li>

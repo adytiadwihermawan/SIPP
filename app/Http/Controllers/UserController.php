@@ -175,13 +175,10 @@ class UserController extends Controller
                             ->get();
         
         $proses_praktikum = Pertemuan::join('proses_praktikum', 'pertemuan.id_praktikum', '=', 'proses_praktikum.id_praktikum')
-                            ->join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
                             ->where('pertemuan.id_praktikum', $id)
                             ->where('id_user', Auth::user()->id)
                             ->get();
     
-        // dd($proses_praktikum);
-
         $data_materi = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
                         ->get();
 
@@ -541,7 +538,6 @@ class UserController extends Controller
                          ->get();
             // dd($data);
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
-                                ->join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
                                 ->where('pertemuan.id_praktikum', $id)
                                 ->get();
 
@@ -647,7 +643,7 @@ class UserController extends Controller
             $grade = Uploadtugas::join('wadah_tugas', 'uploadtugas.id_wadahtugas', 'wadah_tugas.id_wadahtugas')
                                 ->join('users', 'uploadtugas.id_user', 'users.id')
                                 ->leftjoin('nilai', 'uploadtugas.id_tugas', 'nilai.id_tugas')
-                                ->where('uploadtugas.id_wadahtugas', $id)
+                                ->where('wadah_tugas.id_pertemuan', $id)
                                 ->get();
             // dd($grade);
             if ($request->ajax()) {
@@ -686,24 +682,17 @@ class UserController extends Controller
                     ->make(true);
             }
             $mk = Praktikum::join('pertemuan', 'praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
-                                ->join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
-                                ->where('wadah_tugas.id_wadahtugas', $id)
+                                ->where('pertemuan.id_pertemuan', $id)
                                 ->get();
 
             $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
                             ->get();
 
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
-                                ->join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
-                                ->where('wadah_tugas.id_wadahtugas', $id)
+                                ->where('pertemuan.id_pertemuan', $id)
                                 ->get();
 
-            return view('dsn.grades', [
-                'grade'=>$grade,
-                'mk'=>$mk,
-                'absen'=>$absen,
-                'course'=>$course,
-            ]);
+            return view('dsn.grades', compact('grade','mk', 'absen', 'course'));
         }
         
         public function asistGrade(Request $request, $id)
@@ -953,7 +942,6 @@ class UserController extends Controller
                             ->simplePaginate(16);
 
         $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
-                                ->join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
                                 ->where('pertemuan.id_praktikum', $id)
                                 ->get();
 
@@ -1198,15 +1186,14 @@ class UserController extends Controller
             'ipk'=>'required',
             'mk1'=>'required',
             'nmk1'=>'required',
-            'mk2'=>'required|different:mk1',
-            'nmk2'=>'required',
+            'mk2'=>'nullable|different:mk1',
+            'nmk2',
             '_file'=>'required',
             ],[
                 'number.required'=>"No Hp tidak boleh kosong",
                 'ipk.required'=>"IPK tidak boleh kosong",
                 'mk1.required'=>"Pilih salah satu matkul",
                 'nmk1.required'=>"Pilih nilai matkul",
-                'mk2.required'=>"Pilih salah satu matkul",
                 'mk2.different'=>"MK 1 dan MK 2 harus beda",
                 'nmk2.required'=>"Pilih nilai matkul",
                 '_file.required'=>"Upload Transkrip Nilai"
