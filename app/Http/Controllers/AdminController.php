@@ -720,12 +720,23 @@ class AdminController extends Controller
                            return $row->praktikum1->nama_praktikum;
                     })
                     ->addColumn('praktikumpilihan2', function($row){
+                        if(empty($row->praktikum2->nama_praktikum)){
+                            return "-";
+                        }else{
                            return $row->praktikum2->nama_praktikum;
+                        }
+                    })
+                    ->addColumn('nilai2', function($row){
+                        if(empty($row->nilai_pilihan2)){
+                            return "-";
+                        }else{
+                            return $row->nilai_pilihan2;
+                        }
                     })
                     ->addColumn('file', function($row){
                            return $btn = "<a href='/downloadfile".$row->filetranskripnilai."' data-id='" . $row->id_user . "' title='download'>$row->filetranskripnilai</a>";
                     })
-                    ->rawColumns(['praktikumpilihan1', 'praktikumpilihan2', 'file'])
+                    ->rawColumns(['praktikumpilihan1', 'praktikumpilihan2', 'nilai2', 'file'])
                     ->make(true);
         }
         return view('admin.daftarcalonasisten', compact('data'));

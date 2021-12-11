@@ -37,7 +37,7 @@
             if($count == $total);
           ?>
           <li class="nav-item">
-            <a href="/dsn/matkul/{{$matkul->id_praktikum}}" class="nav-link">
+            <a href="/dsn/matkul/{{$matkul->nama_praktikum}}" class="nav-link">
               <i class="fas fa-book-open"></i>
               <p>{{ $matkul->nama_praktikum }}</p>
             </a>

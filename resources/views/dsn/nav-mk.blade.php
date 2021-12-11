@@ -12,16 +12,16 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('matkulDsn', [$mk[0]->id_praktikum]) }}"
-                class="{{ request()->routeIs('matkulDsn', [$mk[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
+            <a href="{{ route('matkulDsn', [$mk[0]->nama_praktikum]) }}"
+                class="{{ request()->routeIs('matkulDsn', [$mk[0]->nama_praktikum]) ? 'nav-link active' : 'nav-link' }}">
                 <i class="nav-icon fas fa-book-open"></i>
                 <p> {{$mk[0]->nama_praktikum}}</p>
             </a>
         </li>
 
         <li class="nav-item">
-            <a href="{{ route('data', [$mk[0]->id_praktikum]) }}"
-                class="{{ request()->routeIs('data', [$mk[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
+            <a href="{{ route('data', [$mk[0]->nama_praktikum]) }}"
+                class="{{ request()->routeIs('data', [$mk[0]->nama_praktikum]) ? 'nav-link active' : 'nav-link' }}">
                 <i class="nav-icon fas fa-user-graduate"></i>
                 <p>
                      Participants
@@ -30,8 +30,8 @@
         </li>
 
         <li class="nav-item">
-            <a href="{{route('rekap', [$mk[0]->id_praktikum]) }}"
-                class="{{ request()->routeIs('rekap', [$mk[0]->id_praktikum]) ? 'nav-link active' : 'nav-link' }}">
+            <a href="{{route('absen', [$mk[0]->nama_praktikum]) }}"
+                class="{{ request()->routeIs('absen', [$mk[0]->nama_praktikum]) ? 'nav-link active' : 'nav-link' }}">
                 <i class="nav-icon fas fa-tasks"></i>
                 <p>
                      Presensi

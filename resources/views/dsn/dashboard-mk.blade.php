@@ -196,7 +196,7 @@
             serverside: true,
             responsive: true,
             ajax: {
-                url: "{{ route('data', [$mk[0]->id_praktikum]) }}"
+                url: "{{ route('data', [$mk[0]->nama_praktikum]) }}"
             },
             columnDefs: [
                         {"className": "dt-center", "targets": [0]}
@@ -259,7 +259,6 @@
             ]
         })
     }
-
   
   $(function () {
 
@@ -269,12 +268,49 @@
          }
      });
 
-     var table = $('#rekap').DataTable({
+       var table = $('#presensi').DataTable({
+         processing: true,
+         serverSide: true,
+         ajax: {
+           url: "{{ route('absen', [$mk[0]->nama_praktikum]) }}"
+         },
+         columnDefs: [
+                         {"className": "dt-center", "targets": [0, 2, 3, 4, 5, 6, 7]}
+                     ],
+         columns: [
+             {
+               "data": null, "sortable": false,
+               render: function(data, type, row, meta){
+               return meta.row + meta.settings._iDisplayStart + 1
+                     }
+                 },
+               {data: 'hari', name: 'hari' },
+               {data: 'jam', name: 'jam' },
+               {data: 'pertemuan', name: 'pertemuan' },
+               {data: 'tanggal', name: 'tanggal' },
+               {data: 'materi', name: 'materi' },
+               {data: 'waktu', name: 'waktu' },
+               {data: 'action', name: 'action' }
+         ]
+     });
+     
+   });
+
+   $(function () {
+
+     $.ajaxSetup({
+         headers: {
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
+     });
+
+     @if ($absen->count() > 0 || $presensi->count() > 0) 
+       var table = $('#rekap').DataTable({
          processing: true,
          serverSide: true,
          dom: 'Bflrtip',
          ajax: {
-           url: "{{ route('rekap', [$mk[0]->id_praktikum]) }}"
+           url: "{{ route('dataPresensi', [$mk[0]->nama_praktikum, $cekid]) }}"
          },
          columnDefs: [
                          {"className": "dt-center", "targets": [0, 2, 3]}
@@ -283,7 +319,7 @@
            {
              extend: 'excel',
              text: '<span class="fa fa-file-excel-o"></span> Export Rekap Presensi',
-
+             messageTop: 'Pertemuan {{$absen[0]->urutanpertemuan}}',
              title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$course[0]->nama_praktikum}} ',
              exportOptions: {
                  columns: [ 0, 1, 2, 3 ],
@@ -307,7 +343,10 @@
                {data: 'keterangan', name: 'keterangan'}
          ]
      });
+     @endif
+     
    });
+
    
     $(function(){
 
@@ -424,8 +463,8 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            $('#absen')[0].reset();
             toastr.success(data.msg)
+            location.reload()
           }
         }
       });

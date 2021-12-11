@@ -652,7 +652,7 @@
           url: "daftarcalonasisten"
         },
         columnDefs: [
-                        {"className": "dt-center", "targets": [0,2, 3,4]}
+                        {"className": "dt-center", "targets": [0,2, 3, 4, 5, 6]}
                     ],
         columns: [
             {
@@ -665,7 +665,7 @@
             {data: 'praktikumpilihan1', name: 'praktikum_pilihan1'},
             {data: 'nilai_pilihan1', name: 'nilai_pilihan1'},
             {data: 'praktikumpilihan2', name: 'praktikum_pilihan2'},
-            {data: 'nilai_pilihan2', name: 'nilai_pilihan2'},
+            {data: 'nilai2', name: 'nilai_pilihan2'},
             {data: 'IPK', name: 'IPK'},
             {data: 'Nohp', name: 'Nohp'},
             {data: 'file', name: 'filetranskripnilai'},

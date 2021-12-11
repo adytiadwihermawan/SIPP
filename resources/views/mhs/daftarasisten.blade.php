@@ -94,11 +94,11 @@
 								<span class="text-danger error-text nmk2_error"></span>
 							</div>
 
-							<div class="custom-file">
-                        <input type="file" name="_file" class="custom-file-input" id="customFile">
+							 <label for="customFile">Upload Transkrip Nilai</label>
+                        <input type="file" name="_file" class="form-control" id="customFile">
                         <span class="text-danger error-text _file_error"></span>
-                        <label class="custom-file-label" for="customFile">Upload Transkrip Nilai</label>
-                    </div>
+                       
+                   
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal"><a style="color: white;" href="">Kembali</a></button>
 						<button type="submit" class="btn btn-primary">Submit</button>

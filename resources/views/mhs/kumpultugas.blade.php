@@ -96,9 +96,9 @@
                                             ]);
                                         ?>
                                         @if (Carbon\Carbon::parse($data[0]->waktu_selesai) > Carbon\Carbon::parse($assign[0]->waktu_submit))      
-                                            Assignment was submitted {{str_replace(['after', 'before'], ['late', 'early'], $data[0]->waktu_selesai->locale($shortVariant)->diffForHumans($assign[0]->waktu_submit, ['short'=> true, 'parts' => 3]))}}
+                                            Assignment was submitted {{$data[0]->waktu_selesai}}
                                         @else
-                                            Assignment was submitted {{str_replace(['after', 'before'], ['late', 'early'], $assign[0]->waktu_submit->locale($shortVariant)->diffForHumans($data[0]->waktu_selesai, ['short'=> true, 'parts' => 3]))}}
+                                            Assignment was submitted {{$assign[0]->waktu_submit}}
                                         @endif
                                     </td>
                                 </tr>

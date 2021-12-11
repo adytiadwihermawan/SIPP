@@ -50,46 +50,7 @@
                     <th>Aksi</th>
 					</tr>
 				</thead>
-				<tbody>
-				@foreach ($absen as $item => $data)
-                    <tr style="text-align: center;">
-						<td>{{ $absen->firstItem() + $item }}</td>
-                        <td>{{ $data->hari_praktikum }}</td>
-                        <td>{{ date('H:i', strtotime($data->jam_praktikum))}}</td>
-                        <td style="text-align: center;">{{ $data->urutanpertemuan }}</td>
-                        <td>{{$data->tanggal->format('l, j F Y')}}
-                        </td>
-                        <td>{{ $data->keterangan}}</td>
-                        <td>Mulai Berlaku
-                          <br>
-                          {{ $data->waktu_mulai->format('l, j F Y') }} jam 
-                          <br>
-                          {{ $data->waktu_mulai->format('H:i')}}
-                          <br>
-                          s.d
-                          <br>
-                          {{ $data->waktu_berakhir->format('l, j F Y') }} jam 
-                          <br>
-                          {{ $data->waktu_berakhir->format('H:i')}}
-                        </td>
-                        <td>
-                            <a href="javascript:void(0)" class="btn btn-info view" data-id="{{ $data->id_wadah }}">
-                                <i class="fas fa-edit">View</i>
-                            </a>
-                            <br>
-                            <a href="javascript:void(0)" class="btn hijau3 panjang1 mt-2 editpresensi" data-id="{{ $data->id_wadah }}">
-                                <i class="fas fa-edit">Edit</i>
-                            </a>
-                            <br>
-                            <a href="/deleteabsen/{{$data->id_wadah}}" title="Delete" class="btn btn-danger mt-2" onclick="return confirm('Are you sure to delete this data ?')">
-                                <i class="fa fa-trash"></i> Hapus
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
 			</table>
-			{{ $absen->links() }}
           </div>
         </div>
     </div>
@@ -152,34 +113,6 @@
         </div> 
 
     @endforeach
-                      
-    
-                            <div class="modal fade" id="view">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title" id="head">Pertemuan {{$data->urutanpertemuan}}</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <input type="hidden" id="id_wadah" name="id_wadah">
-
-                                            <table class="table table-striped hover" id="rekap">
-                                                    <thead>
-                                                        <tr style="text-align: center">
-                                                            <th>No</th>
-                                                            <th>NAMA</th>
-                                                            <th>NIM</th>
-                                                            <th>KETERANGAN</th>
-                                                        </tr>
-                                                    </thead>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
 @else
 

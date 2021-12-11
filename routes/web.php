@@ -125,6 +125,8 @@ Route::post('absen', [UserController::class, 'buatAbsen'])->name('buatAbsen');
 
 Route::get('editabsen', [UserController::class, 'editabsen']);
 
+Route::get('/rekap/{id_praktikum}/{id}', [UserController::class, 'viewrekap'])->name('dataPresensi');
+
 Route::post('editpresensi', [UserController::class, 'updateAbsen'])->name('updateAbsen');
 
 Route::post('nilai', [UserController::class, 'nilai'])->name('nilaiTugas');
@@ -133,11 +135,10 @@ Route::get('dsn/partisipan/{id}', [UserController::class, 'dsnPartisipan'])->nam
 
 Route::get('dsn/grade/{id}', [UserController::class, 'dsnGrade'])->name('grade');
 
-Route::get('dsn/presensi/{id}', [UserController::class, 'rekapAbsen'])->name('rekap');
+Route::get('dsn/presensi/{id}', [UserController::class, 'rekapAbsen'])->name('absen');
 
 Route::get('file-export', [UserController::class, 'fileExport'])->name('file-export');
 
-Route::get('view', [UserController::class, 'viewrekap']);
 
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
 
