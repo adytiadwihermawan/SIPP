@@ -46,6 +46,14 @@
               </p>
             </a>
            </li>
+           <li class="nav-item">
+            <a href="/openrekrutasist" class="{{ request()->is('openrekrutasist') ? 'nav-link active' : 'nav-link' }}">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Rekap Asisten
+              </p>
+            </a>
+           </li>
   </ul>
 </nav>
 <!-- /.sidebar-menu -->
