@@ -73,6 +73,7 @@ class UserController extends Controller
                             ->where('id_user', Auth::user()->id)
                             ->get();
         // dd($proses_praktikum);
+
          $data_materi = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
                         ->get();
 
@@ -171,7 +172,9 @@ class UserController extends Controller
 
         $cek = Praktikum::where("nama_praktikum", "like", "%".$nama_praktikum."%")->first();
 
-        $cekid = Presensi::first();
+        $cekid = Wadahpresensi::first();
+
+        // dd($cekid);
 
         $kelas = Praktikum::where('id_praktikum',  $cek->id_praktikum)->get();
 
@@ -179,13 +182,21 @@ class UserController extends Controller
                             ->where('wadahpresensi.id_praktikum', $cek->id_praktikum)
                             ->get();
 
+        // dd($absen);
+
         $presensi = Presensi::get();
 
         
         $proses_praktikum = Pertemuan::join('proses_praktikum', 'pertemuan.id_praktikum', '=', 'proses_praktikum.id_praktikum')
-                            ->where('pertemuan.id_praktikum', $cek->id_praktikum)
+                            ->where('proses_praktikum.id_praktikum', $cek->id_praktikum)
                             ->where('id_user', Auth::user()->id)
                             ->get();
+
+        $course1 = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', 'pertemuan.id_pertemuan')
+                                ->where('id_praktikum', $cek->id_praktikum)
+                                ->get();
+
+        // dd($course1);
     
         $data_materi = Materi::join('pertemuan', 'materi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
                         ->get();
@@ -193,9 +204,10 @@ class UserController extends Controller
         $data_tugas = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', '=', 'pertemuan.id_pertemuan')
                         ->get();
 
-        // dd($data);
+        // dd($data_tugas);
         $course = [
             'course'=>$proses_praktikum,
+            'course1'=>$course1,
             'mk'=>$kelas,
             'data_materi'=>$data_materi,
             'absen'=>$absen,
@@ -455,6 +467,8 @@ class UserController extends Controller
                                 ->where('pertemuan.id_praktikum', $cek->id_praktikum)
                                 ->get();
 
+        $course1 = Wadah_tugas::get();
+
         $mk = Praktikum::where('id_praktikum', $cek->id_praktikum)->get();
 
         if ($request->ajax()) {
@@ -477,7 +491,7 @@ class UserController extends Controller
                     ->rawColumns(['keterangan'])
                     ->make(true);
             }
-        return view('dsn.rekap', compact(['presensi', 'absen', 'course', 'mk', 'cekid']));
+        return view('dsn.rekap', compact(['presensi', 'absen', 'course', 'course1', 'mk', 'cekid']));
     }
 
     public function updatePertemuan(Request $request){
@@ -587,7 +601,7 @@ class UserController extends Controller
         
             $cek = Praktikum::where("nama_praktikum", "like", "%".$nama_praktikum."%")->first();
 
-            $cekid = Presensi::first();;
+            $cekid =  Wadahpresensi::first();
 
             $data = User::join('proses_praktikum', 'users.id', '=', 'proses_praktikum.id_user')
                          ->leftjoin('roles', 'users.id', '=', 'roles.id_user')
@@ -599,9 +613,7 @@ class UserController extends Controller
                          ->orderBy('status', 'asc')
                          ->get();
             // dd($data);
-            $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
-                                ->where('pertemuan.id_praktikum', $cek->id_praktikum)
-                                ->get();
+            $course1 =  Wadah_tugas::get();
 
             $kelas = Praktikum::where('id_praktikum', $cek->id_praktikum)->get();
 
@@ -629,7 +641,7 @@ class UserController extends Controller
                 'data'=>$data,
                 'absen'=>$absen,
                 'presensi'=>$presensi,
-                'course'=>$course,
+                'course1'=>$course1,
             ];
             return view('dsn.participants', $cek);
         }
@@ -707,10 +719,14 @@ class UserController extends Controller
 
          public function dsnGrade(Request $request, $id)
         {
+
+            // $cek = Wadah_tugas::where("judul_tugas", "like", "%".$nama."%")->first();
+
             $grade = Uploadtugas::join('wadah_tugas', 'uploadtugas.id_wadahtugas', 'wadah_tugas.id_wadahtugas')
                                 ->join('users', 'uploadtugas.id_user', 'users.id')
                                 ->leftjoin('nilai', 'uploadtugas.id_tugas', 'nilai.id_tugas')
-                                ->where('wadah_tugas.id_pertemuan', $id)
+                                ->where('uploadtugas.id_wadahtugas', $id)
+                                // ->groupBy('uploadtugas.id_wadahtugas')
                                 ->get();
             // dd($grade);
             if ($request->ajax()) {
@@ -749,21 +765,23 @@ class UserController extends Controller
                     ->make(true);
             }
             $mk = Praktikum::join('pertemuan', 'praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
-                                ->where('pertemuan.id_pertemuan', $id)
+                                ->join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
+                                ->where('wadah_tugas.id_wadahtugas', $id)
                                 ->get();
 
             $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
                             ->get();
 
-            $cekid = Presensi::first();
+            $cekid = Wadahpresensi::first();
 
             $presensi = Presensi::get();
 
-            $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
-                                ->where('pertemuan.id_pertemuan', $id)
+            $course1 = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
+                                ->join('wadah_tugas', 'pertemuan.id_pertemuan', 'wadah_tugas.id_pertemuan')
+                                ->where('wadah_tugas.id_wadahtugas', $id)
                                 ->get();
 
-            return view('dsn.grades', compact('grade','mk', 'absen', 'cekid', 'presensi', 'course'));
+            return view('dsn.grades', compact('grade','mk', 'absen', 'cekid', 'presensi', 'course1'));
         }
         
         public function asistGrade(Request $request, $id)
@@ -1007,7 +1025,7 @@ class UserController extends Controller
    {
        $cek = Praktikum::where("nama_praktikum", "like", "%".$nama_praktikum."%")->first();
 
-       $cekid = Presensi::first();
+       $cekid = Wadahpresensi::first();
 
        $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
                             ->where('wadahpresensi.id_praktikum', $cek->id_praktikum)
@@ -1015,9 +1033,7 @@ class UserController extends Controller
 
         $presensi = Presensi::get();
 
-        $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
-                                ->where('pertemuan.id_praktikum', $cek->id_praktikum)
-                                ->get();
+        $course1 = Wadah_tugas::get();
 
         $mk = Praktikum::where('id_praktikum', $cek->id_praktikum)->get();
 
@@ -1077,7 +1093,7 @@ class UserController extends Controller
                     ->make(true);
         }
         
-       return view('dsn.presensi',  compact(['cekid', 'mk', 'absen', 'presensi', 'course']));
+       return view('dsn.presensi',  compact(['cekid', 'mk', 'absen', 'presensi', 'course1']));
    }
 
 

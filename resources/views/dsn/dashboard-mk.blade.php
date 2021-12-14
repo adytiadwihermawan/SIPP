@@ -215,16 +215,19 @@
         })
     }
 
+    
     $(document).ready(function(){
         datagrade()
     })
+   
     function datagrade() {
+      @if($course1->count() > 0)
         $('#grade').DataTable({
             serverside: true,
             responsive: true,
             rowGroup: [0],
             ajax: {
-                url: "{{ route('grade', [$course[0]->id_pertemuan]) }}"
+                url: "{{ route('grade', [$course1[0]->id_wadahtugas]) }}"
             },
             columnDefs: [
                         {"className": "dt-center", "targets": [0,2,3]}
@@ -233,8 +236,8 @@
           {
             extend: 'excel',
             text: '<span class="fa fa-file-excel-o"></span> Export Nilai',
-            messageTop: 'Tugas {{$course[0]->nama_pertemuan}}',
-            title: 'Rekap Nilai untuk Praktikum {{$course[0]->nama_praktikum}} ',
+            messageTop: 'Tugas {{$course1[0]->nama_pertemuan}}',
+            title: 'Rekap Nilai untuk Praktikum {{$course1[0]->nama_praktikum}} ',
             exportOptions: {
                 columns: [ 0, 1, 2, 3 ],
                 format: { 
@@ -257,8 +260,10 @@
               {data: 'grade', name: 'grade'},
               {data: 'file', name: 'file'}
             ]
-        })
+        });
+      @endif
     }
+
   
   $(function () {
 
@@ -304,7 +309,7 @@
          }
      });
 
-     @if ($absen->count() > 0 || $presensi->count() > 0) 
+     @if ($absen->count() && $course1->count() > 0 ) 
        var table = $('#rekap').DataTable({
          processing: true,
          serverSide: true,
@@ -320,7 +325,7 @@
              extend: 'excel',
              text: '<span class="fa fa-file-excel-o"></span> Export Rekap Presensi',
              messageTop: 'Pertemuan {{$absen[0]->urutanpertemuan}}',
-             title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$course[0]->nama_praktikum}} ',
+             title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$course1[0]->nama_praktikum}} ',
              exportOptions: {
                  columns: [ 0, 1, 2, 3 ],
                  format: { 
