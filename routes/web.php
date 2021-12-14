@@ -84,6 +84,8 @@ Route::post('status-form', [AdminController::class, 'updateform']);
 
 Route::get('daftarcalonasisten', [AdminController::class, 'viewcalon']);
 
+Route::get('rekapasisten', [AdminController::class, 'rekapasisten']);
+
 
 // ----------------------------------------- Dashboard Dosen -------------------------------------------------------------------- \\
 
@@ -153,6 +155,8 @@ Route::get('asist/partisipan/{id}', [UserController::class, 'asistPartisipan'])-
 Route::get('asist/grade/{id}', [UserController::class, 'asistGrade'])->name('gradeAsisten');
 
 Route::get('asist/presensi/{id}', [UserController::class, 'rekapAsisten'])->name('asistenRekap');
+
+Route::get('/rekap/{id_praktikum}/{id}', [UserController::class, 'viewrekapasisten'])->name('dataPresensiAsisten');
 
 // -----------------------------------------  Dashboard Mahasiswa -------------------------------------------------------------------- \\
 

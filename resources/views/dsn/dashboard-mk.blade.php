@@ -309,7 +309,7 @@
          }
      });
 
-     @if ($absen->count() && $course1->count() > 0 ) 
+     @if ($absen->count()) 
        var table = $('#rekap').DataTable({
          processing: true,
          serverSide: true,
@@ -325,7 +325,7 @@
              extend: 'excel',
              text: '<span class="fa fa-file-excel-o"></span> Export Rekap Presensi',
              messageTop: 'Pertemuan {{$absen[0]->urutanpertemuan}}',
-             title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$course1[0]->nama_praktikum}} ',
+             title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$absen[0]->nama_praktikum}} ',
              exportOptions: {
                  columns: [ 0, 1, 2, 3 ],
                  format: { 

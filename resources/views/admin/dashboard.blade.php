@@ -673,6 +673,39 @@
     });
   });
 
+  $(function () {
+     
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    var table = $('#rekapasisten').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+          url: "rekapasisten"
+        },
+        columnDefs: [
+                        {"className": "dt-center", "targets": [0,2, 3, 4, 5]}
+                    ],
+        columns: [
+            {
+              "data": null, "sortable": false,
+              render: function(data, type, row, meta){
+              return meta.row + meta.settings._iDisplayStart + 1
+                    }
+                },
+            {data: 'nama', name: 'nama_user'},
+            {data: 'nim', name: 'username'},
+            {data: 'praktikum', name: 'nama_praktikum'},
+            {data: 'tahunajaran', name: 'tahun_ajaran'},
+            {data: 'print', name: 'print'}
+        ]
+    });
+  });
+
 // To style only selects with the my-select class
 $('.selectpicker').selectpicker();
 

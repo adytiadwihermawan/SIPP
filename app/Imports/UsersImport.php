@@ -18,12 +18,13 @@ class UsersImport implements ToModel, WithHeadingRow
     {
         // dd($row);
             $user = User::where('username', $row['nimnip'])->first();
+
             if(is_null($user)){
-                User::insert([    
-                'nama_user' => $row['nama'],
-                'username' => $row['nimnip'],
-                'password' => Hash::make($row['password']),
-                'id_status' => $row['role']
+                return new User([    
+                    'nama_user' => $row['nama'],
+                    'username' => $row['nimnip'],
+                    'password' => Hash::make($row['password']),
+                    'id_status' => $row['role']
                 ]);
             }
     }

@@ -11,6 +11,7 @@ use App\Models\Pertemuan;
 use App\Models\Status_user;
 use App\Models\Roles;
 use App\Models\Rekrutasisten;
+use App\Models\Data_asisten;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\UsersImport;
@@ -380,11 +381,17 @@ class AdminController extends Controller
             'role' => 'required',
         ]);
 
+        Data_asisten::insert([
+            'id_praktikum'=>$request->input('id'),
+            'id_user'=>$request->input('peserta')
+        ]);
+
         $query = Roles::insert([
             'id_praktikum'=>$request->input('id'),
             'id_user'=>$request->input('peserta'),
             'id_status'=>$request->input('role')
         ]);
+
 
         if($query){
             return response()->json(['status'=>1,'msg'=>'Peserta Kelas berhasil ditambahkan']);
@@ -706,11 +713,6 @@ class AdminController extends Controller
     public function viewcalon(Request $request){
         $data = Praktikum::first();
 
-         $datas = Rekrutasisten::with(['praktikum1', 'praktikum2'])->get();
-        // foreach ($datas as $key) {
-        //     dd($key->praktikum2->nama_praktikum);
-        // }
-
          if ($request->ajax()) {
             $data = Rekrutasisten::with(['praktikum1', 'praktikum2'])
                              ->join('users', 'rekrutasisten.id_user', 'users.id')
@@ -740,6 +742,35 @@ class AdminController extends Controller
                     ->make(true);
         }
         return view('admin.daftarcalonasisten', compact('data'));
+    }
+
+    public function rekapasisten(Request $request){
+        $data = Praktikum::first();
+
+         if ($request->ajax()) {
+            $data = Data_asisten::join('users', 'data_asisten.id_user', 'users.id')
+                                ->join('praktikum', 'data_asisten.id_praktikum', 'praktikum.id_praktikum')
+                                ->get();
+            return Datatables::of($data)
+                    ->addColumn('nama', function($row){
+                        return $row->nama_user;
+                    })
+                    ->addColumn('nim', function($row){
+                        return $row->username;
+                    })
+                    ->addColumn('praktikum', function($row){
+                        return $row->nama_praktikum;
+                    })
+                    ->addColumn('tahunajaran', function($row){
+                        return $row->tahun_ajaran;
+                    })
+                    ->addColumn('print', function($row){
+                           return $btn = " <button class='print btn  btn-info' data-id='" . $row->id_dataasisten . "' ><i class='fas fa-print'></i></button>";
+                    })
+                    ->rawColumns(['nama', 'nim', 'praktikum', 'tahunajaran', 'print'])
+                    ->make(true);
+        }
+        return view('admin.rekapasisten', compact('data'));
     }
 
 }

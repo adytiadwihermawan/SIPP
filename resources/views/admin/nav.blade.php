@@ -47,7 +47,7 @@
             </a>
            </li>
            <li class="nav-item">
-            <a href="/openrekrutasist" class="{{ request()->is('openrekrutasist') ? 'nav-link active' : 'nav-link' }}">
+            <a href="/rekapasisten" class="{{ request()->is('rekapasisten') ? 'nav-link active' : 'nav-link' }}">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 Rekap Asisten

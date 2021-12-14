@@ -395,8 +395,8 @@
 
             <div class="card-body col-13 card-outline card-warning mb-0 ml-3 px-0">
                 <div class="card-header pt-0">
-                    <a style="text-decoration: none; color:tomato" href="" data-toggle="modal"
-                        data-target="#edit-tugas-{{$datas->id_wadahtugas}}">
+                  
+                    <a href="javascript:void(0)" style="text-decoration: none; color:tomato" class="edittugas" data-id="{{ $datas->id_wadahtugas }}">
                         <h4 class="card-title">  <b> 
                              {{$datas->judul_tugas}} </b>
                         </h4>
@@ -408,7 +408,8 @@
                         <i class="fa fa-trash"></i> Hapus Tugas
                     </a>
                 </div>
-<div class="modal fade" id="edit-tugas-{{$datas->id_wadahtugas}}">
+
+<div class="modal fade" id="edit-tugas">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -422,44 +423,41 @@
                         enctype="multipart/form-data">
                         @csrf
 
-                       <input type="hidden" class="form-control" name="id" value="{{$datas->id_wadahtugas}}"
-                                        readonly>
+                       <input type="text" class="form-control" name="id" id="id_wadahtugas" hidden>
 
-                        <input type="hidden" class="form-control" name="id_pertemuan"
-                                        value="{{$datas->id_pertemuan}}" readonly>
+                        <input type="text" class="form-control" name="id_pertemuan" id="id_pertemuan" hidden>
 
 
                         <div class="form-group">
                             <label for="">Judul Tugas</label>
-                            <input type="text" class="form-control" name="judul_tugas" maxlength="250" value="{{$datas->judul_tugas}}">
+                            <input type="text" class="form-control" name="judul_tugas" maxlength="250" id="judul_tugas">
                             <span class="text-danger error-text judul_tugas_error"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="">Deskripsi Tugas</label>
-                            <textarea class="form-control" name="deskripsi" maxlength="1000" rows="4"> {{$datas->deskripsi_tugas}}</textarea>
+                            <textarea class="form-control" name="deskripsi" maxlength="1000" rows="4" id="deskripsi"></textarea>
                             <span class="text-danger error-text deskripsi_error"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="">Waktu Mulai Pengumpulan</label>
-                            <input type="datetime-local" class="form-control" name="wmp"  value="{{$datas->waktu_mulai->toDatetimelocalString()}}">
+                            <input type="datetime-local" class="form-control" name="wmp" id="wmp" value="{{$datas->waktu_mulai->toDatetimelocalString()}}">
                             <span class="text-danger error-text wmp_error"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="">Waktu Akhir Pengumpulan</label>
-                            <input type="datetime-local" class="form-control" name="wap" value="{{$datas->waktu_selesai->toDatetimelocalString()}}">
+                            <input type="datetime-local" class="form-control" name="wap" id="wap" value="{{$datas->waktu_selesai->toDatetimelocalString()}}">
                             <span class="text-danger error-text wap_error"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="">Waktu Cut-Off Pengumpulan</label>
                                 @if (!empty($datas->waktu_cutoff))
-                                    <input type="datetime-local" class="form-control" name="wcp"
-                                       value="{{$datas->waktu_cutoff->toDatetimelocalString()}}">
+                                    <input type="datetime-local" class="form-control" name="wcp" id="wcp" value="{{$datas->waktu_cutoff->toDatetimelocalString()}}">
                                 @else
-                                    <input type="datetime-local" class="form-control" name="wcp">
+                                    <input type="datetime-local" class="form-control" name="wcp" id="wcp">
                                 @endif
                             <span class="text-danger error-text wcp_error"></span>
                         </div>
@@ -494,18 +492,16 @@
                 <textarea class="form-control"
                     style="border-style: none; border-color: Transparent; overflow: auto;" rows="5">{{$item->deskripsi}}</textarea>
                 <br>
-                <a href="" class="btn hijau3 panjang1 float-right" data-toggle="modal"
-                    data-target="#edit-pertemuan-{{$item->id_pertemuan}}">
-                    <i class="fas fa-edit"></i> Edit Pertemuan </button>
-                </a>
+            <a href="javascript:void(0)" class="btn hijau3 panjang1 float-right editPertemuan" data-id="{{ $item->id_pertemuan }}">
+                <i class="fas fa-edit">Edit Pertemuan</i>
+            </a>
             </div>
         </div>
     </div>
     <br>
     @endforeach
 
-    @foreach ($course as $data)
-        <div class="modal fade" id="edit-pertemuan-{{$data->id_pertemuan}}">
+        <div class="modal fade" id="edit-pertemuan" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -518,26 +514,26 @@
                         <form id="edit-pertemuan" action="{{ route('updatepertemuan') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <input type="text" class="form-control" name="id" value="{{$data->id_pertemuan}}" hidden>
+                                <input type="hidden" id="id_pertemuan" name="id_pertemuan">
                             </div>
 
                             <div class="form-group">
                                 <label for="">Nama Pertemuan / Pertemuan Ke</label>
-                                <input type="text" class="form-control" value="{{ $data->nama_pertemuan }}"
-                                    name="nama_pertemuan" required>
+                                <input type="text" class="form-control" id="nama_pertemuan"
+                                    name="nama_pertemuan">
                                 <span class="text-danger error-text nama_pertemuan_error"></span>
                             </div>
 
                             <div class="form-group">
                                 <label for="">Materi Pembahasan</label>
                                 <textarea class="form-control" placeholder="Masukkan Deskripsi" name="deskripsi"
-                                    maxlength="1000" required rows="5"> {{$data->deskripsi}}</textarea>
+                                    maxlength="1000" rows="5" id="deskripsi"> </textarea>
                                 <span class="text-danger error-text deskripsi_error"></span>
                             </div>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" id="buat-pertemuan" class="btn btn-primary">Edit Pertemuan</button>
+                                <button type="submit" id="edit-pertemuan" class="btn btn-primary">Edit Pertemuan</button>
                             </div>
                         </form>
                     </div>
@@ -545,7 +541,6 @@
             </div>
         </div>
     </div>
-    @endforeach
 
 @endif
 @endsection

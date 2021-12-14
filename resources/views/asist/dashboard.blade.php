@@ -38,7 +38,7 @@
   <ul class="navbar-nav ml-auto">
     <div class="user-panel mt-0 pb-0 mb-0 d-flex" >
       <div class="image">
-        <img src="{{asset('dist/img/defaultpic.png')}}" class="img-circle elevation-2" alt="User Image">
+        <img src="{{ Auth::user()->fotouser}}" class="img-circle elevation-2" alt="User Image">
       </div>
     </div>
       @guest
@@ -74,7 +74,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
    
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="/asist/dashboard" class="brand-link">
       <img src="{{asset('dist/img/logoulm.png')}}" alt="logoulm" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">SIPP-TI</span>
     </a>

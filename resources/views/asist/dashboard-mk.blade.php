@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>@yield('title')</title>
 
    <!-- Font Awesome -->
@@ -96,7 +96,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
         
           <!-- Brand Logo -->
-          <a href="index3.html" class="brand-link">
+          <a href="/asist/dashboard" class="brand-link">
             <img src="{{asset('dist/img/logo.png')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
             <span class="brand-text font-weight-light">SIDP-TI</span>
           </a>
@@ -196,7 +196,7 @@
             serverside: true,
             responsive: true,
             ajax: {
-                url: "{{ route('asistenPart', [$mk[0]->id_praktikum]) }}"
+                url: "{{ route('asistenPart', [$mk[0]->nama_praktikum]) }}"
             },
             columnDefs: [
                         {"className": "dt-center", "targets": [0]}
@@ -214,31 +214,30 @@
             ]
         })
     }
+
     
-    $(function () {
-     
-    $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    
-    var table = $('#grade').DataTable({
-        processing: true,
-        serverSide: true,
-        dom: 'Bflrtip',
-        ajax: {
-          url: "{{ route('gradeAsisten', [$course[0]->id_pertemuan]) }}"
-        },
-        columnDefs: [
-                        {"className": "dt-center", "targets": [0, 2, 3]}
+    $(document).ready(function(){
+        datagrade()
+    })
+   
+    function datagrade() {
+      @if($course1->count() > 0)
+        $('#grade').DataTable({
+            serverside: true,
+            responsive: true,
+            rowGroup: [0],
+            ajax: {
+                url: "{{ route('gradeAsisten', [$course1[0]->id_wadahtugas]) }}"
+            },
+            columnDefs: [
+                        {"className": "dt-center", "targets": [0,2,3]}
                     ],
-        buttons : [
+              buttons : [
           {
             extend: 'excel',
             text: '<span class="fa fa-file-excel-o"></span> Export Nilai',
-            messageTop: 'Tugas {{$course[0]->nama_pertemuan}}',
-            title: 'Rekap Nilai untuk Praktikum {{$course[0]->nama_praktikum}} ',
+            messageTop: 'Tugas {{$course1[0]->nama_pertemuan}}',
+            title: 'Rekap Nilai untuk Praktikum {{$course1[0]->nama_praktikum}} ',
             exportOptions: {
                 columns: [ 0, 1, 2, 3 ],
                 format: { 
@@ -260,10 +259,12 @@
               {data: 'nim', name: 'nim'},
               {data: 'grade', name: 'grade'},
               {data: 'file', name: 'file'}
-        ]
-    });
-  });
+            ]
+        });
+      @endif
+    }
 
+  
   $(function () {
 
      $.ajaxSetup({
@@ -272,12 +273,49 @@
          }
      });
 
-     var table = $('#rekap').DataTable({
+       var table = $('#presensi').DataTable({
+         processing: true,
+         serverSide: true,
+         ajax: {
+           url: "{{ route('asistenRekap', [$mk[0]->nama_praktikum]) }}"
+         },
+         columnDefs: [
+                         {"className": "dt-center", "targets": [0, 2, 3, 4, 5, 6, 7]}
+                     ],
+         columns: [
+             {
+               "data": null, "sortable": false,
+               render: function(data, type, row, meta){
+               return meta.row + meta.settings._iDisplayStart + 1
+                     }
+                 },
+               {data: 'hari', name: 'hari' },
+               {data: 'jam', name: 'jam' },
+               {data: 'pertemuan', name: 'pertemuan' },
+               {data: 'tanggal', name: 'tanggal' },
+               {data: 'materi', name: 'materi' },
+               {data: 'waktu', name: 'waktu' },
+               {data: 'action', name: 'action' }
+         ]
+     });
+     
+   });
+
+   $(function () {
+
+     $.ajaxSetup({
+         headers: {
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
+     });
+
+     @if ($absen->count()) 
+       var table = $('#rekap-asist').DataTable({
          processing: true,
          serverSide: true,
          dom: 'Bflrtip',
          ajax: {
-           url: "{{ route('asistenRekap', [$mk[0]->id_praktikum]) }}"
+           url: "{{ route('dataPresensiAsisten', [$mk[0]->nama_praktikum, $cekid]) }}"
          },
          columnDefs: [
                          {"className": "dt-center", "targets": [0, 2, 3]}
@@ -286,8 +324,8 @@
            {
              extend: 'excel',
              text: '<span class="fa fa-file-excel-o"></span> Export Rekap Presensi',
-             
-             title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$course[0]->nama_praktikum}} ',
+             messageTop: 'Pertemuan {{$absen[0]->urutanpertemuan}}',
+             title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$absen[0]->nama_praktikum}} ',
              exportOptions: {
                  columns: [ 0, 1, 2, 3 ],
                  format: { 
@@ -310,7 +348,10 @@
                {data: 'keterangan', name: 'keterangan'}
          ]
      });
+     @endif
+     
    });
+
    
     $(function(){
 
@@ -427,8 +468,8 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            $('#absen')[0].reset();
             toastr.success(data.msg)
+            location.reload()
           }
         }
       });
@@ -464,25 +505,60 @@
     });
   });
 
-  $(document).on("click", ".idtugas", function () {
-     var ids = $(this).attr('data-id');
-     $(".modal-body #idtugas").val( ids );
-    });
-
+  
 </script>
  
 <script>
+
+  $('body').on('click', '.editPertemuan', function () {
+        var id = $(this).data('id');
+         
+        $.ajax({
+            type:"GET",
+            url: "{{ url('edit') }}",
+            data: { id: id },
+            dataType: 'json',
+            success: function(res){
+              $('#edit-pertemuan').modal('show');
+              $('#id_pertemuan').val(res.id_pertemuan);
+              $('#nama_pertemuan').val(res.nama_pertemuan);
+              $('#deskripsi').val(res.deskripsi);
+           }
+        });
+    });
+
+    $('body').on('click', '.view', function () {
+        var id = $(this).data('id');
+         
+        $.ajax({
+            type:"GET",
+            url: "{{ url('view') }}",
+            data: { id: id },
+            dataType: 'json',
+            success: function(res){
+              $('#view').modal('show');
+              $('#id_wadah').val(res.id_wadah);
+           }
+        });
+        
+    });
     
   $('#edit-pertemuan').on('submit', function(e){
       e.preventDefault();
+      
+      var id_pertemuan = $('#id_pertemuan').val();
+      var nama_pertemuan = $('#nama_pertemuan').val();
+      var deskripsi = $('#deskripsi').val();
 
       $.ajax({
-        url:$(this).attr('action'),
-        method:$(this).attr('method'),
-        data:new FormData(this),
-        processData: false,
+        url: "{{ url('editpertemuan') }}",
+        method: "POST",
+        data: {
+          id_pertemuan: id_pertemuan,
+          nama_pertemuan: nama_pertemuan,
+          deskripsi: deskripsi
+        },
         dataType: 'json',
-        contentType: false,
         beforeSend: function(){
           $(document).find('span.error-text').text('');
         },
@@ -491,24 +567,56 @@
             $.each(data.error, function(prefix, val){
               $('span.'+prefix+'_error').text(val[0]);
             });
+            if(!data.error){
+            toastr.error(data.msg)
+            }
           }else{
             toastr.success(data.msg)
-            location.reload();
+            location.reload()
           }
         }
       });
+    });
+
+  $('body').on('click', '.editpresensi', function () {
+        var id = $(this).data('id');
+         
+        $.ajax({
+            type:"GET",
+            url: "{{ url('editabsen') }}",
+            data: { id: id },
+            dataType: 'json',
+            success: function(res){
+              $('#edit-absen').modal('show');
+              $('#id').val(res.id_wadah);
+              $('#pertemuan').val(res.urutanpertemuan);
+              $('#materi').val(res.keterangan);
+           }
+        });
     });
 
     $('#edit-absen').on('submit', function(e){
       e.preventDefault();
       
+      var id = $('#id').val();
+      var pertemuan = $('#pertemuan').val();
+      var tanggal = $('#tanggal').val();
+      var materi = $('#materi').val();
+      var wmp = $('#wmp').val();
+      var wap = $('#wap').val();
+
       $.ajax({
-        url:$(this).attr('action'),
-        method:$(this).attr('method'),
-        data:new FormData(this),
-        processData: false,
+        url: "{{ url('editpresensi') }}",
+        method: "POST",
+        data: {
+          id: id,
+          pertemuan: pertemuan,
+          tanggal: tanggal,
+          materi: materi,
+          wmp: wmp,
+          wap: wap
+        },
         dataType: 'json',
-        contentType: false,
         beforeSend: function(){
           $(document).find('span.error-text').text('');
         },
@@ -518,30 +626,58 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
             if(!data.error){
-                toastr.options =
-                  {
-                    "closeButton" : true
-                  }
-                toastr.error(data.msg);
+            toastr.error(data.msg)
             }
           }else{
             toastr.success(data.msg)
+            location.reload()
           }
         }
       });
     });
 
+    $('body').on('click', '.edittugas', function () {
+        var id = $(this).data('id');
+         
+        $.ajax({
+            type:"GET",
+            url: "{{ url('edittugas') }}",
+            data: { id: id },
+            dataType: 'json',
+            success: function(res){
+              $('#edit-tugas').modal('show');
+              $('#id_wadahtugas').val(res.id_wadahtugas);
+              $('#id_pertemuan').val(res.id_pertemuan);
+              $('#judul_tugas').val(res.judul_tugas);
+              $('#deskripsi').val(res.deskripsi_tugas);
+           }
+        });
+    });
 
     $('#edit-tugas').on('submit', function(e){
       e.preventDefault();
+      
+      var id = $('#id_wadahtugas').val();
+      var id_pertemuan = $('#id_pertemuan').val();
+      var judul_tugas = $('#judul_tugas').val();
+      var deskripsi = $('#deskripsi').val();
+      var wmp = $('#wmp').val();
+      var wap = $('#wap').val();
+      var wcp = $('#wcp').val()
 
       $.ajax({
-        url:$(this).attr('action'),
-        method:$(this).attr('method'),
-        data:new FormData(this),
-        processData: false,
+        url: "{{ url('updatetugas') }}",
+        method: "POST",
+        data: {
+          id: id,
+          id_pertemuan: id_pertemuan,
+          judul_tugas: judul_tugas,
+          deskripsi: deskripsi,
+          wmp: wmp,
+          wap: wap,
+          wcp: wcp
+        },
         dataType: 'json',
-        contentType: false,
         beforeSend: function(){
           $(document).find('span.error-text').text('');
         },
@@ -551,15 +687,11 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
             if(!data.error){
-                toastr.options =
-                  {
-                    "closeButton" : true
-                  }
-                toastr.error(data.msg)
-              }
+            toastr.error(data.msg)
+            }
           }else{
             toastr.success(data.msg)
-            location.reload();
+            location.reload()
           }
         }
       });
