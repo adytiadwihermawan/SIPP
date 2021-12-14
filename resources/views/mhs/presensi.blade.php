@@ -144,7 +144,7 @@
 
                         <input type="hidden" class="form-control" name="id_user" value="{{Auth::user()->id}}" readonly>
 
-                        <input type="text" class="form-control" id="id" name="id_wadah" value="{{$data->id_wadah}}"
+                        <input type="hidden" class="form-control" id="id" name="id_wadah" value="{{$data->id_wadah}}"
                             readonly>
 
                         <div class="col-md-12">

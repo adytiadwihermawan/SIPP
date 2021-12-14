@@ -43,8 +43,8 @@
                                     <button type="button" class="btn">
 
                                         <i class="fa fa-book"></i> <a
-                                            href="{{asset('assets/file/tambah partisipan kelas.xlsx')}}"
-                                            download="Template Tambah User">
+                                            href="{{asset('assets/file/template add peserta kelas.xlsx')}}"
+                                            download="Template Tambah Peserta Kelas">
                                             Download Template Excel</a>
                                     </button>
                                     <button class="btn btn-primary float-right">Import data</button>
