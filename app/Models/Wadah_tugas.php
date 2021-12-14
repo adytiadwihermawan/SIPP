@@ -9,6 +9,7 @@ class Wadah_tugas extends Model
 {
     protected $fillable = [
         'id_pertemuan',
+        'url',
         'judul_tugas',
         'file_tugas',
         'deskripsi', 

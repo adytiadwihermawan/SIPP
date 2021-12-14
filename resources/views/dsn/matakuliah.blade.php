@@ -181,8 +181,13 @@
                             <span class="text-danger error-text deskripsi_error"></span>
                         </div>
 
-                        <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control"
-                            required>
+                        <div class="form-group">
+                            <label for="">URL Video</label>
+                            <textarea class="form-control" name="url" maxlength="1000" rows="4"> </textarea>
+                            <span class="text-danger error-text url_error"></span>
+                        </div>
+
+                        <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -232,7 +237,6 @@
                             <!-- <input type="text" class="form-control" name="deskripsi" maxlength="10000"> -->
                             <textarea class="form-control" name="deskripsi" maxlength="1000" rows="4"
                                 form="upload-tugas"> </textarea>
-
                             <span class="text-danger error-text deskripsi_error"></span>
                         </div>
 
@@ -384,6 +388,11 @@
                 @if($datas->deskripsi_file != null)
                 <div class="card-footer">
                     <p>{{$datas->deskripsi_file}}</p>
+                </div>
+                @endif
+                @if($datas->url != null)
+                <div class="card-footer">
+                    <x-embed url="{{$datas->url}}"/>
                 </div>
                 @endif
             </div>

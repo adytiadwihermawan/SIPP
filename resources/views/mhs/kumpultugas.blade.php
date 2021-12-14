@@ -135,7 +135,7 @@
                                                 <i class="fa fa-file-text-o mr-2" style="font-size:23px;color:black"> </i>
                                             @endif
                                              
-
+                                            
                                         <a style="text-decoration: none; color:indianred" id="cek"  href="{{route('download', $file->namafile_tugas)}}"> 
                                            {{  $file->namafile_tugas }}   
                                             <br>                                     

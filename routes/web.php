@@ -129,7 +129,7 @@ Route::post('absen', [UserController::class, 'buatAbsen'])->name('buatAbsen');
 
 Route::get('editabsen', [UserController::class, 'editabsen']);
 
-Route::get('/rekap/{id_praktikum}/{id}', [UserController::class, 'viewrekap'])->name('dataPresensi');
+Route::get('dsn/rekap/{id_praktikum}/{id}', [UserController::class, 'viewrekap'])->name('rekap');
 
 Route::post('editpresensi', [UserController::class, 'updateAbsen'])->name('updateAbsen');
 
@@ -158,7 +158,7 @@ Route::get('asist/grade/{id}', [UserController::class, 'asistGrade'])->name('gra
 
 Route::get('asist/presensi/{id}', [UserController::class, 'rekapAsisten'])->name('asistenRekap');
 
-Route::get('/rekap/{id_praktikum}/{id}', [UserController::class, 'viewrekapasisten'])->name('dataPresensiAsisten');
+Route::get('asist/rekap/{id_praktikum}/{id}', [UserController::class, 'viewrekapasisten'])->name('dataPresensiAsisten');
 
 // -----------------------------------------  Dashboard Mahasiswa -------------------------------------------------------------------- \\
 

@@ -240,7 +240,8 @@ class UserController extends Controller
 
         $request->validate([
                     'id'=>'required',
-                    '_file' => 'required',
+                    '_file',
+                    'url',
                     'judul_materi'=>'required',
                     'deskripsi'
                 ]);
@@ -258,6 +259,7 @@ class UserController extends Controller
             $fileModel->namafile_materi = $request->_file->getClientOriginalName();
             $fileModel->judul_materi = $request->judul_materi;
             $fileModel->deskripsi_file = $request->deskripsi;
+            $fileModel->url = $request->url;
             $query = $fileModel->save();
 
             if($query){
@@ -815,7 +817,6 @@ class UserController extends Controller
                                 ->join('users', 'uploadtugas.id_user', 'users.id')
                                 ->leftjoin('nilai', 'uploadtugas.id_tugas', 'nilai.id_tugas')
                                 ->where('uploadtugas.id_wadahtugas', $id)
-                                // ->groupBy('uploadtugas.id_wadahtugas')
                                 ->get();
             // dd($grade);
             if ($request->ajax()) {
@@ -1160,7 +1161,7 @@ class UserController extends Controller
                     })
                     ->addColumn('action', function($row){
 
-                             $btn = "<a href='/rekap/".$row->nama_praktikum."/$row->id_wadah' class='btn btn-info view' data-id='" . $row->id_wadah ."' title='view'><i class='fas fa-edit'>View</i></a>";
+                             $btn = "<a href='/dsn/rekap/".$row->nama_praktikum."/$row->id_wadah' class='btn btn-info view' data-id='" . $row->id_wadah ."' title='view'><i class='fas fa-edit'>View</i></a>";
 
                              $btn .= " <a href='javascript:void(0)' class='editpresensi btn  btn-success' data-id='" . $row->id_wadah . "' title='edit'><i class='fa fa-edit'>Edit</i></a>";
 
@@ -1238,7 +1239,7 @@ class UserController extends Controller
                     })
                     ->addColumn('action', function($row){
 
-                             $btn = "<a href='/rekap/".$row->nama_praktikum."/$row->id_wadah' class='btn btn-info view' data-id='" . $row->id_wadah ."' title='view'><i class='fas fa-edit'>View</i></a>";
+                             $btn = "<a href='/asist/rekap/".$row->nama_praktikum."/$row->id_wadah' class='btn btn-info view' data-id='" . $row->id_wadah ."' title='view'><i class='fas fa-edit'>View</i></a>";
 
                              $btn .= " <a href='javascript:void(0)' class='editpresensi btn  btn-success' data-id='" . $row->id_wadah . "' title='edit'><i class='fa fa-edit'>Edit</i></a>";
 

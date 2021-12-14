@@ -46,7 +46,11 @@
         float:none;  
         text-align:left;
       }
-    
+
+      .laravel-embed__responsive-wrapper{
+        padding-bottom: 0.25%!important;
+      }
+
     </style>
   </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -309,13 +313,13 @@
          }
      });
 
-     @if ($absen->count()) 
+     @if ($absen->count() > 0) 
        var table = $('#rekap').DataTable({
          processing: true,
          serverSide: true,
          dom: 'Bflrtip',
          ajax: {
-           url: "{{ route('dataPresensi', [$mk[0]->nama_praktikum, $cekid]) }}"
+           url: "{{ route('rekap', [$mk[0]->nama_praktikum, $cekid]) }}"
          },
          columnDefs: [
                          {"className": "dt-center", "targets": [0, 2, 3]}
