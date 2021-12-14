@@ -26,6 +26,10 @@
    
     <style>
 
+      .progress { position:relative; width:100%; border: 1px solid #7F98B2; padding: 1px; border-radius: 3px; }
+        .bar { background-color: #B4F5B4; width:0%; height:25px; border-radius: 3px; }
+        .percent { position:absolute; display:inline-block; top:3px; left:48%; color: #7F98B2;}
+
         .container {
             max-width: 500px;
         }
@@ -175,6 +179,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+<script src="http://malsup.github.com/jquery.form.js"></script>
+
 <script>
 
   // $.ajaxSetup({
@@ -257,6 +263,40 @@
     });
 
   });
+
+  (function() {
+ 
+    var bar = $('.bar');
+    var percent = $('.percent');
+    var status = $('#status');
+ 
+    $('form').ajaxForm({
+        beforeSubmit: validate,
+        beforeSend: function() {
+            status.empty();
+            var percentVal = '0%';
+            var posterValue = $('input[name=_file]').fieldValue();
+            bar.width(percentVal)
+            percent.html(percentVal);
+        },
+        uploadProgress: function(event, position, total, percentComplete) {
+            var percentVal = percentComplete + '%';
+            bar.width(percentVal)
+            percent.html(percentVal);
+        },
+        success: function() {
+            var percentVal = 'Wait, Saving';
+            bar.width(percentVal)
+            percent.html(percentVal);
+        },
+        complete: function(xhr) {
+            status.html(xhr.responseText);
+            alert('Uploaded Successfully');
+            window.location.href = "/daftarAsisten";
+        }
+    });
+     
+    })();
 
 </script>
 

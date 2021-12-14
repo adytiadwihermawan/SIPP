@@ -1412,22 +1412,25 @@ class UserController extends Controller
      public function daftar(Request $request)
      {
          $validator = \Validator::make($request->all(),[
-            'id_user',
+            'id_user'=>'unique:rekrutasisten,id_user',
             'number'=>'required',
             'ipk'=>'required',
             'mk1'=>'required',
             'nmk1'=>'required',
             'mk2'=>'nullable|different:mk1',
             'nmk2',
-            '_file'=>'required',
+            '_file'=>'required|mimes:pdf|size:1000',
             ],[
+                'id_user.unique'=>"Anda Sudah Submit Form Pendaftaran",
                 'number.required'=>"No Hp tidak boleh kosong",
                 'ipk.required'=>"IPK tidak boleh kosong",
                 'mk1.required'=>"Pilih salah satu matkul",
                 'nmk1.required'=>"Pilih nilai matkul",
                 'mk2.different'=>"MK 1 dan MK 2 harus beda",
                 'nmk2.required'=>"Pilih nilai matkul",
-                '_file.required'=>"Upload Transkrip Nilai"
+                '_file.required'=>"Upload Transkrip Nilai",
+                '_file.mimes' => 'format Transkrip Nilai hanya boleh PDF',
+                '_file.size'=>"Ukuran File Tidak Boleh Melebihi 1mb"
         ]);
         // dd($validator);
         if($validator->fails()) {

@@ -773,4 +773,15 @@ class AdminController extends Controller
         return view('admin.rekapasisten', compact('data'));
     }
 
+    public function sertifikat(Request $request)
+    {
+        $data = Data_asisten::join('users', 'data_asisten.id_user', 'users.id')
+                            ->join('praktikum', 'data_asisten.id_praktikum', 'praktikum.id_praktikum')
+                            ->where('id_dataasisten', $request->id)
+                            ->first();
+
+        $pdf = \PDF::loadView('admin.sertifikat', compact('data'))->setPaper('a4', 'landscape');
+        return $pdf->stream("Sertifikat ".$data->nama_user.".pdf");
+    }
+
 }

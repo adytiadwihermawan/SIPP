@@ -527,22 +527,7 @@
         });
     });
 
-    $('body').on('click', '.view', function () {
-        var id = $(this).data('id');
-         
-        $.ajax({
-            type:"GET",
-            url: "{{ url('view') }}",
-            data: { id: id },
-            dataType: 'json',
-            success: function(res){
-              $('#view').modal('show');
-              $('#id_wadah').val(res.id_wadah);
-           }
-        });
-        
-    });
-    
+
   $('#edit-pertemuan').on('submit', function(e){
       e.preventDefault();
       
