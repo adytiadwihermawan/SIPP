@@ -467,7 +467,9 @@ class UserController extends Controller
                                 ->where('pertemuan.id_praktikum', $cek->id_praktikum)
                                 ->get();
 
-        $course1 = Wadah_tugas::get();
+        $course1 = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', 'pertemuan.id_pertemuan')
+                                ->where('id_praktikum', $cek->id_praktikum)
+                                ->get();
 
         $mk = Praktikum::where('id_praktikum', $cek->id_praktikum)->get();
 
@@ -613,7 +615,9 @@ class UserController extends Controller
                          ->orderBy('status', 'asc')
                          ->get();
             // dd($data);
-            $course1 =  Wadah_tugas::get();
+            $course1 = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', 'pertemuan.id_pertemuan')
+                                ->where('id_praktikum', $cek->id_praktikum)
+                                ->get();
 
             $kelas = Praktikum::where('id_praktikum', $cek->id_praktikum)->get();
 
@@ -1033,7 +1037,9 @@ class UserController extends Controller
 
         $presensi = Presensi::get();
 
-        $course1 = Wadah_tugas::get();
+        $course1 = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', 'pertemuan.id_pertemuan')
+                                ->where('id_praktikum', $cek->id_praktikum)
+                                ->get();
 
         $mk = Praktikum::where('id_praktikum', $cek->id_praktikum)->get();
 
