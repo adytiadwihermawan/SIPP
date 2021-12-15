@@ -817,6 +817,7 @@ class UserController extends Controller
                                 ->join('users', 'uploadtugas.id_user', 'users.id')
                                 ->leftjoin('nilai', 'uploadtugas.id_tugas', 'nilai.id_tugas')
                                 ->where('uploadtugas.id_wadahtugas', $id)
+                                // ->groupBy('nama_user')
                                 ->get();
             // dd($grade);
             if ($request->ajax()) {

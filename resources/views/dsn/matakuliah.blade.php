@@ -393,6 +393,7 @@
                 @if($datas->url != null)
                 <div class="card-footer">
                     <x-embed url="{{$datas->url}}"/>
+                        {{-- <iframe width="420" height="315" src="https://www.youtube.com/embed/?v=EleVGcG8lyg&list=RDEleVGcG8lyg&start_radio=1" frameborder="0" allowfullscreen></iframe> --}}
                 </div>
                 @endif
             </div>
