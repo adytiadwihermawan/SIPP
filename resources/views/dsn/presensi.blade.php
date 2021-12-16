@@ -123,9 +123,9 @@
                     <h1>
                         Oops!</h1>
                     <h2>
-                        Belum Ada Absen untuk Mata Kuliah Sekarang</h2>
+                        Anda Belum Membuat Absen Untuk Mata Kuliah Ini</h2>
                     <div class="error-details">
-                        Mohon menunggu sampai dosen atau asisten kelas membuat absen untuk mata kuliah ini
+                        Silahkan Buat Presensi Terlebih Dahulu
                     </div>
                 </div>
             </div>

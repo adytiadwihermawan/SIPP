@@ -143,7 +143,7 @@
 
     </div>
 
-    <div class="modal fade" id="addmateri">
+     <div class="modal fade" id="addmateri">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -158,7 +158,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="">Pertemuan ke:</label>
-                            <select id="id" name="id" class="form-control" required>
+                            <select id="id" name="id" class="form-control">
                                 <option value="" selected>Pilih Pertemuan</option>
                                 @foreach($course as $pertemuan)
                                 <option value="{{$pertemuan->id_pertemuan}}">
@@ -170,7 +170,7 @@
 
                         <div class="form-group">
                             <label for="">Judul Materi</label>
-                            <input type="text" class="form-control" name="judul_materi" required maxlength="250">
+                            <input type="text" class="form-control" name="judul_materi" maxlength="250">
                             <span class="text-danger error-text judul_materi_error"></span>
                         </div>
 
@@ -181,8 +181,13 @@
                             <span class="text-danger error-text deskripsi_error"></span>
                         </div>
 
-                        <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control"
-                            required>
+                        <div class="form-group">
+                            <label for="">URL Video</label>
+                            <textarea class="form-control" name="url" maxlength="1000" rows="4"> </textarea>
+                            <span class="text-danger error-text url_error"></span>
+                        </div>
+
+                        <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -232,7 +237,6 @@
                             <!-- <input type="text" class="form-control" name="deskripsi" maxlength="10000"> -->
                             <textarea class="form-control" name="deskripsi" maxlength="1000" rows="4"
                                 form="upload-tugas"> </textarea>
-
                             <span class="text-danger error-text deskripsi_error"></span>
                         </div>
 
@@ -254,6 +258,25 @@
                             <span class="text-danger error-text wcp_error"></span>
                         </div>
 
+                        <div class="form-group">
+                            <label for="">Ukuran File Kumpul Tugas</label>
+                            <br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="size" id="s25" value="25">
+                                    <label class="form-check-label" for="25mb">25 MB</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="size" id="s50" value="50">
+                                    <label class="form-check-label" for="50mb">50 MB</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="size" id="s100" value="100">
+                                    <label class="form-check-label" for="100mb">100 MB</label>
+                                </div>
+                            <br>
+                            <span class="text-danger error-text size_error"></span>
+                        </div>
+
                         <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
 
                         <div class="modal-footer">
@@ -267,6 +290,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+
 
     <div class="modal fade" id="modal-presensi">
         <div class="modal-dialog modal-lg">
@@ -351,7 +375,7 @@
                     </a>
                 </div>
                 <div class="card-body cold1 col-13 mb-0">
-
+        @if (!empty($datas->namafile_materi))
                     <?php
                 $pecah = explode(".", $datas->namafile_materi);
                 $ekstensi = $pecah[1];
@@ -386,6 +410,13 @@
                     <p>{{$datas->deskripsi_file}}</p>
                 </div>
                 @endif
+
+            @endif
+                @if($datas->url != null)
+                <div class="card-footer">
+                    <x-embed url="{{$datas->url}}"/>
+                @endif
+
             </div>
             @endif
             @endforeach
@@ -427,7 +458,6 @@
 
                         <input type="text" class="form-control" name="id_pertemuan" id="id_pertemuan" hidden>
 
-
                         <div class="form-group">
                             <label for="">Judul Tugas</label>
                             <input type="text" class="form-control" name="judul_tugas" maxlength="250" id="judul_tugas">
@@ -439,7 +469,7 @@
                             <textarea class="form-control" name="deskripsi" maxlength="1000" rows="4" id="deskripsi"></textarea>
                             <span class="text-danger error-text deskripsi_error"></span>
                         </div>
-
+                        
                         <div class="form-group">
                             <label for="">Waktu Mulai Pengumpulan</label>
                             <input type="datetime-local" class="form-control" name="wmp" id="wmp" value="{{$datas->waktu_mulai->toDatetimelocalString()}}">
@@ -448,7 +478,7 @@
 
                         <div class="form-group">
                             <label for="">Waktu Akhir Pengumpulan</label>
-                            <input type="datetime-local" class="form-control" name="wap" id="wap" value="{{$datas->waktu_selesai->toDatetimelocalString()}}">
+                            <input type="datetime-local" class="form-control" name="wap" id="wap">
                             <span class="text-danger error-text wap_error"></span>
                         </div>
 
@@ -489,9 +519,11 @@
             @endforeach
 
             <div class="card-footer blue1">
-                <textarea class="form-control"
+            @if (!empty($item->deskripsi))
+                <textarea class="form-control" readonly
                     style="border-style: none; border-color: Transparent; overflow: auto;" rows="5">{{$item->deskripsi}}</textarea>
                 <br>
+            @endif
             <a href="javascript:void(0)" class="btn hijau3 panjang1 float-right editPertemuan" data-id="{{ $item->id_pertemuan }}">
                 <i class="fas fa-edit">Edit Pertemuan</i>
             </a>
@@ -514,12 +546,12 @@
                         <form id="edit-pertemuan" action="{{ route('updatepertemuan') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <input type="hidden" id="id_pertemuan" name="id_pertemuan">
+                                <input class="form-control" name="id" id="idcek" readonly hidden>
                             </div>
 
                             <div class="form-group">
                                 <label for="">Nama Pertemuan / Pertemuan Ke</label>
-                                <input type="text" class="form-control" id="nama_pertemuan"
+                                <input type="text" class="form-control" id="pertemuancek"
                                     name="nama_pertemuan">
                                 <span class="text-danger error-text nama_pertemuan_error"></span>
                             </div>
@@ -527,7 +559,7 @@
                             <div class="form-group">
                                 <label for="">Materi Pembahasan</label>
                                 <textarea class="form-control" placeholder="Masukkan Deskripsi" name="deskripsi"
-                                    maxlength="1000" rows="5" id="deskripsi"> </textarea>
+                                    maxlength="1000" rows="5" id="isi"> </textarea>
                                 <span class="text-danger error-text deskripsi_error"></span>
                             </div>
 

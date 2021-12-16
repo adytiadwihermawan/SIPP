@@ -18,7 +18,7 @@
                     <form id="nilai-tugas" action="{{ route('nilaiTugas') }}" method="POST">
                         @csrf
 
-                        <input type="hidden" id="idtugas" name="id" value="{{$grade[0]->id_tugas}}">
+                        <input id="id" name="id" type="text" hidden>
 
                         <div class="form-group">
                             <label for="">Nilai</label>

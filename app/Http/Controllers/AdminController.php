@@ -18,6 +18,7 @@ use App\Imports\UsersImport;
 use App\Imports\PesertaImport;
 use App\Models\Wadahform;
 use App\Models\Statusform;
+use Barryvdh\DomPDF\Facade;
 use DataTables;
 
 
@@ -780,7 +781,8 @@ class AdminController extends Controller
                             ->where('id_dataasisten', $request->id)
                             ->first();
 
-        $pdf = \PDF::loadView('admin.sertifikat', compact('data'))->setPaper('a4', 'landscape');
+        $pdf = Facade::loadView('sertifikat', compact('data'))->setPaper('a4', 'landscape');
+        // dd($pdf);
         return $pdf->stream("SERTIFIKAT ".$data->nama_user." PRAKTIKUM ".$data->nama_praktikum.".pdf");
     }
 

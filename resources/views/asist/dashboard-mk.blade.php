@@ -46,7 +46,11 @@
         float:none;  
         text-align:left;
       }
-    
+
+      .laravel-embed__responsive-wrapper{
+        padding-bottom: 0.25%!important;
+      }
+
     </style>
   </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -208,9 +212,9 @@
                         return meta.row + meta.settings._iDisplayStart + 1
                     }
                 },
-                {data: 'username', name: 'username'},
-                {data: 'nama_user', name: 'nama_user'},
-                {data: 'status', name: 'status'}
+                {data: 'nim', name: 'username'},
+                {data: 'nama', name: 'nama_user'},
+                {data: 'keterangan', name: 'status'}
             ]
         })
     }
@@ -225,7 +229,7 @@
         $('#grade').DataTable({
             serverside: true,
             responsive: true,
-            rowGroup: [0],
+            dom: 'Bflrtip',
             ajax: {
                 url: "{{ route('gradeAsisten', [$course1[0]->id_wadahtugas]) }}"
             },
@@ -520,9 +524,9 @@
             dataType: 'json',
             success: function(res){
               $('#edit-pertemuan').modal('show');
-              $('#id_pertemuan').val(res.id_pertemuan);
-              $('#nama_pertemuan').val(res.nama_pertemuan);
-              $('#deskripsi').val(res.deskripsi);
+              $('#idcek').val(res.id_pertemuan);
+              $('#pertemuancek').val(res.nama_pertemuan);
+              $('#isi').val(res.deskripsi);
            }
         });
     });
@@ -546,9 +550,9 @@
   $('#edit-pertemuan').on('submit', function(e){
       e.preventDefault();
       
-      var id_pertemuan = $('#id_pertemuan').val();
-      var nama_pertemuan = $('#nama_pertemuan').val();
-      var deskripsi = $('#deskripsi').val();
+      var id_pertemuan = $('#idcek').val();
+      var nama_pertemuan = $('#pertemuancek').val();
+      var deskripsi = $('#isi').val();
 
       $.ajax({
         url: "{{ url('editpertemuan') }}",
@@ -594,6 +598,22 @@
            }
         });
     });
+
+    $('body').on('click', '.nilai', function () {
+        var id = $(this).data('id');
+         
+        $.ajax({
+            type:"GET",
+            url: "{{ url('grade') }}",
+            data: { id: id },
+            dataType: 'json',
+            success: function(res){
+              $('#nilai').modal('show');
+              $('#id').val(res.id_tugas);
+           }
+        });
+    });
+
 
     $('#edit-absen').on('submit', function(e){
       e.preventDefault();
@@ -650,6 +670,7 @@
               $('#id_pertemuan').val(res.id_pertemuan);
               $('#judul_tugas').val(res.judul_tugas);
               $('#deskripsi').val(res.deskripsi_tugas);
+
            }
         });
     });
@@ -663,7 +684,7 @@
       var deskripsi = $('#deskripsi').val();
       var wmp = $('#wmp').val();
       var wap = $('#wap').val();
-      var wcp = $('#wcp').val()
+      var wcp = $('#wcp').val();
 
       $.ajax({
         url: "{{ url('updatetugas') }}",
@@ -675,7 +696,7 @@
           deskripsi: deskripsi,
           wmp: wmp,
           wap: wap,
-          wcp: wcp
+          wcp: wcp,
         },
         dataType: 'json',
         beforeSend: function(){

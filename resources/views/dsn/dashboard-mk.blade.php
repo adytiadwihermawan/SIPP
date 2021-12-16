@@ -235,9 +235,9 @@
                         return meta.row + meta.settings._iDisplayStart + 1
                     }
                 },
-                {data: 'username', name: 'username'},
-                {data: 'nama_user', name: 'nama_user'},
-                {data: 'status', name: 'status'}
+                {data: 'nama', name: 'username'},
+                {data: 'nim', name: 'nama_user'},
+                {data: 'keterangan', name: 'status'}
             ]
         })
     }
@@ -531,6 +531,22 @@
       });
     });
   });
+
+  $('body').on('click', '.nilai', function () {
+        var id = $(this).data('id');
+         
+        $.ajax({
+            type:"GET",
+            url: "{{ url('grade') }}",
+            data: { id: id },
+            dataType: 'json',
+            success: function(res){
+              $('#nilai').modal('show');
+              $('#id').val(res.id_tugas);
+           }
+        });
+    });
+
 
   
 </script>

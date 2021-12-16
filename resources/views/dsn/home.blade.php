@@ -13,11 +13,9 @@
 				
 					<h5>{{ $matkul->nama_praktikum }}</h5>
 				
-	
-					<p>Jumlah Peserta: {{$matkul->where('id_praktikum', '=', $matkul->id_praktikum)->count()}}</p>
 				</div>
-				<div class="icon">
-					<i class="ion ion-stats-bars"></i>
+				<div class="inner">
+					<h6>Tahun Ajaran {{ $matkul->tahun_ajaran}}</h6>
 				</div>
 			<a href="{{route('matkulDsn', $matkul->nama_praktikum)}}" class="small-box-footer bg-secondary">Selengkapnya
 					<i class="fas fa-arrow-circle-right"></i>

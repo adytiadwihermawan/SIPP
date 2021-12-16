@@ -133,6 +133,8 @@ Route::get('dsn/rekap/{id_praktikum}/{id}', [UserController::class, 'viewrekap']
 
 Route::post('editpresensi', [UserController::class, 'updateAbsen'])->name('updateAbsen');
 
+Route::get('grade', [UserController::class, 'getNilai']);
+
 Route::post('nilai', [UserController::class, 'nilai'])->name('nilaiTugas');
 
 Route::get('dsn/partisipan/{id}', [UserController::class, 'dsnPartisipan'])->name('data');

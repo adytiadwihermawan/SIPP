@@ -178,7 +178,7 @@ $(document).ready(function(){
             serverside: true,
             responsive: true,
             ajax: {
-                url: "{{ route('partisipan', [$mk[0]->id_praktikum]) }}"
+                url: "{{ route('partisipan', [$mk[0]->nama_praktikum]) }}"
             },
             columnDefs: [
                         {"className": "dt-center", "targets": [0,2]}
@@ -190,8 +190,8 @@ $(document).ready(function(){
                         return meta.row + meta.settings._iDisplayStart + 1
                     }
                 },
-                {data: 'nama_user', name: 'nama_user'},
-                {data: 'status', name: 'status'}
+                {data: 'nama', name: 'nama_user'},
+                {data: 'keterangan', name: 'status'}
             ]
         })
     }

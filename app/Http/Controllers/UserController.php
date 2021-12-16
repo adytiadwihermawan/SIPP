@@ -64,12 +64,15 @@ class UserController extends Controller
         return view('mhs.profile', $datas);
     }
 
-    public function matkulMhs($id)
+    public function matkulMhs($nama_praktikum)
     {
-        $kelas = Praktikum::where('id_praktikum', $id)->get();
+
+        $cek = Praktikum::where("nama_praktikum", "like", "%".$nama_praktikum."%")->first();
+
+        $kelas = Praktikum::where('id_praktikum', $cek->id_praktikum)->get();
         
         $proses_praktikum = Pertemuan::join('proses_praktikum', 'pertemuan.id_praktikum', '=', 'proses_praktikum.id_praktikum')
-                            ->where('pertemuan.id_praktikum', $id)
+                            ->where('pertemuan.id_praktikum', $cek->id_praktikum)
                             ->where('id_user', Auth::user()->id)
                             ->get();
         // dd($proses_praktikum);
@@ -101,7 +104,7 @@ class UserController extends Controller
     public function asistHome()
     {
         $course = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
-        
+
         $data = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')
                     ->where('id_status', '=', 3)
                     ->Where('id_user', '=', Auth::user()->id)
@@ -311,14 +314,16 @@ class UserController extends Controller
                 'wcp.after'=>"Waktu cut-offf tidak boleh mendahului waktu akhir pengumpulan"
         ]);
 
-        $fileModel = new Wadah_tugas;
+        // dd($request->all());
 
-            if($request->size == '25MB'){
+        $fileModel = new Wadah_tugas;
+            
+            if($request->size == 25){
 
                 $size = 25000;
 
             } 
-            elseif ($request->size == '50MB')   {
+            elseif ($request->size == 50)   {
 
                 $size = 50000;
             }
@@ -473,6 +478,7 @@ class UserController extends Controller
 
         $data = Pertemuan::where('id_pertemuan', $request->id)
                 ->first();
+                // dd($data);
         return response()->json($data);
     }
 
@@ -489,6 +495,14 @@ class UserController extends Controller
                 ->first();
         return response()->json($data);
     }
+
+    public function getNilai(Request $request){
+
+        $data = Uploadtugas::where('id_tugas', $request->id)
+                ->first();
+        return response()->json($data);
+    }
+
 
     public function viewrekap(Request $request, $nama_praktikum, $id){
 
@@ -625,17 +639,8 @@ class UserController extends Controller
                                     'nama_pertemuan'=>$request->input('nama_pertemuan'),
                                     'deskripsi'=>$request->input('deskripsi')
                             ]);
-
-            // $update = Pertemuan::updateOrCreate([
-            //     'id_pertemuan'=>$request->id
-            //     ],
-            //     [
-            //         'nama_pertemuan'=>$request->nama_pertemuan,
-            //         'deskripsi'=>$request->deskripsi,
-            //     ]);
-            // dd($update);
             if(!$update){
-                    return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal memperbaharui pertemuan']);
+                    return response()->json(['status'=>0,'msg'=>'Tidak Ada Perubahan yang Dilakukan']);
                 }                
                 else{
                     return response()->json(['status'=>1,'msg'=>'Data Berhasil Diperbaharui']);
@@ -654,7 +659,7 @@ class UserController extends Controller
                 '_file',
                 'judul_tugas'=>'required',
                 'deskripsi',
-                'wmp'=>'required|after:yesterday',
+                'wmp'=>'required|after:'. Carbon::now(),
                 'wap'=>'required|after:wmp',
                 'wcp'=>'nullable|after:wap'
             ],[
@@ -666,7 +671,7 @@ class UserController extends Controller
                 'wcp.after'=>"Waktu cut-offf tidak boleh mendahului waktu akhir pengumpulan"
         ]);
         // dd($cek);
-       
+            
         if($validator->passes()) {
             if(empty($request->input('_file'))){
                 $update = Wadah_tugas::where('id_wadahtugas', $request->input('id'))
@@ -676,7 +681,7 @@ class UserController extends Controller
                                 'deskripsi_tugas'=>$request->input('deskripsi'),
                                 'waktu_mulai'=>$request->input('wmp'),
                                 'waktu_selesai'=>$request->input('wap'),
-                                'waktu_cutoff'=>$request->input('wcp')
+                                'waktu_cutoff'=>$request->input('wcp'),
                         ]);
 
             }else{
@@ -715,16 +720,19 @@ class UserController extends Controller
 
             $cekid =  Wadahpresensi::first();
 
-            $data = User::join('proses_praktikum', 'users.id', '=', 'proses_praktikum.id_user')
-                         ->leftjoin('roles', 'users.id', '=', 'roles.id_user')
+            $peserta = User::join('proses_praktikum', 'users.id', '=', 'proses_praktikum.id_user')
                          ->join('status_user', 'users.id_status', 'status_user.id_status') 
                          ->where('proses_praktikum.id_praktikum', $cek->id_praktikum)
-                         ->orwhere('roles.id_praktikum', $cek->id_praktikum)
-                         ->select('nama_user', 'status', 'username')
-                         ->groupBy('nama_user', 'status', 'username')
+                         ->select('nama_user', 'username','users.id_status', 'proses_praktikum.id_praktikum', 'status')
+                         ->groupBy('username', 'nama_user', 'status')
                          ->orderBy('status', 'asc')
                          ->get();
-            // dd($data);
+
+            $asisten = Roles::join('users', 'roles.id_user', 'users.id')->where('id_praktikum', $cek->id_praktikum)
+                                ->select('nama_user', 'username','roles.id_status', 'id_praktikum')->get();
+
+            $data = $peserta->concat($asisten);
+
             $course1 = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', 'pertemuan.id_pertemuan')
                                 ->where('id_praktikum', $cek->id_praktikum)
                                 ->get();
@@ -740,12 +748,26 @@ class UserController extends Controller
             // dd($data);
             if(request()->ajax()){
                 return datatables()->of($data)
-                ->addColumn('Aksi', function($data)
-                {
-                    $button = "<button class='edit btn btn-success' style='text-align: center' id='".$data->id."'>View</button>";
-                    return $button;
+                ->addColumn('nama', function($row){
+                    return $row->nama_user; 
                 })
-                ->rawColumns(['Aksi'])
+                ->addColumn('nim', function($row){
+                    return $row->username;
+                })
+                ->addColumn('keterangan', function($row){
+                    if($row->id_status == 3){
+                        return "Asisten Praktikum";
+                        }
+                    else{
+                        if($row->id_status == 2){
+                            return "Dosen";
+                        }else{
+                            return "Mahasiswa";
+                        }
+                    }
+                   
+                })
+                ->rawColumns(['nama', 'nim', 'keterangan'])
                 ->make(true);
             }
 
@@ -766,15 +788,18 @@ class UserController extends Controller
 
             $cekid =  Wadahpresensi::first();
 
-            $data = User::join('proses_praktikum', 'users.id', '=', 'proses_praktikum.id_user')
-                         ->leftjoin('roles', 'users.id', '=', 'roles.id_user')
+            $peserta = User::join('proses_praktikum', 'users.id', '=', 'proses_praktikum.id_user')
                          ->join('status_user', 'users.id_status', 'status_user.id_status') 
                          ->where('proses_praktikum.id_praktikum', $cek->id_praktikum)
-                         ->orwhere('roles.id_praktikum', $cek->id_praktikum)
-                         ->select('username', 'nama_user', 'status')
+                         ->select('nama_user', 'username','users.id_status', 'proses_praktikum.id_praktikum', 'status')
                          ->groupBy('username', 'nama_user', 'status')
                          ->orderBy('status', 'asc')
                          ->get();
+
+            $asisten = Roles::join('users', 'roles.id_user', 'users.id')->where('id_praktikum', $cek->id_praktikum)
+                                ->select('nama_user', 'username','roles.id_status', 'id_praktikum')->get();
+
+            $data = $peserta->concat($asisten);
             // dd($data);
             $course1 = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', 'pertemuan.id_pertemuan')
                                 ->where('id_praktikum', $cek->id_praktikum)
@@ -790,12 +815,22 @@ class UserController extends Controller
             // dd($data);
             if(request()->ajax()){
                 return datatables()->of($data)
-                ->addColumn('Aksi', function($data)
-                {
-                    $button = "<button class='edit btn btn-success' style='text-align: center' id='".$data->id."'>View</button>";
-                    return $button;
+                ->addColumn('nama', function($row){
+                    return $row->nama_user; 
                 })
-                ->rawColumns(['Aksi'])
+                ->addColumn('nim', function($row){
+                    return $row->username;
+                })
+                ->addColumn('keterangan', function($row){
+                    if($row->id_status == 3){
+                        return "Asisten Praktikum";
+                        }
+                    else{
+                        return $row->status;
+                    }
+                   
+                })
+                ->rawColumns(['nama', 'nim', 'keterangan'])
                 ->make(true);
             }
 
@@ -811,26 +846,47 @@ class UserController extends Controller
             return view('asist.participants', $cek);
         }
 
-        public function partisipan($id)
+        public function partisipan($nama_praktikum)
         {
-            $data = User::join('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
-                         ->leftjoin('roles', 'users.id', 'roles.id_user')
+            $cek = Praktikum::where("nama_praktikum", "like", "%".$nama_praktikum."%")->first();
+
+            $peserta = User::join('proses_praktikum', 'users.id', '=', 'proses_praktikum.id_user')
                          ->join('status_user', 'users.id_status', 'status_user.id_status') 
-                         ->where('proses_praktikum.id_praktikum', $id)
-                         ->orWhere('roles.id_praktikum', $id)
-                         ->select('nama_user', 'status')
-                         ->groupBy('nama_user', 'status')
+                         ->where('proses_praktikum.id_praktikum', $cek->id_praktikum)
+                         ->select('nama_user', 'username','users.id_status', 'proses_praktikum.id_praktikum', 'status')
+                         ->groupBy('username', 'nama_user', 'status')
                          ->orderBy('status', 'asc')
                          ->get();
-            // dd($data);
+
+            $asisten = Roles::join('users', 'roles.id_user', 'users.id')->where('id_praktikum', $cek->id_praktikum)
+                                ->select('nama_user', 'username','roles.id_status', 'id_praktikum')->get();
+
+            $data = $peserta->concat($asisten);
+
             $course = Pertemuan::join('praktikum', 'pertemuan.id_praktikum', '=', 'praktikum.id_praktikum')
-                                ->where('pertemuan.id_praktikum', $id)
+                                ->where('pertemuan.id_praktikum', $cek->id_praktikum)
                                 ->get();
 
-            $kelas = Praktikum::where('id_praktikum', $id)->get();
+            $kelas = Praktikum::where('id_praktikum', $cek->id_praktikum)->get();
             // dd($data);
             if(request()->ajax()){
                 return datatables()->of($data)
+                ->addColumn('nama', function($row){
+                    return $row->nama_user; 
+                })
+                ->addColumn('nim', function($row){
+                    return $row->username;
+                })
+                ->addColumn('keterangan', function($row){
+                    if($row->id_status == 3){
+                        return "Asisten Praktikum";
+                        }
+                    else{
+                        return $row->status;
+                    }
+                   
+                })
+                ->rawColumns(['nama', 'nim', 'keterangan'])
                 ->make(true);
             }
 
@@ -848,12 +904,11 @@ class UserController extends Controller
 
             // $cek = Wadah_tugas::where("judul_tugas", "like", "%".$nama."%")->first();
 
-            $grade = Uploadtugas::join('wadah_tugas', 'uploadtugas.id_wadahtugas', 'wadah_tugas.id_wadahtugas')
+             $grade = Uploadtugas::join('wadah_tugas', 'uploadtugas.id_wadahtugas', 'wadah_tugas.id_wadahtugas')
                                 ->join('users', 'uploadtugas.id_user', 'users.id')
-                                ->leftjoin('nilai', 'uploadtugas.id_tugas', 'nilai.id_tugas')
                                 ->where('uploadtugas.id_wadahtugas', $id)
                                 ->groupBy('username')
-                                ->select('id_user', 'nama_user', 'username', 'namafile_tugas', 'uploadtugas.id_wadahtugas', 'uploadtugas.id_tugas', 'nilai')
+                                ->select('id_user', 'nama_user', 'username', 'namafile_tugas', 'uploadtugas.id_wadahtugas', 'id_tugas')
                                 ->get();
 
                                 // dd($grade);
@@ -867,15 +922,14 @@ class UserController extends Controller
                                 return $row->username;
                             })
                     ->addColumn('grade', function($row){
-                        if($row->nilai){
-                            $nilai = $row->nilai;
-                            return $nilai;
+
+                        $nilai = Nilai::where('id_tugas', $row->id_tugas)->first();
+
+                        if($nilai){
+                            return $nilai->nilai;
                             
                         }else{
-                            $btn =  "
-                             <a data-id='".$row->id_tugas."' class='idtugas'>
-                             <button class='grade btn btn-info' data-toggle='modal' data-target='#nilai' style='text-align: center' id='".$row->id_tugas."'>Grade</button>
-                             </a>";
+                             $btn = " <a href='javascript:void(0)' class='nilai btn  btn-success' data-id='" . $row->id_tugas . "' title='nilai'>Nilai</a>";
                             return $btn;
                         }
                     })
@@ -954,11 +1008,13 @@ class UserController extends Controller
         {
             $grade = Uploadtugas::join('wadah_tugas', 'uploadtugas.id_wadahtugas', 'wadah_tugas.id_wadahtugas')
                                 ->join('users', 'uploadtugas.id_user', 'users.id')
-                                ->leftjoin('nilai', 'uploadtugas.id_tugas', 'nilai.id_tugas')
                                 ->where('uploadtugas.id_wadahtugas', $id)
-                                // ->groupBy('uploadtugas.id_wadahtugas')
+                                ->groupBy('username')
+                                ->select('id_user', 'nama_user', 'username', 'namafile_tugas', 'uploadtugas.id_wadahtugas', 'id_tugas')
                                 ->get();
-            // dd($grade);
+
+                                // dd($grade);
+
             if ($request->ajax()) {
             return Datatables::of($grade)
                     ->addColumn('nama', function($row){
@@ -968,28 +1024,64 @@ class UserController extends Controller
                                 return $row->username;
                             })
                     ->addColumn('grade', function($row){
-                        if($row->nilai){
-                            $nilai = $row->nilai;
-                            return $nilai;
+
+                        $nilai = Nilai::where('id_tugas', $row->id_tugas)->first();
+
+                        if($nilai){
+                            return $nilai->nilai;
                             
                         }else{
-                            $btn =  "
-                             <a data-id='".$row->id_tugas."' class='idtugas'>
-                             <button class='grade btn btn-info' data-toggle='modal' data-target='#nilai' style='text-align: center' id='".$row->id_tugas."'>Grade</button>
-                             </a>";
+                             $btn = " <a href='javascript:void(0)' class='nilai btn  btn-success' data-id='" . $row->id_tugas . "' title='nilai'>Nilai</a>";
                             return $btn;
                         }
                     })
                     ->addColumn('file', function($row){
                         
-                            $pecah = explode(".", $row->namafile_tugas);
+                        $files = Uploadtugas::join('users', 'uploadtugas.id_user', 'users.id')
+                                ->where('id_wadahtugas', $row->id_wadahtugas)
+                                ->where('users.id', $row->id_user)
+                                ->get();
+                            $btn = '';
+                        foreach ($files as $value) {
+                            $pecah = explode(".", $value->namafile_tugas);
                             $ekstensi = $pecah[1];
-                            if ($ekstensi == "docx" || $ekstensi == "pdf" || $ekstensi == "ppt"){
-                                $btn = "<a href='/downloadfile".$row->namafile_tugas."' data-id='" . $row->id_user . "' title='download'>$row->namafile_tugas</a>";
-                            } else {
-                                $btn = "<a href='/storage/$row->namafile_tugas' target='_blank' data-id='" . $row->id_user . "' title='view'>$row->namafile_tugas</a>";
+                            
+                            if ($ekstensi == 'zip' or $ekstensi == 'rar'){
+                                $icon = '<i class="fas fa-file-archive mr-2" style="font-size:23px;color:gray"> </i>';
                             }
-                            return $btn;
+                            elseif ($ekstensi == 'docx' or $ekstensi == 'doc'){
+                                $icon = '<i class="fa fa-file-word-o mr-2" style="font-size:23px;color:blue"></i>';
+                            }
+                            elseif ($ekstensi == 'pdf'){
+                                $icon = '<i class="fas fa-file-pdf mr-2" style="font-size:23px;color:red"></i>';
+                            }
+                            elseif ($ekstensi == 'ppt' or $ekstensi == 'pptx'){
+                                $icon = '<i class="fa fa-file-powerpoint-o mr-2" style="font-size:23px;color:orange"></i>';
+                            }
+                            elseif ($ekstensi == 'jpg' or $ekstensi == 'png' or $ekstensi == 'jpeg'){
+                                $icon = '<i class="fas fa-images mr-2" style="font-size:23px;color:black"></i>';
+                            }
+                            elseif ($ekstensi == 'html'){
+                                $icon = '<i class="fas fa-file-code mr-2" style="font-size:23px;color:black"></i>';
+                            }
+                            else{
+                                $icon = '<i class="fa fa-file-text-o mr-2" style="font-size:23px;color:black"> </i>';
+                            }
+
+                            if ($ekstensi == "docx" || $ekstensi == "pdf" || $ekstensi == "ppt"){
+                                $btn .= "
+                                <ul>
+                                        $icon <a href='/downloadfile".$value->namafile_tugas."' data-id='" . $value->id_wadahtugas . "' title='download'>$value->namafile_tugas</a>
+                                </ul";
+                            } else {
+                                $btn .= "
+                                <ul>
+                                        $icon <a href='/storage/$value->namafile_tugas' target='_blank' data-id='" . $value->id_wadahtugas . "' title='view'>$value->namafile_tugas</a>
+                                </ul";
+                            }
+                        }
+                        return $btn;
+                            
                     })
                     ->rawColumns(['nama', 'nim','grade', 'file'])
                     ->make(true);
@@ -1374,14 +1466,16 @@ class UserController extends Controller
         }
     }
 
-   public function dataAbsen($id)
+   public function dataAbsen($nama_praktikum)
    {
 
+        $cek = Praktikum::where("nama_praktikum", "like", "%".$nama_praktikum."%")->first();
+
        $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
-                            ->where('wadahpresensi.id_praktikum', $id)
+                            ->where('wadahpresensi.id_praktikum', $cek->id_praktikum)
                             ->simplePaginate();
 
-        $kelas = Praktikum::where('id_praktikum', $id)->get();
+        $kelas = Praktikum::where('id_praktikum', $cek->id_praktikum)->get();
 
         $cek = Presensi::join('wadahpresensi', 'presensi.id_wadah', 'wadahpresensi.id_wadah')
                         ->where('presensi.id_user', Auth::user()->id)
@@ -1498,7 +1592,7 @@ class UserController extends Controller
             'nmk1'=>'required',
             'mk2'=>'nullable|different:mk1',
             'nmk2',
-            '_file'=>'required|mimes:pdf|size:1000',
+            '_file'=>'required|mimes:pdf|max:1000',
             ],[
                 'id_user.unique'=>"Anda Sudah Submit Form Pendaftaran",
                 'number.required'=>"No Hp tidak boleh kosong",
@@ -1509,7 +1603,7 @@ class UserController extends Controller
                 'nmk2.required'=>"Pilih nilai matkul",
                 '_file.required'=>"Upload Transkrip Nilai",
                 '_file.mimes' => 'format Transkrip Nilai hanya boleh PDF',
-                '_file.size'=>"Ukuran File Tidak Boleh Melebihi 1mb"
+                '_file.max'=>"Ukuran File Tidak Boleh Melebihi 1mb"
         ]);
         // dd($validator);
         if($validator->fails()) {

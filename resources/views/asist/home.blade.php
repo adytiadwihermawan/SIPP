@@ -14,7 +14,9 @@
 					<h5>{{ $matkul->nama_praktikum }}</h5>
 				
 	
-					<p>Jumlah Peserta: {{$matkul->where('id_praktikum', '=', $matkul->id_praktikum)->count()}}</p>
+					<div class="inner">
+						<h6>Tahun Ajaran {{ $matkul->tahun_ajaran}}</h6>
+					</div>
 				</div>
 				<div class="icon">
 					<i class="ion ion-stats-bars"></i>
