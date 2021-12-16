@@ -158,7 +158,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="">Pertemuan ke:</label>
-                            <select id="id" name="id" class="form-control" required>
+                            <select id="id" name="id" class="form-control">
                                 <option value="" selected>Pilih Pertemuan</option>
                                 @foreach($course as $pertemuan)
                                 <option value="{{$pertemuan->id_pertemuan}}">
@@ -170,7 +170,7 @@
 
                         <div class="form-group">
                             <label for="">Judul Materi</label>
-                            <input type="text" class="form-control" name="judul_materi" required maxlength="250">
+                            <input type="text" class="form-control" name="judul_materi" maxlength="250">
                             <span class="text-danger error-text judul_materi_error"></span>
                         </div>
 
@@ -256,6 +256,21 @@
                             <label for="">Waktu Cut-Off Pengumpulan</label>
                             <input type="datetime-local" class="form-control" name="wcp">
                             <span class="text-danger error-text wcp_error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Ukuran File Kumpul Tugas</label>
+                            <br>
+                            <input type="radio" class="btn-check" name="size" id="option2" autocomplete="off">
+                            <label class="btn btn-outline-primary" value="25MB" for="option2">25 MB</label>
+
+                            <input type="radio" class="btn-check" name="size" id="option4" autocomplete="off">
+                            <label class="btn btn-outline-primary" value="50MB" for="option4">50 MB</label>
+
+                            <input type="radio" class="btn-check" name="size" id="option3" autocomplete="off">
+                            <label class="btn btn-outline-primary" value="100MB" for="option3">100 MB</label>
+                            <br>
+                            <span class="text-danger error-text size_error"></span>
                         </div>
 
                         <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
@@ -355,11 +370,11 @@
                     </a>
                 </div>
                 <div class="card-body cold1 col-13 mb-0">
-
+            @if (!empty($datas->namafile_materi))
                     <?php
                 $pecah = explode(".", $datas->namafile_materi);
                 $ekstensi = $pecah[1];
-            ?>
+                ?>
                     @if ($ekstensi == 'zip' or $ekstensi == 'rar')
                     <i class="fa fa-file-zip-o mr-2" style="font-size:23px;color:gray"> </i>
 
@@ -386,15 +401,13 @@
                     <a href="{{route('download', $datas->namafile_materi)}}">{{$datas->namafile_materi}}</a>
                 </div>
                 @if($datas->deskripsi_file != null)
-                <div class="card-footer">
                     <p>{{$datas->deskripsi_file}}</p>
-                </div>
                 @endif
+            
+            @endif
                 @if($datas->url != null)
                 <div class="card-footer">
                     <x-embed url="{{$datas->url}}"/>
-                        {{-- <iframe width="420" height="315" src="https://www.youtube.com/embed/?v=EleVGcG8lyg&list=RDEleVGcG8lyg&start_radio=1" frameborder="0" allowfullscreen></iframe> --}}
-                </div>
                 @endif
             </div>
             @endif
@@ -499,9 +512,11 @@
             @endforeach
 
             <div class="card-footer blue1">
-                <textarea class="form-control"
+            @if (!empty($item->deskripsi))
+                <textarea class="form-control" readonly
                     style="border-style: none; border-color: Transparent; overflow: auto;" rows="5">{{$item->deskripsi}}</textarea>
                 <br>
+            @endif
             <a href="javascript:void(0)" class="btn hijau3 panjang1 float-right editPertemuan" data-id="{{ $item->id_pertemuan }}">
                 <i class="fas fa-edit">Edit Pertemuan</i>
             </a>

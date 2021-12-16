@@ -15,7 +15,8 @@ class Wadah_tugas extends Model
         'deskripsi', 
         'waktu_mulai',
         'waktu_selesai',
-        'waktu_cutoff'
+        'waktu_cutoff',
+        'size'
     ];
 
     protected $table = 'wadah_tugas';

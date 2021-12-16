@@ -781,7 +781,7 @@ class AdminController extends Controller
                             ->first();
 
         $pdf = \PDF::loadView('admin.sertifikat', compact('data'))->setPaper('a4', 'landscape');
-        return $pdf->download("Sertifikat ".$data->nama_user.".pdf");
+        return $pdf->stream("SERTIFIKAT ".$data->nama_user." PRAKTIKUM ".$data->nama_praktikum.".pdf");
     }
 
 }

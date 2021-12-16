@@ -52,6 +52,28 @@
         padding-bottom: 0.25%!important;
       }
 
+      input[type="radio"]{
+        visibility: hidden;
+        height: 0;
+        width: 0;
+      }
+
+      input[type="radio"]:checked + label{
+        background-color: #FFBF86;
+      }
+
+      .btn-outline-primary{
+        background-color: transparent;
+        color: black;
+        border-color: black;
+      }
+
+      .btn-outline-primary:hover{
+        background-color: #FFBF86;
+        color: black;
+        border-color: black;
+      }
+
     </style>
   </head>
 <body class="hold-transition sidebar-mini layout-fixed">

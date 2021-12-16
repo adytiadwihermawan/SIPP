@@ -238,29 +238,44 @@ class UserController extends Controller
 
     public function upload(Request $request){
 
-        $request->validate([
+        // dd($request->all());
+         $validator = \Validator::make($request->all(),[
                     'id'=>'required',
                     '_file',
                     'url',
                     'judul_materi'=>'required',
                     'deskripsi'
-                ]);
-        // dd($request->all());
+            ],[
+                'id.required'=>"Pertemuan tidak boleh kosong",
+                'judul_materi.required'=>"Judul materi tidak boleh kosong"
+        ]);
+        // dd($cek);
         $fileModel = new Materi;
+       
+        if($validator->passes()) {
+            if(empty($request->input('_file'))){
+                $fileModel->id_pertemuan= $request->id;
+                $fileModel->judul_materi = $request->judul_materi;
+                $fileModel->deskripsi_file = $request->deskripsi;
+                $fileModel->url = $request->url;
+                $query = $fileModel->save();
+                
+                $query = $fileModel->save(); 
+            }else{
+                $path = 'storage';
+                $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
 
-        if($request->all()) {
-            $path = 'storage';
-            $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
-            // $fileName = time().'_'.$request->_file->getClientOriginalName();
-            // $filePath = $request->file('_file')->storeAs('uploads', $fileName, 'public');
-            $filePath = $request->_file->move(public_path($path), $newname);
+                $filePath = $request->_file->move(public_path($path), $newname);
 
-            $fileModel->id_pertemuan= $request->id;
-            $fileModel->namafile_materi = $request->_file->getClientOriginalName();
-            $fileModel->judul_materi = $request->judul_materi;
-            $fileModel->deskripsi_file = $request->deskripsi;
-            $fileModel->url = $request->url;
-            $query = $fileModel->save();
+                $fileModel->id_pertemuan= $request->id;
+                $fileModel->namafile_materi = $request->_file->getClientOriginalName();
+                $fileModel->judul_materi = $request->judul_materi;
+                $fileModel->deskripsi_file = $request->deskripsi;
+                $fileModel->url = $request->url;
+                $query = $fileModel->save();
+                
+                $query = $fileModel->save();
+            }
 
             if($query){
                 return response()->json(['status'=>1,'msg'=>'File Berhasil Diunggah']);
@@ -268,6 +283,8 @@ class UserController extends Controller
             else{
                 return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
             }
+        }else{
+                return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
         }
    }
 
@@ -276,23 +293,39 @@ class UserController extends Controller
          $validator = \Validator::make($request->all(),[
                 'id'=>'required',
                 '_file',
+                'size'=>'required',
                 'judul_tugas'=>'required',
-                'deskripsi',
+                'deskripsi'=>'required',
                 'wmp'=>'required|after:' . Carbon::now(),
                 'wap'=>'required|after:wmp',
                 'wcp'=>'nullable|after:wap'
             ],[
                 'id.required'=>"Pertemuan tidak boleh kosong",
                 'judul_tugas.required'=>"Judul tugas tidak boleh kosong",
+                'size.required'=>"Kapasitas Pengumpulan File tidak boleh kosongs",
+                'deskripsi.required'=>"Deskripsi tidak boleh kosong",
                 'wmp.required'=>"Waktu mulai pengumpulan tidak boleh kosong",
                 'wmp.after'=>"Waktu pengumpulan tidak boleh melewati waktu anda sekarang",
                 'wap.required'=>"Waktu akhir pengumpulan tidak boleh kosong",
                 'wap.after'=>"Waktu akhir pengumpulan tidak boleh mendahului waktu mulai pengumpulan",
                 'wcp.after'=>"Waktu cut-offf tidak boleh mendahului waktu akhir pengumpulan"
         ]);
-        // dd($cek);
+
         $fileModel = new Wadah_tugas;
-       
+
+            if($request->size == '25MB'){
+
+                $size = 25000;
+
+            } 
+            elseif ($request->size == '50MB')   {
+
+                $size = 50000;
+            }
+            else{
+                $size = 100000;
+            }   
+
         if($validator->passes()) {
             if(empty($request->input('_file'))){
                 $fileModel->id_pertemuan= $request->id;
@@ -301,6 +334,7 @@ class UserController extends Controller
                 $fileModel->waktu_mulai = $request->wmp;
                 $fileModel->waktu_selesai = $request->wap;
                 $fileModel->waktu_cutoff = $request->wcp;
+                $fileModel->size = $size;
                 
                 $query = $fileModel->save(); 
             }else{
@@ -316,6 +350,7 @@ class UserController extends Controller
                 $fileModel->waktu_mulai = $request->wmp;
                 $fileModel->waktu_selesai = $request->wap;
                 $fileModel->waktu_cutoff = $request->wcp;
+                $fileModel->size = $request->size;
                 
                 $query = $fileModel->save();
             }
@@ -817,9 +852,12 @@ class UserController extends Controller
                                 ->join('users', 'uploadtugas.id_user', 'users.id')
                                 ->leftjoin('nilai', 'uploadtugas.id_tugas', 'nilai.id_tugas')
                                 ->where('uploadtugas.id_wadahtugas', $id)
-                                // ->groupBy('nama_user')
+                                ->groupBy('username')
+                                ->select('id_user', 'nama_user', 'username', 'namafile_tugas', 'uploadtugas.id_wadahtugas', 'uploadtugas.id_tugas', 'nilai')
                                 ->get();
-            // dd($grade);
+
+                                // dd($grade);
+
             if ($request->ajax()) {
             return Datatables::of($grade)
                     ->addColumn('nama', function($row){
@@ -843,14 +881,51 @@ class UserController extends Controller
                     })
                     ->addColumn('file', function($row){
                         
-                            $pecah = explode(".", $row->namafile_tugas);
+                        $files = Uploadtugas::join('users', 'uploadtugas.id_user', 'users.id')
+                                ->where('id_wadahtugas', $row->id_wadahtugas)
+                                ->where('users.id', $row->id_user)
+                                ->get();
+                            $btn = '';
+                        foreach ($files as $value) {
+                            $pecah = explode(".", $value->namafile_tugas);
                             $ekstensi = $pecah[1];
-                            if ($ekstensi == "docx" || $ekstensi == "pdf" || $ekstensi == "ppt"){
-                                $btn = "<a href='/downloadfile".$row->namafile_tugas."' data-id='" . $row->id_user . "' title='download'>$row->namafile_tugas</a>";
-                            } else {
-                                $btn = "<a href='/storage/$row->namafile_tugas' target='_blank' data-id='" . $row->id_user . "' title='view'>$row->namafile_tugas</a>";
+                            
+                            if ($ekstensi == 'zip' or $ekstensi == 'rar'){
+                                $icon = '<i class="fas fa-file-archive mr-2" style="font-size:23px;color:gray"> </i>';
                             }
-                            return $btn;
+                            elseif ($ekstensi == 'docx' or $ekstensi == 'doc'){
+                                $icon = '<i class="fa fa-file-word-o mr-2" style="font-size:23px;color:blue"></i>';
+                            }
+                            elseif ($ekstensi == 'pdf'){
+                                $icon = '<i class="fas fa-file-pdf mr-2" style="font-size:23px;color:red"></i>';
+                            }
+                            elseif ($ekstensi == 'ppt' or $ekstensi == 'pptx'){
+                                $icon = '<i class="fa fa-file-powerpoint-o mr-2" style="font-size:23px;color:orange"></i>';
+                            }
+                            elseif ($ekstensi == 'jpg' or $ekstensi == 'png' or $ekstensi == 'jpeg'){
+                                $icon = '<i class="fas fa-images mr-2" style="font-size:23px;color:black"></i>';
+                            }
+                            elseif ($ekstensi == 'html'){
+                                $icon = '<i class="fas fa-file-code mr-2" style="font-size:23px;color:black"></i>';
+                            }
+                            else{
+                                $icon = '<i class="fa fa-file-text-o mr-2" style="font-size:23px;color:black"> </i>';
+                            }
+
+                            if ($ekstensi == "docx" || $ekstensi == "pdf" || $ekstensi == "ppt"){
+                                $btn .= "
+                                <ul>
+                                        $icon <a href='/downloadfile".$value->namafile_tugas."' data-id='" . $value->id_wadahtugas . "' title='download'>$value->namafile_tugas</a>
+                                </ul";
+                            } else {
+                                $btn .= "
+                                <ul>
+                                        $icon <a href='/storage/$value->namafile_tugas' target='_blank' data-id='" . $value->id_wadahtugas . "' title='view'>$value->namafile_tugas</a>
+                                </ul";
+                            }
+                        }
+                        return $btn;
+                            
                     })
                     ->rawColumns(['nama', 'nim','grade', 'file'])
                     ->make(true);
@@ -1057,12 +1132,14 @@ class UserController extends Controller
 
         $input_data = $request->all();
 
+        $size = Wadah_tugas::where('id_wadahtugas', $request->id_wadahtugas)->first();
         $validator = \Validator::make(
         $input_data, [
-        '_file.*' => 'required|file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,doc,docx,pdf,tif,tiff'
+        '_file.*' => 'required|file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,doc,docx,pdf,tif,tiff|size:' . $size->size
         ],[
             '_file.*.required' => 'Please upload file',
             '_file.*.mimes' => 'Only xlsx,xls,csv,jpg,jpeg,png,bmp,doc,docx,pdf,tif,tiff images are allowed',
+            '_file.*.size'=> 'Ukuran File Terlalu Besar'
 
         ]
         );

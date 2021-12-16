@@ -239,6 +239,45 @@
             <th><a class="ml-2 mt-3"><b>Due date</b></a></th>
             <td><a class="ml-2 mt-3"><b>{{ date('l, j F Y H:i', strtotime($data[0]->waktu_selesai)) }}</b></a></td>
         </tr>
+
+        <tr>
+            <th><a class="ml-2 mt-3"><b>Time Remaining</b></a></th>
+            <td><a class="ml-2 mt-3" id="countdown">
+            <b>
+                <script>
+				CountDownTimer('{{$data[0]->waktu_mulai}}', 'countdown');
+				function CountDownTimer(dt, id)
+				{
+					var end = new Date('{{$data[0]->waktu_selesai}}');
+					var _second = 1000;
+					var _minute = _second * 60;
+					var _hour = _minute * 60;
+					var _day = _hour * 24;
+					var timer;
+					function showRemaining() {
+						var now = new Date();
+						var distance = end - now;
+						if (distance < 0) {
+
+							clearInterval(timer);
+                            document.getElementById(id).innerHTML = hours + 'hrs ';
+                            document.getElementById(id).innerHTML += minutes + 'mins ';
+                            document.getElementById(id).innerHTML += seconds + 'secs';
+							return;
+						}
+						var hours = Math.floor((distance % _day) / _hour);
+						var minutes = Math.floor((distance % _hour) / _minute);
+						var seconds = Math.floor((distance % _minute) / _second);
+
+						document.getElementById(id).innerHTML = hours + 'hrs ';
+						document.getElementById(id).innerHTML += minutes + 'mins ';
+						document.getElementById(id).innerHTML += seconds + 'secs';
+					}
+					timer = showRemaining();
+				}
+			    </script>
+            </b></a></td>
+        </tr>
         <tr>
             @if (!empty(Carbon\Carbon::parse($data[0]->waktu_cutoff)))
                 @if (Carbon\Carbon::now() < Carbon\Carbon::parse($data[0]->waktu_cutoff))
@@ -256,6 +295,20 @@
                          
                             <input type="file" name="_file[]" class="form-control" id="customFile" multiple required>
                             <span class="text-danger error-text _file_error"></span>
+                            <?php
+                                $size = 0; 
+                                
+                                if($data[0]->size == 25000){
+                                    $size = 25;
+                                }
+                                elseif ($data[0]->size == 50000) {
+                                    $size = 50;
+                                }
+                                elseif ($data[0]->size == 100000) {
+                                    $size = 100;
+                                }
+                            ?>
+                             <h6>Batas Ukuran File {{$size}} mb</h6>
                           
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" onclick="window.location.href='{{ route('mhsMatkul', [$mk[0]->id_praktikum]) }}'">Back</button>
