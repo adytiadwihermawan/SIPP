@@ -1015,18 +1015,6 @@ $('.selectpicker').selectpicker();
     });
   });
 
-  $('body').on('click', '.print', function () {
-        var id = $(this).data('id');
-         
-        $.ajax({
-            type:"GET",
-            url: "{{ url('sertifikat-asisten') }}",
-            data: { id: id },
-            dataType: 'json'
-        });
-        
-    });
-
 			</script>
 
 </body>

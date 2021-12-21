@@ -86,7 +86,7 @@ Route::get('daftarcalonasisten', [AdminController::class, 'viewcalon']);
 
 Route::get('rekapasisten', [AdminController::class, 'rekapasisten']);
 
-Route::get('sertifikat-asisten', [AdminController::class, 'sertifikat']);
+Route::get('sertifikat{id}', [AdminController::class, 'sertifikat']);
 
 
 // ----------------------------------------- Dashboard Dosen -------------------------------------------------------------------- \\

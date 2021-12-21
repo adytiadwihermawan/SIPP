@@ -766,7 +766,7 @@ class AdminController extends Controller
                         return $row->tahun_ajaran;
                     })
                     ->addColumn('print', function($row){
-                           return $btn = " <button class='print btn  btn-info' data-id='" . $row->id_dataasisten . "' ><i class='fas fa-print'></i></button>";
+                        return $print = "<a href='/sertifikat".$row->id_dataasisten."' data-id='" . $row->id_dataasisten . "' title='Download Sertifikat'><button class='print btn  btn-info'><i class='fas fa-print'></i></button></a>";
                     })
                     ->rawColumns(['nama', 'nim', 'praktikum', 'tahunajaran', 'print'])
                     ->make(true);
@@ -782,12 +782,8 @@ class AdminController extends Controller
                             ->first();
 
         $pdf = Facade::loadView('sertifikat', compact('data'))->setPaper('a4', 'landscape');
-    
-        \Storage::put('public/pdf/SERTIFIKAT '.$data->nama_user.' PRAKTIKUM '.$data->nama_praktikum.'.pdf', $pdf->output());
-        
-        $path = 'storage/pdf/SERTIFIKAT '.$data->nama_user.' PRAKTIKUM '.$data->nama_praktikum.'.pdf';
 
-        return response()->download(public_path($path));
+        return $pdf->download('SERTIFIKAT '.$data->nama_user.' PRAKTIKUM '.$data->nama_praktikum.'.pdf');
     }
 
 }
