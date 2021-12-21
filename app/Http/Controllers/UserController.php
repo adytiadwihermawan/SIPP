@@ -1324,11 +1324,11 @@ class UserController extends Controller
                     })
                     ->addColumn('action', function($row){
 
-                             $btn = "<a href='/dsn/rekap/".$row->nama_praktikum."/$row->id_wadah' class='btn btn-info view' data-id='" . $row->id_wadah ."' title='view'><i class='fas fa-edit'>View</i></a>";
+                             $btn = "<a href='/dsn/rekap/".$row->nama_praktikum."/$row->id_wadah' class='btn btn-info view mb-2' data-id='" . $row->id_wadah ."' title='view'><i class='far fa-file-alt'></i>  View</a>";
 
-                             $btn .= " <a href='javascript:void(0)' class='editpresensi btn  btn-success' data-id='" . $row->id_wadah . "' title='edit'><i class='fa fa-edit'>Edit</i></a>";
+                             $btn .= " <a href='javascript:void(0)' class='editpresensi btn  btn-success mb-2' data-id='" . $row->id_wadah . "' title='edit'><i class='fa fa-edit'></i> Edit</a>";
 
-                             $btn .= " <a href='javascript:void(0)' class='deletepresensi btn  btn-danger' data-id='" . $row->id_wadah . "' title='delete'><i class='fa fa-trash'>Delete</i></a>";
+                             $btn .= " <a href='javascript:void(0)' class='deletepresensi btn  btn-danger' data-id='" . $row->id_wadah . "' title='delete'><i class='fa fa-trash'></i> Delete</a>";
 
                             return $btn;
                         
@@ -1351,7 +1351,7 @@ class UserController extends Controller
                     ->select(['urutanpertemuan', 'wadahpresensi.id_wadah',  'nama_user', 'keterangan', 'proses_praktikum.id_praktikum'])
                     ->get();
 
-        dd($rekap);
+       // dd($rekap);
 
         
        return view('dsn.presensi',  compact(['cekid', 'mk', 'absen', 'presensi', 'course1']));
@@ -1419,11 +1419,11 @@ class UserController extends Controller
                     })
                     ->addColumn('action', function($row){
 
-                             $btn = "<a href='/asist/rekap/".$row->nama_praktikum."/$row->id_wadah' class='btn btn-info view' data-id='" . $row->id_wadah ."' title='view'><i class='fas fa-edit'>View</i></a>";
+                             $btn = "<a href='/asist/rekap/".$row->nama_praktikum."/$row->id_wadah' class='btn btn-info view mb-2' data-id='" . $row->id_wadah ."' title='view'><i class='far fa-file-alt'> </i>View</a> <br>";
 
-                             $btn .= " <a href='javascript:void(0)' class='editpresensi btn  btn-success' data-id='" . $row->id_wadah . "' title='edit'><i class='fa fa-edit'>Edit</i></a>";
+                             $btn .= " <a href='javascript:void(0)' class='editpresensi btn  btn-success mb-2' data-id='" . $row->id_wadah . "' title='edit'><i class='fa fa-edit'></i>Edit</a>";
 
-                             $btn .= " <a href='javascript:void(0)' class='deletepresensi btn  btn-danger' data-id='" . $row->id_wadah . "' title='delete'><i class='fa fa-trash'>Delete</i></a>";
+                             $btn .= " <a href='javascript:void(0)' class='deletepresensi btn  btn-danger' data-id='" . $row->id_wadah . "' title='delete'><i class='fa fa-trash'></i>Delete</a>";
 
                             return $btn;
                         
