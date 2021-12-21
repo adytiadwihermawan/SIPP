@@ -20,6 +20,7 @@
 					
 						@csrf
                             <input type="hidden" value="{{Auth::user()->id}}" name="id_user" readonly>
+							<span class="text-danger error-text id_user_error"></span>
 
 							<div class="form-group">
 								<label for="">Nama</label>

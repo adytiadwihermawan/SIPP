@@ -29,6 +29,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   
+  <style> 
+    .laravel-embed__responsive-wrapper{
+        padding-bottom: 0.25%!important;
+      }
+  </style>
+  
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -195,36 +201,14 @@ $(document).ready(function(){
             ]
         })
     }
-
- $(function(){
     
-    $('#kumpul-tugas').on('submit', function(e){
-      e.preventDefault();
-      $.ajax({
-        url:$(this).attr('action'),
-        method:$(this).attr('method'),
-        data:new FormData(this),
-        processData: false,
-        dataType: 'json',
-        contentType: false,
-        beforeSend: function(){
-          $(document).find('span.error-text').text('');
-        },
-        success:function(data){
-          if(data.status == 0){
-            $.each(data.error, function(prefix, val){
-              $('span.'+prefix+'_error').text(val[0]);
-            });
-          }else{
-            location.reload();
-            toastr.success(data.msg)
-          }
-        }
-      });
-    });
-  });
-
 </script>
+
+ <script>
+        $(document).ready(function(){
+        $('.alert-success').fadeIn().delay(3000).fadeOut();
+        });
+  </script>
 
 <script type="text/javascript">
     var sig = $('#sig').signature({syncField: '#signature64', syncFormat: 'PNG'});

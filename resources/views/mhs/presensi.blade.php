@@ -59,8 +59,6 @@
                         <thead>
                             <tr style="text-align: center;">
                                 <th>No</th>
-                                <th>Hari</th>
-                                <th>Jam</th>
                                 <th>Pertemuan</th>
                                 <th>Tanggal</th>
                                 <th>Pokok Bahasan</th>
@@ -72,8 +70,6 @@
                             @foreach ($absen as $item => $data)
                             <tr style="text-align: center;">
                                 <td>{{ $absen->firstItem() + $item }}</td>
-                                <td>{{ $data->hari_praktikum }}</td>
-                                <td>{{ date('H:i', strtotime($data->jam_praktikum))}}</td>
                                 <td style="text-align: center;">{{ $data->urutanpertemuan }}</td>
                                 <td>{{$data->tanggal->format('l, j F Y')}}
                                 </td>

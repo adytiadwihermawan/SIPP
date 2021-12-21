@@ -11,7 +11,10 @@ class Materi extends Model
     protected $table = 'materi';
     protected $fillable = [
         'namafile_materi',
-        'id_pertemuan'
+        'id_pertemuan',
+        'judul_materi',
+        'deskripsi_file',
+        'url'
     ];
 
     public $timestamps = false;

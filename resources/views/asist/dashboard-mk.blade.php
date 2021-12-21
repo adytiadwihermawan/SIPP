@@ -379,8 +379,8 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            $('#buat-pertemuan')[0].reset();
             toastr.success(data.msg)
+            location.reload()
           }
         }
       });
@@ -411,8 +411,8 @@
               $('span.'+prefix+'_error').text(val[0]);
             });
           }else{
-            $('#upload-file')[0].reset();
             toastr.success(data.msg)
+            location.reload()
           }
         }
       });

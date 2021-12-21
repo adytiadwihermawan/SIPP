@@ -34,7 +34,8 @@
     <div class="card col-13">
           <div class="card-header">
             <h3 class="card-title">Presensi Praktikum</h3>
-          </div>
+            <a href="{{ route('exportrekap', $mk[0]->id_praktikum) }}" class="btn btn-success">Export Rekap</a>
+           </div>
           <!-- /.card-header -->
           <div class="card-body">
             <table id="presensi" class="table table-bordered table-striped">

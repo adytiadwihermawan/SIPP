@@ -253,6 +253,13 @@
             $.each(data.error, function(prefix, val){
               $('span.'+prefix+'_error').text(val[0]);
             });
+            if(!data.error){
+                toastr.options =
+                  {
+                    "closeButton" : true
+                  }
+                toastr.error(data.msg)
+              }
           }else{
             $('#daftar')[0].reset();
             toastr.success(data.msg)

@@ -737,7 +737,7 @@ class AdminController extends Controller
                         }
                     })
                     ->addColumn('file', function($row){
-                           return $btn = "<a href='/downloadfile".$row->filetranskripnilai."' data-id='" . $row->id_user . "' title='download'>$row->filetranskripnilai</a>";
+                           return $btn = "<a href='/downloadfile".$row->filetranskripnilai."' title='download'>$row->filetranskripnilai</a>";
                     })
                     ->rawColumns(['praktikumpilihan1', 'praktikumpilihan2', 'nilai2', 'file'])
                     ->make(true);
@@ -782,8 +782,12 @@ class AdminController extends Controller
                             ->first();
 
         $pdf = Facade::loadView('sertifikat', compact('data'))->setPaper('a4', 'landscape');
-        // dd($pdf);
-        return $pdf->stream("SERTIFIKAT ".$data->nama_user." PRAKTIKUM ".$data->nama_praktikum.".pdf");
+    
+        \Storage::put('public/pdf/SERTIFIKAT '.$data->nama_user.' PRAKTIKUM '.$data->nama_praktikum.'.pdf', $pdf->output());
+        
+        $path = 'storage/pdf/SERTIFIKAT '.$data->nama_user.' PRAKTIKUM '.$data->nama_praktikum.'.pdf';
+
+        return response()->download(public_path($path));
     }
 
 }

@@ -27,14 +27,16 @@ use DataTables;
 use App\DataTables\NilaiDataTable;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\UsersImport;
+use App\Exports\RekapExport;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
     public function dashboardMhs()
     {
-        $mk = Proses_praktikum::leftJoin('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')
-                                    ->where('proses_praktikum.id_user', Auth::user()->id)->get();
+        $mk = Proses_praktikum::Join('praktikum', 'proses_praktikum.id_praktikum', '=', 'praktikum.id_praktikum')
+                                ->where('proses_praktikum.id_user', Auth::user()->id)
+                                ->get();
         
         $data = Roles::join('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')
                     ->where('id_status', '=', 3)
@@ -256,14 +258,13 @@ class UserController extends Controller
         $fileModel = new Materi;
        
         if($validator->passes()) {
-            if(empty($request->input('_file'))){
+            if(empty($request->_file)){
                 $fileModel->id_pertemuan= $request->id;
                 $fileModel->judul_materi = $request->judul_materi;
                 $fileModel->deskripsi_file = $request->deskripsi;
                 $fileModel->url = $request->url;
                 $query = $fileModel->save();
                 
-                $query = $fileModel->save(); 
             }else{
                 $path = 'storage';
                 $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
@@ -275,8 +276,6 @@ class UserController extends Controller
                 $fileModel->judul_materi = $request->judul_materi;
                 $fileModel->deskripsi_file = $request->deskripsi;
                 $fileModel->url = $request->url;
-                $query = $fileModel->save();
-                
                 $query = $fileModel->save();
             }
 
@@ -305,7 +304,7 @@ class UserController extends Controller
             ],[
                 'id.required'=>"Pertemuan tidak boleh kosong",
                 'judul_tugas.required'=>"Judul tugas tidak boleh kosong",
-                'size.required'=>"Kapasitas Pengumpulan File tidak boleh kosongs",
+                'size.required'=>"Kapasitas Pengumpulan File tidak boleh kosong",
                 'deskripsi.required'=>"Deskripsi tidak boleh kosong",
                 'wmp.required'=>"Waktu mulai pengumpulan tidak boleh kosong",
                 'wmp.after'=>"Waktu pengumpulan tidak boleh melewati waktu anda sekarang",
@@ -317,19 +316,6 @@ class UserController extends Controller
         // dd($request->all());
 
         $fileModel = new Wadah_tugas;
-            
-            if($request->size == 25){
-
-                $size = 25000;
-
-            } 
-            elseif ($request->size == 50)   {
-
-                $size = 50000;
-            }
-            else{
-                $size = 100000;
-            }   
 
         if($validator->passes()) {
             if(empty($request->input('_file'))){
@@ -339,7 +325,7 @@ class UserController extends Controller
                 $fileModel->waktu_mulai = $request->wmp;
                 $fileModel->waktu_selesai = $request->wap;
                 $fileModel->waktu_cutoff = $request->wcp;
-                $fileModel->size = $size;
+                $fileModel->size = $request->size;
                 
                 $query = $fileModel->save(); 
             }else{
@@ -510,6 +496,8 @@ class UserController extends Controller
 
         $cekid = $id;
 
+        $wadah = $cek->id_praktikum;
+
         // dd($cekid);
 
         $presensi = Presensi::rightJoin('users', function($join) use($cekid){
@@ -520,8 +508,6 @@ class UserController extends Controller
                     ->where('id_status', 4)
                     ->where('proses_praktikum.id_praktikum', $cek->id_praktikum)
                     ->get();
-
-        // dd($presensi);
 
         $absen = Wadahpresensi::join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
                             ->leftjoin('presensi', 'wadahpresensi.id_wadah', 'presensi.id_wadah')
@@ -826,7 +812,11 @@ class UserController extends Controller
                         return "Asisten Praktikum";
                         }
                     else{
-                        return $row->status;
+                        if($row->id_status == 2){
+                            return "Dosen";
+                        }else{
+                            return "Mahasiswa";
+                        }
                     }
                    
                 })
@@ -881,8 +871,12 @@ class UserController extends Controller
                     if($row->id_status == 3){
                         return "Asisten Praktikum";
                         }
-                    else{
-                        return $row->status;
+                   else{
+                        if($row->id_status == 2){
+                            return "Dosen";
+                        }else{
+                            return "Mahasiswa";
+                        }
                     }
                    
                 })
@@ -969,13 +963,17 @@ class UserController extends Controller
                             if ($ekstensi == "docx" || $ekstensi == "pdf" || $ekstensi == "ppt"){
                                 $btn .= "
                                 <ul>
+                                    <li>
                                         $icon <a href='/downloadfile".$value->namafile_tugas."' data-id='" . $value->id_wadahtugas . "' title='download'>$value->namafile_tugas</a>
-                                </ul";
+                                    </li>
+                                </ul>";
                             } else {
                                 $btn .= "
                                 <ul>
+                                    <li>
                                         $icon <a href='/storage/$value->namafile_tugas' target='_blank' data-id='" . $value->id_wadahtugas . "' title='view'>$value->namafile_tugas</a>
-                                </ul";
+                                    </li>
+                                </ul>";
                             }
                         }
                         return $btn;
@@ -1222,22 +1220,31 @@ class UserController extends Controller
 
     public function kumpulTugas(Request $request){
 
-        $input_data = $request->all();
-
         $size = Wadah_tugas::where('id_wadahtugas', $request->id_wadahtugas)->first();
-        $validator = \Validator::make(
-        $input_data, [
-        '_file.*' => 'required|file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,doc,docx,pdf,tif,tiff|size:' . $size->size
-        ],[
-            '_file.*.required' => 'Please upload file',
-            '_file.*.mimes' => 'Only xlsx,xls,csv,jpg,jpeg,png,bmp,doc,docx,pdf,tif,tiff images are allowed',
-            '_file.*.size'=> 'Ukuran File Terlalu Besar'
 
-        ]
-        );
+    $names = [];
+            if($request->hasfile('_file')){
+           
+           $names = array(); // array for all names of files
+          foreach($request->_file as $file){
+            $name=$file->getClientOriginalName();
+            $names[]= $name;
+        }
+    }
 
-        if($request->hasFile('_file')) {
-            foreach ($request->file('_file') as $file) {
+    $messages = [
+        '_file.required'=>'Masukkan File Tugas Anda',
+        '_file.*.max'=>'Ukuran File ' . implode(" dan ", $names) .' Terlalu Besar'
+        ];
+    
+
+    $validator = $request->validate([
+        '_file'=>'required',
+        '_file.*'=>'max:'. $size->size
+    ], $messages);
+
+    if($validator) {
+        foreach ($request->file('_file') as $file) {
                 $fileName = $file->getClientOriginalName();
                 $file->move(public_path('storage'), $fileName); 
                 $files = $fileName;
@@ -1250,24 +1257,10 @@ class UserController extends Controller
         $save->namafile_tugas = $files;
         $save->waktu_submit = Carbon::now()->format('Y-m-d H:i:s');
         $query = $save->save();
-         }
-
-
-        //  $query = Uploadtugas::create([
-        //             'id_praktikum'=>$request->id,
-        //             'id_user'=>$request->id_user,
-        //             'id_wadahtugas'=>$request->id_wadahtugas,
-        //             'namafile_tugas'=> $files,
-        //             'waktu_submit'=>Carbon::now()->format('Y-m-d H:i:s')
-        //     ]);
-
-            if($query){
-                return response()->json(['status'=>1,'msg'=>'File Berhasil Diunggah']);
-            }                
-            else{
-                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
-            }
-        }
+        }  
+    }
+    return back()->with('success', "Submit Tugas Berhasil"); 
+     
    }
 
    public function rekapAbsen(Request $request, $nama_praktikum)
@@ -1343,6 +1336,23 @@ class UserController extends Controller
                     ->rawColumns(['hari', 'jam', 'pertemuan', 'tanggal', 'materi', 'waktu', 'action'])
                     ->make(true);
         }
+        
+        $rekap = Wadahpresensi::rightJoin('presensi', function($join) use($cekid){
+                        $join->on('presensi.id_wadah', '=', 'wadahpresensi.id_wadah');
+                        $join->where('wadahpresensi.id_wadah', $cekid);
+                    })
+                    ->rightJoin('users', function($join) use($cekid){
+                        $join->on('users.id', '=', 'presensi.id_user');
+                        $join->where('wadahpresensi.id_wadah', $cekid);
+                    })
+                    ->join('proses_praktikum', 'users.id', 'proses_praktikum.id_user')
+                    ->where('id_status', 4)
+                    ->where('proses_praktikum.id_praktikum', $cek->id_praktikum)
+                    ->select(['urutanpertemuan', 'wadahpresensi.id_wadah',  'nama_user', 'keterangan', 'proses_praktikum.id_praktikum'])
+                    ->get();
+
+        dd($rekap);
+
         
        return view('dsn.presensi',  compact(['cekid', 'mk', 'absen', 'presensi', 'course1']));
    }
@@ -1611,12 +1621,12 @@ class UserController extends Controller
 
         }else{          
             
-            $path = 'storage';
+            // $path = 'storage';
+            // $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
+            // $filePath = $request->_file->move(public_path($path, $newname));
+            $path =  'storage';
             $newname = Helper::renameFile($path, $request->file('_file')->getClientOriginalName());
-            $filePath = $request->_file->move(public_path($path, $newname));
-
-            // $fileName = $file->getClientOriginalName();
-            //     $file->move(public_path('storage'), $fileName);     
+             $request->_file->move(public_path($path), $newname);     
 
             $daftar = new Rekrutasisten;
 
@@ -1634,9 +1644,14 @@ class UserController extends Controller
                 return response()->json(['status'=>1,'msg'=>'Form Berhasil Disubmit']);
             }                
             else{
-                return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal submit form']);
+                return response()->json(['status'=>0,'msg'=>'Anda Sudah Submit Form']);
             }
         }
+     }
+
+     public function exportRekap(Request $request)
+     {
+         return Excel::download(new RekapExport($request->id_praktikum), 'rekap.xlsx');
      }
 
 }

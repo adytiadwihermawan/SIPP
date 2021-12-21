@@ -77,6 +77,11 @@
                 <p>{{$datas->deskripsi_file}}</p>
             </div>
             @endif
+
+            @if($datas->url != null)
+                <div class="card-footer">
+                    <x-embed url="{{$datas->url}}"/>
+            @endif
         </div>
         @endif
         @endforeach
@@ -134,9 +139,11 @@
         @endif
         @endforeach
 
+        @if($item->deskripsi != null)
         <div class="card-footer blue1">
             {{$item->deskripsi}}
         </div>
+        @endif
     </div>
     @endforeach
 </div>

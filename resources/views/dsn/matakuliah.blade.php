@@ -187,7 +187,8 @@
                             <span class="text-danger error-text url_error"></span>
                         </div>
 
-                        <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
+                        <input type="file" name="_file" style="margin-bottom:15px;" class="form-control">
+                        <span class="text-danger error-text _file_error"></span>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -261,17 +262,22 @@
                         <div class="form-group">
                             <label for="">Ukuran File Kumpul Tugas</label>
                             <br>
-                            <input type="radio" class="btn-check" name="size" id="option2" autocomplete="off">
-                            <label class="btn btn-outline-primary" value="25MB" for="option2">25 MB</label>
-
-                            <input type="radio" class="btn-check" name="size" id="option4" autocomplete="off">
-                            <label class="btn btn-outline-primary" value="50MB" for="option4">50 MB</label>
-
-                            <input type="radio" class="btn-check" name="size" id="option3" autocomplete="off">
-                            <label class="btn btn-outline-primary" value="100MB" for="option3">100 MB</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="size" id="s25" value="25000">
+                                    <label class="form-check-label" for="25mb">25 MB</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="size" id="s50" value="50000">
+                                    <label class="form-check-label" for="50mb">50 MB</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="size" id="s100" value="100000">
+                                    <label class="form-check-label" for="100mb">100 MB</label>
+                                </div>
                             <br>
                             <span class="text-danger error-text size_error"></span>
                         </div>
+
 
                         <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
 
