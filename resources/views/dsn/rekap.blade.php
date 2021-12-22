@@ -6,7 +6,8 @@
 <div class="card col-12 blue1">
         <div class="card-header">
             <h3 class="card-title">
-                <b> {{$mk[0]->nama_praktikum}} </b>
+                <b>Presensi Pertemuan {{$absen[0]->urutanpertemuan}} 
+                    {{$mk[0]->nama_praktikum}} </b>
             </h3>
 
         </div>

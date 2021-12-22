@@ -1442,12 +1442,6 @@ class UserController extends Controller
                     ->where('proses_praktikum.id_praktikum', $cek->id_praktikum)
                     ->select(['urutanpertemuan', 'wadahpresensi.id_wadah',  'nama_user', 'keterangan', 'proses_praktikum.id_praktikum'])
                     ->get();
-<<<<<<< HEAD
-=======
-
-       // dd($rekap);
-
->>>>>>> 571557077da4130d78d86c90b6b31baf40e4d916
         
        return view('dsn.presensi',  compact(['cekid', 'mk', 'absen', 'presensi', 'course1']));
    }
