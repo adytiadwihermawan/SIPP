@@ -482,6 +482,13 @@ class UserController extends Controller
         return response()->json($data);
     }
 
+    public function editgrade(Request $request){
+
+        $data = Nilai::where('id_tugas', $request->id)
+                ->first();
+        return response()->json($data);
+    }
+
     public function getNilai(Request $request){
 
         $data = Uploadtugas::where('id_tugas', $request->id)
@@ -902,10 +909,9 @@ class UserController extends Controller
                                 ->join('users', 'uploadtugas.id_user', 'users.id')
                                 ->where('uploadtugas.id_wadahtugas', $id)
                                 ->groupBy('username')
-                                ->select('id_user', 'nama_user', 'username', 'namafile_tugas', 'uploadtugas.id_wadahtugas', 'id_tugas')
-                                ->get();
-
-                                // dd($grade);
+                                ->select('id_user', 'nama_user', 'username', 'namafile_tugas', 'uploadtugas.id_wadahtugas', 'id_tugas', 'waktu_submit')
+                                ->get();        
+            // dd($grade);
 
             if ($request->ajax()) {
             return Datatables::of($grade)
@@ -927,6 +933,15 @@ class UserController extends Controller
                             return $btn;
                         }
                     })
+                    ->addColumn('komentar', function($row){
+                            $nilai = Nilai::where('id_tugas', $row->id_tugas)->first();
+
+                            if($nilai){
+                                return $nilai->komentar;
+                            }else{
+                                return "Not graded";
+                            }
+                            })
                     ->addColumn('file', function($row){
                         
                         $files = Uploadtugas::join('users', 'uploadtugas.id_user', 'users.id')
@@ -979,7 +994,21 @@ class UserController extends Controller
                         return $btn;
                             
                     })
-                    ->rawColumns(['nama', 'nim','grade', 'file'])
+                    ->addColumn('waktu_submit', function($row){
+
+                        $tanggal= Wadah_tugas::where('id_wadahtugas', $row->id_wadahtugas)->first();
+                        
+                        if($tanggal->waktu_selesai > $row->waktu_submit){
+                            return $ket = "Assignment was submitted ".str_replace([' after', ' before', 'd', 'h', 'm', 'sec'], [' late', ' early', ' days', ' hours', ' mins', ' secs'], $tanggal->waktu_selesai->diffForHumans($row->waktu_submit, ['short'=> true, 'parts' => 3]));
+                        }else{    
+                            return $ket = "Assignment was submitted ".str_replace([' after', ' before', 'd', 'h', 'm', 'sec'], [' late', ' early', ' days', ' hours', ' mins', ' secs'], $row->waktu_submit->diffForHumans($tanggal->waktu_selesai, ['short'=> true, 'parts' => 3]));
+                        }
+                    })
+                    ->addColumn('edit', function($row){
+
+                            return $btn = " <a href='javascript:void(0)' class='editgrade btn  btn-success' data-id='" . $row->id_tugas . "' title='edit'><i class='fa fa-edit'>Edit</i></a>";
+                    })
+                    ->rawColumns(['nama', 'nim','grade', 'komentar', 'file', 'waktu_submit', 'edit'])
                     ->make(true);
             }
             $mk = Praktikum::join('pertemuan', 'praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
@@ -1033,6 +1062,15 @@ class UserController extends Controller
                             return $btn;
                         }
                     })
+                    ->addColumn('komentar', function($row){
+                            $nilai = Nilai::where('id_tugas', $row->id_tugas)->first();
+
+                            if($nilai){
+                                return $nilai->komentar;
+                            }else{
+                                return "Not graded";
+                            }
+                            })
                     ->addColumn('file', function($row){
                         
                         $files = Uploadtugas::join('users', 'uploadtugas.id_user', 'users.id')
@@ -1081,7 +1119,21 @@ class UserController extends Controller
                         return $btn;
                             
                     })
-                    ->rawColumns(['nama', 'nim','grade', 'file'])
+                    ->addColumn('waktu_submit', function($row){
+
+                        $tanggal= Wadah_tugas::where('id_wadahtugas', $row->id_wadahtugas)->first();
+                        
+                        if($tanggal->waktu_selesai > $row->waktu_submit){
+                            return $ket = "Assignment was submitted ".str_replace([' ago', 'from now', ' after', ' before', 'd', 'h', 'm', 'sec'], [' late' , ' early',' late', ' early', ' days', ' hours', ' mins', ' secs'], $tanggal->waktu_selesai->diffForHumans($row->waktu_submit, ['short'=> true, 'parts' => 3]));
+                        }else{    
+                            return $ket = "Assignment was submitted ".str_replace([' ago', 'from now', ' after', ' before', 'd', 'h', 'm', 'sec'], [' late', ' early'.' late', ' early', ' days', ' hours', ' mins', ' secs'], $row->waktu_submit->diffForHumans($tanggal->waktu_selesai, ['short'=> true, 'parts' => 3]));
+                        }
+                    })
+                    ->addColumn('edit', function($row){
+
+                            return $btn = " <a href='javascript:void(0)' class='editgrade btn  btn-success' data-id='" . $row->id_tugas . "' title='edit'><i class='fa fa-edit'>Edit</i></a>";
+                    })
+                    ->rawColumns(['nama', 'nim','grade', 'komentar', 'file', 'waktu_submit', 'edit'])
                     ->make(true);
             }
             $mk = Praktikum::join('pertemuan', 'praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
@@ -1163,11 +1215,13 @@ class UserController extends Controller
        $request->validate([
                     'id'=>'required',
                     'nilai'=>'required',
+                    'komentar',
                 ]);
         //  dd($request->all());
         $query = Nilai::insert([
                         'id_tugas'=>$request->input('id'),
                         'nilai'=>$request->input('nilai'),
+                        'komentar'=>$request->input('komentar')
                     ]);
         // dd($query);
         if($query){
@@ -1177,6 +1231,37 @@ class UserController extends Controller
             return response()->json(['status'=>0,'msg'=>'Something went wrong, Gagal upload file']);
         }
 
+    }
+
+    public function updateNilai(Request $request){
+
+        $validator = \Validator::make($request->all(),[
+                'id_tugas',
+                'nilai'=>'required',
+                'komentar'
+            ],[
+                'nilai.required'=>"Nilai tidak boleh kosong",
+        ]);
+
+        
+        if($validator->passes()) {
+
+            $update = Nilai::where('id_tugas', $request->input('id_tugas'))
+                                ->update([
+                                    'id_tugas'=>$request->input('id_tugas'),
+                                    'nilai'=>$request->input('nilai'),
+                                    'komentar'=>$request->input('komentar')
+                            ]);
+            if(!$update){
+                    return response()->json(['status'=>0,'msg'=>'Tidak Ada Perubahan yang Dilakukan']);
+                }                
+                else{
+                    return response()->json(['status'=>1,'msg'=>'Data Berhasil Diperbaharui']);
+                }
+            }
+        else{
+            return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
+        }
     }
 
      public function tampilTugas($id_praktikum, $id_pertemuan, $id){  
@@ -1208,12 +1293,19 @@ class UserController extends Controller
                             ->where('uploadtugas.id_wadahtugas', $id)
                             ->where('id_user', Auth::user()->id)
                             ->get();
+
+        $nilai = Nilai::join('uploadtugas', 'nilai.id_tugas', 'uploadtugas.id_tugas')
+                        ->where('id_wadahtugas', $id)
+                        ->where('id_user', Auth::user()->id)
+                        ->first();
+
         $data = [
             'mk'=>$kelas,
             'nama_dosen'=>$nama_dosen,
             'nama_asisten'=>$nama_asisten,
             'data'=>$data,
-            'assign'=>$assign
+            'assign'=>$assign,
+            'nilai'=>$nilai
         ];
         return view('mhs.kumpultugas', $data);
     }
@@ -1350,9 +1442,6 @@ class UserController extends Controller
                     ->where('proses_praktikum.id_praktikum', $cek->id_praktikum)
                     ->select(['urutanpertemuan', 'wadahpresensi.id_wadah',  'nama_user', 'keterangan', 'proses_praktikum.id_praktikum'])
                     ->get();
-
-        dd($rekap);
-
         
        return view('dsn.presensi',  compact(['cekid', 'mk', 'absen', 'presensi', 'course1']));
    }
@@ -1556,16 +1645,12 @@ class UserController extends Controller
          }
      }
 
-     public function deleteabsen($id){
-        $query = Wadahpresensi::where('id_wadah', $id)->Delete();
-         
-         if($query){
-             return back()->with('berhasil', 'Data Berhasil Dihapus');
-         }
-         else{
-             return back()->with('gagal', 'Ada terjadi kesalahan');
-         }
-     }
+     public function deleteabsen(Request $request)
+    {
+        $data = Wadahpresensi::where('id_wadah', $request->id)->delete();
+        return response()->json(['text' => 'Data Berhasil Dihapus'], 200);
+    }
+
 
      public function formasisten()
      {

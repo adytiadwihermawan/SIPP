@@ -265,7 +265,10 @@
               {data: 'nama', name: 'nama' },
               {data: 'nim', name: 'nim'},
               {data: 'grade', name: 'grade'},
-              {data: 'file', name: 'file'}
+              {data: 'komentar', name: 'komentar'},
+              {data: 'file', name: 'file'},
+              {data: 'waktu_submit', name: 'waktu_submit'},
+              {data: 'edit', name: 'edit'}
             ]
         });
       @endif
@@ -512,6 +515,58 @@
     });
   });
 
+   $('body').on('click', '.editgrade', function () {
+        var id = $(this).data('id');
+         
+        $.ajax({
+            type:"GET",
+            url: "{{ url('editgrade') }}",
+            data: { id: id },
+            dataType: 'json',
+            success: function(res){
+              $('#edit-nilai').modal('show');
+              $('#id_tugas').val(res.id_tugas);
+              $('#nilaitugas').val(res.nilai);
+              $('#komentar').val(res.komentar);
+           }
+        });
+    });
+
+    $('#edit-nilai').on('submit', function(e){
+      e.preventDefault();
+      
+      var id_tugas = $('#id_tugas').val();
+      var nilai = $('#nilaitugas').val();
+      var komentar = $('#komentar').val();
+
+      $.ajax({
+        url: "{{ url('update-nilai') }}",
+        method: "POST",
+        data: {
+          id_tugas: id_tugas,
+          nilai: nilai,
+          komentar: komentar
+        },
+        dataType: 'json',
+        beforeSend: function(){
+          $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+          if(data.status == 0){
+            $.each(data.error, function(prefix, val){
+              $('span.'+prefix+'_error').text(val[0]);
+            });
+            if(!data.error){
+            toastr.error(data.msg)
+            }
+          }else{
+            toastr.success(data.msg)
+            location.reload()
+          }
+        }
+      });
+    });
+
   $('body').on('click', '.nilai', function () {
         var id = $(this).data('id');
          
@@ -703,6 +758,35 @@
           }
         }
       });
+    });
+
+    $('body').on('click', '.deletepresensi', function () {
+        var id = $(this).data('id');
+        Swal.fire({
+          title: 'Are you sure delete this data ?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+                headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                type:"POST",
+                url: "{{ url('deleteabsen')}} ",
+                data: { id: id },
+                dataType: 'json',
+                success: function(params){
+                  toastr.success(params.text)
+                  $('#presensi').DataTable().ajax.reload()
+              }
+            });
+          }
+        })
     });
 
   </script>

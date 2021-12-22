@@ -90,21 +90,28 @@
                                     <td>{{ date('l, j F Y H:i', strtotime($data[0]->waktu_selesai)) }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Grading status</th>
+                                    <td>
+                                        @if (!empty($nilai->nilai))
+                                        {{$nilai->nilai}}/100
+                                    @else
+                                        Not graded
+                                    @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Deskripsi Penilaian</th>
+                                    <td>
+                                        <textarea class="form-control" name="komentar" maxlength="1000" rows="4" readonly>{{$nilai->komentar}}</textarea>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>Time remaining</th>
                                     <td>
-                                        <?php 
-                                            $shortVariant = 'en_Short';
-                                            $translator = Carbon\Translator::get($shortVariant);
-                                            $translator->setTranslations([
-                                                'h' => ':count hrs',
-                                                'min' => ':count mins',
-                                                's' => ':count secs'
-                                            ]);
-                                        ?>
                                         @if (Carbon\Carbon::parse($data[0]->waktu_selesai) > Carbon\Carbon::parse($assign[0]->waktu_submit))      
-                                            Assignment was submitted {{$data[0]->waktu_selesai}}
+                                            Assignment was submitted <b style="color:rgb(64, 228, 64)">{{str_replace([' after', ' before', 'd', 'h', 'm', 'sec'], [' late', ' early', ' days', ' hours', ' mins', ' secs'], $data[0]->waktu_selesai->diffForHumans($assign[0]->waktu_submit, ['short'=> true, 'parts' => 3]))}}</b>
                                         @else
-                                            Assignment was submitted {{$assign[0]->waktu_submit}}
+                                            Assignment was submitted <b style="color: rgb(209, 22, 22)">{{str_replace([' after', ' before', 'd', 'h', 'm', 'sec'], [' late', ' early', ' days', ' hours', ' mins', ' secs'], $assign[0]->waktu_submit->diffForHumans($data[0]->waktu_selesai, ['short'=> true, 'parts' => 3]))}}</b>
                                         @endif
                                     </td>
                                 </tr>
@@ -174,7 +181,9 @@
             </div>
     @endif
 @else
-    
+
+@if (!(Carbon\Carbon::now() < $data[0]->waktu_mulai))
+
 <div class="col-12 row-3">
     <div class="card ml-3 ">
         <div class="card-header" style="background-color: aliceblue;">
@@ -227,6 +236,7 @@
 
     </div>
 </div>
+
 <div class="col-12">
 
     <div class="card ml-3 ">
@@ -331,5 +341,24 @@
         </tr>
     </div>
 </div>
+
+@else
+    <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>
+                    Sorry</h1>
+                <h2>
+                    Waktu Pengumpulan Tugas Belum Dibuka untuk Sekarang</h2>
+                <div class="error-details">
+                    Pengumpulan Tugas Bisa dimulai dari tanggal {{date('j F Y', strtotime($data[0]->waktu_mulai))}} pukul {{date('H:i', strtotime($data[0]->waktu_mulai))}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
 @endif
 @endsection

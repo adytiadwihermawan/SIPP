@@ -115,7 +115,7 @@ Route::get('deletemateri/{id}', [UserController::class, 'deletemateri']);
 
 Route::get('deletetugas/{id}', [UserController::class, 'deletetugas']);
 
-Route::get('deleteabsen/{id}', [UserController::class, 'deleteabsen']);
+Route::post('deleteabsen', [UserController::class, 'deleteabsen']);
 
 Route::get('downloadfile{file}', [UserController::class, 'downloadFile'])->name('download');
 
@@ -135,7 +135,11 @@ Route::post('editpresensi', [UserController::class, 'updateAbsen'])->name('updat
 
 Route::get('grade', [UserController::class, 'getNilai']);
 
+Route::get('editgrade', [UserController::class, 'editgrade']);
+
 Route::post('nilai', [UserController::class, 'nilai'])->name('nilaiTugas');
+
+Route::post('update-nilai', [UserController::class, 'updateNilai'])->name('updateNilai');
 
 Route::get('dsn/partisipan/{id}', [UserController::class, 'dsnPartisipan'])->name('data');
 

@@ -10,8 +10,11 @@ class Nilai extends Model
     protected $table = 'nilai';
     protected $fillable = [
         'nilai',
-        'id_materi',
+        'komentar',
         'id_user'
     ];
+
+
+     public $timestamps = false;
     
 }
