@@ -7,15 +7,16 @@
             }
             body {
                 color: black;
-                font-family:'Times New Roman', Times, serif;
+                font-family:Verdana, sans-serif;;
                 font-size: 24px;
            
             }
             .container {
-                background-image: url("dist/img/ST.png");
+                background-image: url("dist/img/Sertifikatbg.jpg");
                 background-size: cover;
                 width: 29.7cm;
                 height: 20.5cm;
+                image-rendering: -webkit-optimize-contrast;
                 margin: none;
                 position: fixed;
                 text-align: center;
@@ -45,13 +46,13 @@
         <div class="container">
             
             <div class="nama">
-               <b> NAMA MAHASISWA</b>
+               <b>    {{$data->nama_user}}</b>
             </div>
             <div class="nim">
-                <b>  NIM MAHASISWA</b>
+                <b>  {{$data->username}}</b>
             </div>
             <div class="matkul">
-                <b>  NAMA MATA KULIAH</b>
+                <b>   {{$data->nama_praktikum}}</b>
             </div>
             
 
