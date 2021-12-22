@@ -12,11 +12,14 @@
            
             }
             .container {
-                background-image: url("dist/img/Sertifikatbg.png");
+                background-image: url("dist/img/ST.png");
                 background-size: cover;
                 width: 29.7cm;
                 height: 20.5cm;
                 margin: none;
+                position: fixed;
+                text-align: center;
+              
             }
            
             .nama {
