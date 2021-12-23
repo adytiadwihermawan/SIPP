@@ -262,18 +262,18 @@
                         <div class="form-group">
                             <label for="">Ukuran File Kumpul Tugas</label>
                             <br>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="size" id="s25" value="25000">
-                                    <label class="form-check-label" for="25mb">25 MB</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="size" id="s50" value="50000">
-                                    <label class="form-check-label" for="50mb">50 MB</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="size" id="s100" value="100000">
-                                    <label class="form-check-label" for="100mb">100 MB</label>
-                                </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="size" id="s25" value="25000">
+                                <label class="form-check-label" for="25mb">25 MB</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="size" id="s50" value="50000">
+                                <label class="form-check-label" for="50mb">50 MB</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="size" id="s100" value="100000">
+                                <label class="form-check-label" for="100mb">100 MB</label>
+                            </div>
                             <br>
                             <span class="text-danger error-text size_error"></span>
                         </div>
@@ -362,23 +362,23 @@
 
             </div>
             <br>
-            @foreach($data_materi as $datas)
-            @if($datas->id_pertemuan == $item->id_pertemuan)
+            @foreach($data_materi as $value)
+            @if($value->id_pertemuan == $item->id_pertemuan)
 
             <div class="card-body col-13 card-outline card-primary mb-0 ml-3 px-0">
                 <div class="card-header pt-0 ">
 
-                    <h3 class="card-title">{{$datas->judul_materi}}</h3>
-                    <a href="/deletemateri/{{  $datas->id_materi }}" title="Delete"
+                    <h3 class="card-title">{{$value->judul_materi}}</h3>
+                    <a href="/deletemateri/{{  $value->id_materi }}" title="Delete"
                         class="btn-sm btn-danger btn float-right"
                         onclick="return confirm('Are you sure to delete this data ?')">
                         <i class="fa fa-trash"></i> Hapus Materi
                     </a>
                 </div>
+             @if (!empty($value->namafile_materi))
                 <div class="card-body cold1 col-13 mb-0">
-            @if (!empty($datas->namafile_materi))
                     <?php
-                $pecah = explode(".", $datas->namafile_materi);
+                $pecah = explode(".", $value->namafile_materi);
                 $ekstensi = $pecah[1];
                 ?>
                     @if ($ekstensi == 'zip' or $ekstensi == 'rar')
@@ -404,17 +404,21 @@
                     <i class="fa fa-file-text-o mr-2" style="font-size:23px;color:black"> </i>
                     @endif
 
-                    <a href="{{route('download', $datas->namafile_materi)}}">{{$datas->namafile_materi}}</a>
+                    <a href="{{route('download', $value->namafile_materi)}}">{{$value->namafile_materi}}</a>
                 </div>
-                @if($datas->deskripsi_file != null)
-                    <p>{{$datas->deskripsi_file}}</p>
-                @endif
-            
             @endif
-                @if($datas->url != null)
-                <div class="card-footer">
-                    <x-embed url="{{$datas->url}}"/>
+                
+            <div class="card-footer">
+                @if($value->url != null)
+                    <x-embed url="{{$value->url}}" />
                 @endif
+            </div>
+            
+                    @if($value->deskripsi_file != null)
+                <div class="card-footer">
+                    <p>{{$value->deskripsi_file}}</p>
+                </div>
+                    @endif
             </div>
             @endif
             @endforeach
@@ -424,10 +428,11 @@
 
             <div class="card-body col-13 card-outline card-warning mb-0 ml-3 px-0">
                 <div class="card-header pt-0">
-                  
-                    <a href="javascript:void(0)" style="text-decoration: none; color:tomato" class="edittugas" data-id="{{ $datas->id_wadahtugas }}">
-                        <h4 class="card-title">  <b> 
-                             {{$datas->judul_tugas}} </b>
+
+                    <a href="javascript:void(0)" style="text-decoration: none; color:tomato" class="edittugas"
+                        data-id="{{ $datas->id_wadahtugas }}">
+                        <h4 class="card-title"> <b>
+                                {{$datas->judul_tugas}} </b>
                         </h4>
                     </a>
 
@@ -437,141 +442,148 @@
                         <i class="fa fa-trash"></i> Hapus Tugas
                     </a>
                 </div>
-
-<div class="modal fade" id="edit-tugas">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Tugas</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="edit-tugas" action="{{ route('updateTugas') }}" method="POST"
-                        enctype="multipart/form-data">
-                        @csrf
-
-                       <input type="text" class="form-control" name="id" id="id_wadahtugas" hidden>
-
-                        <input type="text" class="form-control" name="id_pertemuan" id="id_pertemuan" hidden>
-
-
-                        <div class="form-group">
-                            <label for="">Judul Tugas</label>
-                            <input type="text" class="form-control" name="judul_tugas" maxlength="250" id="judul_tugas">
-                            <span class="text-danger error-text judul_tugas_error"></span>
+            </div>
+            <div class="modal fade" id="edit-tugas">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit Tugas</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
+                        <div class="modal-body">
+                            <form id="edit-tugas" action="{{ route('updateTugas') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
 
-                        <div class="form-group">
-                            <label for="">Deskripsi Tugas</label>
-                            <textarea class="form-control" name="deskripsi" maxlength="1000" rows="4" id="deskripsi"></textarea>
-                            <span class="text-danger error-text deskripsi_error"></span>
-                        </div>
+                                <input type="text" class="form-control" name="id" id="id_wadahtugas" hidden>
 
-                        <div class="form-group">
-                            <label for="">Waktu Mulai Pengumpulan</label>
-                            <input type="datetime-local" class="form-control" name="wmp" id="wmp" value="{{$datas->waktu_mulai->toDatetimelocalString()}}">
-                            <span class="text-danger error-text wmp_error"></span>
-                        </div>
+                                <input type="text" class="form-control" name="id_pertemuan" id="id_pertemuan" hidden>
 
-                        <div class="form-group">
-                            <label for="">Waktu Akhir Pengumpulan</label>
-                            <input type="datetime-local" class="form-control" name="wap" id="wap" value="{{$datas->waktu_selesai->toDatetimelocalString()}}">
-                            <span class="text-danger error-text wap_error"></span>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="">Waktu Cut-Off Pengumpulan</label>
-                                @if (!empty($datas->waktu_cutoff))
-                                    <input type="datetime-local" class="form-control" name="wcp" id="wcp" value="{{$datas->waktu_cutoff->toDatetimelocalString()}}">
-                                @else
+                                <div class="form-group">
+                                    <label for="">Judul Tugas</label>
+                                    <input type="text" class="form-control" name="judul_tugas" maxlength="250"
+                                        id="judul_tugas">
+                                    <span class="text-danger error-text judul_tugas_error"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">Deskripsi Tugas</label>
+                                    <textarea class="form-control" name="deskripsi" maxlength="1000" rows="4"
+                                        id="deskripsi"></textarea>
+                                    <span class="text-danger error-text deskripsi_error"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">Waktu Mulai Pengumpulan</label>
+                                    <input type="datetime-local" class="form-control" name="wmp" id="wmp"
+                                        value="{{$datas->waktu_mulai->toDatetimelocalString()}}">
+                                    <span class="text-danger error-text wmp_error"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">Waktu Akhir Pengumpulan</label>
+                                    <input type="datetime-local" class="form-control" name="wap" id="wap"
+                                        value="{{$datas->waktu_selesai->toDatetimelocalString()}}">
+                                    <span class="text-danger error-text wap_error"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">Waktu Cut-Off Pengumpulan</label>
+                                    @if (!empty($datas->waktu_cutoff))
+                                    <input type="datetime-local" class="form-control" name="wcp" id="wcp"
+                                        value="{{$datas->waktu_cutoff->toDatetimelocalString()}}">
+                                    @else
                                     <input type="datetime-local" class="form-control" name="wcp" id="wcp">
-                                @endif
-                            <span class="text-danger error-text wcp_error"></span>
-                        </div>
+                                    @endif
+                                    <span class="text-danger error-text wcp_error"></span>
+                                </div>
 
-                        <input type="file" name="_file" id="_file" style="margin-bottom:15px;" class="form-control">
+                                <input type="file" name="_file" id="_file" style="margin-bottom:15px;"
+                                    class="form-control">
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Edit Tugas</button>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Edit Tugas</button>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
+
+            @if (!empty($datas->file_tugas))
+            <div class="card-body beee">
+                <a href="{{route('download', $datas->file_tugas)}}">{{$datas->file_tugas}}</a>
+            </div>
+            @endif
+            @if($datas->deskripsi_tugas != null)
+            <div class="card-footer">
+                <p>{{$datas->deskripsi_tugas}}</p>
+            </div>
+            @endif
         </div>
-    </div>
-    
-                @if (!empty($datas->file_tugas))
-                <div class="card-body beee">
-                    <a href="{{route('download', $datas->file_tugas)}}">{{$datas->file_tugas}}</a>
-                </div>
-                @endif
-                @if($datas->deskripsi_tugas != null)
-                <div class="card-footer">
-                    <p>{{$datas->deskripsi_tugas}}</p>
-                </div>
-                @endif
-            </div>
-            @endif
-            @endforeach
+        @endif
+        @endforeach
 
-            <div class="card-footer blue1">
+        <div class="card-footer blue1">
             @if (!empty($item->deskripsi))
-                <textarea class="form-control" readonly
-                    style="border-style: none; border-color: Transparent; overflow: auto;" rows="5">{{$item->deskripsi}}</textarea>
-                <br>
+            <textarea class="form-control" readonly
+                style="border-style: none; border-color: Transparent; overflow: auto;"
+                rows="5">{{$item->deskripsi}}</textarea>
+            <br>
             @endif
-            <a href="javascript:void(0)" class="btn hijau3 panjang1 float-right editPertemuan" data-id="{{ $item->id_pertemuan }}">
+            <a href="javascript:void(0)" class="btn hijau3 panjang1 float-right editPertemuan"
+                data-id="{{ $item->id_pertemuan }}">
                 <i class="fas fa-edit">Edit Pertemuan</i>
             </a>
+        </div>
+    </div>
+</div>
+<br>
+@endforeach
+
+<div class="modal fade" id="edit-pertemuan" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Pertemuan</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-pertemuan" action="{{ route('updatepertemuan') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <input type="hidden" id="id_pertemuan" name="id_pertemuan">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Nama Pertemuan / Pertemuan Ke</label>
+                        <input type="text" class="form-control" id="nama_pertemuan" name="nama_pertemuan">
+                        <span class="text-danger error-text nama_pertemuan_error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Materi Pembahasan</label>
+                        <textarea class="form-control" placeholder="Masukkan Deskripsi" name="deskripsi"
+                            maxlength="1000" rows="5" id="deskripsi"> </textarea>
+                        <span class="text-danger error-text deskripsi_error"></span>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" id="edit-pertemuan" class="btn btn-primary">Edit Pertemuan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <br>
-    @endforeach
-
-        <div class="modal fade" id="edit-pertemuan" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Edit Pertemuan</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="edit-pertemuan" action="{{ route('updatepertemuan') }}" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                <input type="hidden" id="id_pertemuan" name="id_pertemuan">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">Nama Pertemuan / Pertemuan Ke</label>
-                                <input type="text" class="form-control" id="nama_pertemuan"
-                                    name="nama_pertemuan">
-                                <span class="text-danger error-text nama_pertemuan_error"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">Materi Pembahasan</label>
-                                <textarea class="form-control" placeholder="Masukkan Deskripsi" name="deskripsi"
-                                    maxlength="1000" rows="5" id="deskripsi"> </textarea>
-                                <span class="text-danger error-text deskripsi_error"></span>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" id="edit-pertemuan" class="btn btn-primary">Edit Pertemuan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
 
 @endif
 @endsection

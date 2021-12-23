@@ -149,7 +149,9 @@ Route::get('dsn/presensi/{id}', [UserController::class, 'rekapAbsen'])->name('ab
 
 Route::get('file-export', [UserController::class, 'fileExport'])->name('file-export');
 
-Route::get('export-rekap{id}', [UserController::class, 'exportRekap'])->name('exportrekap');
+Route::get('dsn/rekap-presensi/{id_praktikum}', [UserController::class, 'exportrekap'])->name('export');
+
+// Route::get('export-rekap{id}', [UserController::class, 'exportRekap'])->name('exportrekap');
 
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
 

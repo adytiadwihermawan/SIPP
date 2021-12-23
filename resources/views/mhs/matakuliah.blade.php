@@ -30,62 +30,67 @@
 
         </div>
         <br>
-        @foreach($data_materi as $datas)
-        @if($datas->id_pertemuan == $item->id_pertemuan)
+        @foreach($data_materi as $value)
+            @if($value->id_pertemuan == $item->id_pertemuan)
 
-        <div class="card-body col-13 card-outline card-primary mb-0 ml-3 px-0">
-            <div class="card-header pt-0">
-                <h3 class="card-title">{{$datas->judul_materi}}</h3>
-            
-            </div>
-        
-    @if (!empty($datas->namafile_materi))
-            <div class="card-body cold1">
-            <?php
-                $pecah = explode(".", $datas->namafile_materi);
+            <div class="card-body col-13 card-outline card-primary mb-0 ml-3 px-0">
+                <div class="card-header pt-0 ">
+
+                    <h3 class="card-title">{{$value->judul_materi}}</h3>
+                    <a href="/deletemateri/{{  $value->id_materi }}" title="Delete"
+                        class="btn-sm btn-danger btn float-right"
+                        onclick="return confirm('Are you sure to delete this data ?')">
+                        <i class="fa fa-trash"></i> Hapus Materi
+                    </a>
+                </div>
+             @if (!empty($value->namafile_materi))
+                <div class="card-body cold1 col-13 mb-0">
+                    <?php
+                $pecah = explode(".", $value->namafile_materi);
                 $ekstensi = $pecah[1];
-            ?>
-             @if ($ekstensi == 'zip' or $ekstensi == 'rar')
-                <i class="fa fa-file-zip-o mr-2" style="font-size:23px;color:gray"> </i>
+                ?>
+                    @if ($ekstensi == 'zip' or $ekstensi == 'rar')
+                    <i class="fa fa-file-zip-o mr-2" style="font-size:23px;color:gray"> </i>
 
-             @elseif ($ekstensi == 'docx' or $ekstensi == 'doc')
-                <i class="fa fa-file-word-o mr-2" style="font-size:23px;color:blue"></i>
-             
-             @elseif ($ekstensi == 'pdf')
-              <i class="fa fa-file-pdf-o mr-2" style="font-size:23px;color:red"></i>
-             
-             @elseif ($ekstensi == 'ppt' or $ekstensi == 'pptx')
-                 <i class="fa fa-file-powerpoint-o mr-2" style="font-size:23px;color:orange"></i>
-             
+                    @elseif ($ekstensi == 'docx' or $ekstensi == 'doc')
+                    <i class="fa fa-file-word-o mr-2" style="font-size:23px;color:blue"></i>
 
-             @elseif ($ekstensi == 'jpg' or $ekstensi == 'png' or $ekstensi == 'jpeg')
-                 <i class="fa fa-file-photo-o mr-2" style="font-size:23px;color:green"></i>
-             
-             @elseif ($ekstensi == 'html')
-                 <i class="fa fa-file-code-o mr-2" style="font-size:23px;color:green"></i>
+                    @elseif ($ekstensi == 'pdf')
+                    <i class="fa fa-file-pdf-o mr-2" style="font-size:23px;color:red"></i>
 
-                 @else
-                 <i class="fa fa-file-text-o mr-2" style="font-size:23px;color:black"> </i>
+                    @elseif ($ekstensi == 'ppt' or $ekstensi == 'pptx')
+                    <i class="fa fa-file-powerpoint-o mr-2" style="font-size:23px;color:orange"></i>
+
+
+                    @elseif ($ekstensi == 'jpg' or $ekstensi == 'png' or $ekstensi == 'jpeg')
+                    <i class="fa fa-file-photo-o mr-2" style="font-size:23px;color:green"></i>
+
+                    @elseif ($ekstensi == 'html')
+                    <i class="fa fa-file-code-o mr-2" style="font-size:23px;color:green"></i>
+
+                    @else
+                    <i class="fa fa-file-text-o mr-2" style="font-size:23px;color:black"> </i>
+                    @endif
+
+                    <a href="{{route('download', $value->namafile_materi)}}">{{$value->namafile_materi}}</a>
+                </div>
             @endif
-
-            
-                <a href="{{route('download', $datas->namafile_materi)}}">{{$datas->namafile_materi}}</a>
-            </div>
-        @endif
-            @if($datas->deskripsi_file != null)
+                
             <div class="card-footer">
-                <p>{{$datas->deskripsi_file}}</p>
+                @if($value->url != null)
+                    <x-embed url="{{$value->url}}" />
+                @endif
+            </div>
+            
+                    @if($value->deskripsi_file != null)
+                <div class="card-footer">
+                    <p>{{$value->deskripsi_file}}</p>
+                </div>
+                    @endif
             </div>
             @endif
-
-            @if($datas->url != null)
-                <div class="card-footer">
-                    <x-embed url="{{$datas->url}}"/>
-            @endif
-        </div>
-        @endif
-        @endforeach
-        <br>
+            @endforeach
+            <br>
         
         @foreach($data_tugas as $datas)
         @if($datas->id_pertemuan == $item->id_pertemuan)

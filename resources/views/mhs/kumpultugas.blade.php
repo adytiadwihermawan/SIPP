@@ -99,19 +99,21 @@
                                     @endif
                                     </td>
                                 </tr>
+                                @if (!empty($nilai->nilai))
                                 <tr>
                                     <th>Deskripsi Penilaian</th>
                                     <td>
                                         <textarea class="form-control" name="komentar" maxlength="1000" rows="4" readonly>{{$nilai->komentar}}</textarea>
                                     </td>
                                 </tr>
+                                @endif
                                 <tr>
                                     <th>Time remaining</th>
                                     <td>
-                                        @if (Carbon\Carbon::parse($data[0]->waktu_selesai) > Carbon\Carbon::parse($assign[0]->waktu_submit))      
-                                            Assignment was submitted <b style="color:rgb(64, 228, 64)">{{str_replace([' after', ' before', 'd', 'h', 'm', 'sec'], [' late', ' early', ' days', ' hours', ' mins', ' secs'], $data[0]->waktu_selesai->diffForHumans($assign[0]->waktu_submit, ['short'=> true, 'parts' => 3]))}}</b>
+                                        @if (Carbon\Carbon::parse($data[0]->waktu_selesai) < Carbon\Carbon::parse($assign[0]->waktu_submit))      
+                                            Assignment was submitted <b style="color:rgb(209, 22, 22)">{{str_replace([' after', ' before', 'd', 'h', 'm', 'sec'], [' late', ' early', ' days', ' hours', ' mins', ' secs'], Carbon\Carbon::parse($data[0]->waktu_selesai)->diffForHumans(Carbon\Carbon::parse($assign[0]->waktu_submit), ['short'=> true, 'parts' => 3]))}}</b>
                                         @else
-                                            Assignment was submitted <b style="color: rgb(209, 22, 22)">{{str_replace([' after', ' before', 'd', 'h', 'm', 'sec'], [' late', ' early', ' days', ' hours', ' mins', ' secs'], $assign[0]->waktu_submit->diffForHumans($data[0]->waktu_selesai, ['short'=> true, 'parts' => 3]))}}</b>
+                                            Assignment was submitted <b style="color: rgb(64, 228, 64)">{{str_replace([' after', ' before', 'd', 'h', 'm', 'sec'], [' late', ' early', ' days', ' hours', ' mins', ' secs'], Carbon\Carbon::parse($assign[0]->waktu_submit)->diffForHumans(Carbon\Carbon::parse($data[0]->waktu_selesai), ['short'=> true, 'parts' => 3]))}}</b>
                                         @endif
                                     </td>
                                 </tr>
