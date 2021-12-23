@@ -286,7 +286,6 @@
        var table = $('#presensi').DataTable({
          processing: true,
          serverSide: true,
-         dom: 'Bflrtip',
          ajax: {
            url: "{{ route('absen', [$mk[0]->nama_praktikum]) }}"
          },

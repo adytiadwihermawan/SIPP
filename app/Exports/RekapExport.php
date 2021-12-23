@@ -41,19 +41,18 @@ class RekapExport implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        $pertemuan = Wadahpresensi::where('id_praktikum', $this->id)->select('urutanpertemuan')->get();
+        $pertemuan = Wadahpresensi::where('id_praktikum', $this->id)->pluck('id_wadah');
 
-         $cek1 = "PERTEMUAN " .$pertemuan;
-        foreach ($pertemuan as $value => $item) {
-            $cek = "PERTEMUAN " .$item->urutanpertemuan;
-
-            return [
+        //  $cek1 = "PERTEMUAN " .$pertemuan;
+        // foreach ($pertemuan as $value => $item) {
+        //     $cek = "PERTEMUAN " .$item->urutanpertemuan;
+        // }
+        return [
                 'NO',
                 'NAMA',
                 'NIM',
-                $cek
+                $pertemuan
             ];
-        }
         
         // return [
         //     'NO',

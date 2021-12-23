@@ -33,7 +33,7 @@
     <div class="card col-13">
           <div class="card-header">
             <h3 class="card-title">Presensi Praktikum</h3>
-            {{-- <a href="{{ route('exportrekap', $mk[0]->id_praktikum) }}" class="btn btn-success float-right">Export Rekap</a> --}}
+            {{-- <a href="{{ route('exp', $mk[0]->id_praktikum) }}" class="btn btn-success float-right">Export Rekap</a> --}}
 
             <a href="/dsn/rekap-presensi/{{$mk[0]->nama_praktikum}}" class='btn btn-primary view mb-2 float-right' data-id='" . $row->id_wadah ."' title='Rekap'><i class='far fa-file-alt'></i>Rekap</a>
 

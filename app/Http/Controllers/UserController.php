@@ -1476,25 +1476,11 @@ class UserController extends Controller
                         $join->where('proses_praktikum.id_praktikum', $cek->id_praktikum);
                     })
                     ->where('id_status', 4)
-                    ->select('nama_user','presensi.id_user', 'username', 'presensi.id_wadah')
+                    ->select('nama_user','presensi.id_user', 'username', DB::raw('group_concat(presensi.id_wadah) as id_wadah'))
+                    ->groupBy('id_user')
                     ->get();
 
-                
-        // dd($data);
-                //     $presensi1 = Presensi::rightjoin('users', function($join){
-                //                         $join->on('users.id', '=', 'presensi.id_user');
-                //                     })
-                //                     ->Join('proses_praktikum', function($join) use($cek){
-                //                         $join->on('proses_praktikum.id_user', '=', 'users.id');
-                //                         $join->where('proses_praktikum.id_praktikum', $cek->id_praktikum);
-                //                     })
-                //                     ->where('id_status', 4)
-                //                     ->groupBy('nama_user')
-                //                     ->select('nama_user', 'username', 'id_wadah')
-                //                     ->get();
-                // $ha = $data->($presensi1);
-
-                // dd($ha);
+                // dd($data);
 
         if ($request->ajax()) {
 
@@ -1510,7 +1496,8 @@ class UserController extends Controller
                         $join->where('proses_praktikum.id_praktikum', $cek->id_praktikum);
                     })
                     ->where('id_status', 4)
-                    ->select('nama_user', 'username', 'presensi.id_wadah')
+                    ->select('nama_user','presensi.id_user', 'username', DB::raw('group_concat(presensi.id_wadah) as id_wadah'))
+                    ->groupBy('id_user')
                     ->get();
                     
 
@@ -1523,7 +1510,7 @@ class UserController extends Controller
                     })
                     ->addColumn('keterangan', function($row){
 
-                        return $row->id_wadah;
+                        return $row->id_wadah = explode(",", $row->id_wadah);
                         
                         // if($row->id_wadah){
                         //     return "Hadir";
