@@ -429,7 +429,7 @@
             <div class="card-body col-13 card-outline card-warning mb-0 ml-3 px-0">
                 <div class="card-header pt-0">
 
-                    <a href="javascript:void(0)" style="text-decoration: none; color:tomato" class="edittugas"
+                    <a href="javascript:void(0)" style="text-decoration: none; color:tomato" class="edittugas"  
                         data-id="{{ $datas->id_wadahtugas }}">
                         <h4 class="card-title"> <b>
                                 {{$datas->judul_tugas}} </b>
@@ -478,26 +478,19 @@
 
                                 <div class="form-group">
                                     <label for="">Waktu Mulai Pengumpulan</label>
-                                    <input type="datetime-local" class="form-control" name="wmp" id="wmp"
-                                        value="{{$datas->waktu_mulai->toDatetimelocalString()}}">
+                                    <input type="datetime-local" class="form-control" name="wmp" id="wmp">
                                     <span class="text-danger error-text wmp_error"></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="">Waktu Akhir Pengumpulan</label>
-                                    <input type="datetime-local" class="form-control" name="wap" id="wap"
-                                        value="{{$datas->waktu_selesai->toDatetimelocalString()}}">
+                                    <input type="datetime-local" class="form-control" name="wap" id="wap">
                                     <span class="text-danger error-text wap_error"></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="">Waktu Cut-Off Pengumpulan</label>
-                                    @if (!empty($datas->waktu_cutoff))
-                                    <input type="datetime-local" class="form-control" name="wcp" id="wcp"
-                                        value="{{$datas->waktu_cutoff->toDatetimelocalString()}}">
-                                    @else
                                     <input type="datetime-local" class="form-control" name="wcp" id="wcp">
-                                    @endif
                                     <span class="text-danger error-text wcp_error"></span>
                                 </div>
 

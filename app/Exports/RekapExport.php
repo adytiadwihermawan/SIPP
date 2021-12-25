@@ -51,7 +51,22 @@ class RekapExport implements FromCollection, WithHeadings
                 'NO',
                 'NAMA',
                 'NIM',
-                $pertemuan
+                'PERTEMUAN 1',
+                'PERTEMUAN 2',
+                'PERTEMUAN 3',
+                'PERTEMUAN 4',
+                'PERTEMUAN 5',
+                'PERTEMUAN 6',
+                'PERTEMUAN 7',
+                'PERTEMUAN 8',
+                'PERTEMUAN 9',
+                'PERTEMUAN 10',
+                'PERTEMUAN 11',
+                'PERTEMUAN 12',
+                'PERTEMUAN 13',
+                'PERTEMUAN 14',
+                'PERTEMUAN 15',
+                'PERTEMUAN 16',
             ];
         
         // return [

@@ -33,7 +33,7 @@
     <div class="card col-13">
           <div class="card-header">
             <h3 class="card-title">Presensi Praktikum</h3>
-            <a href="{{ route('exportrekap', $mk[0]->id_praktikum) }}" class="btn btn-success float-right">Export Rekap</a>
+            <a href="{{ route('exp', $mk[0]->id_praktikum) }}" class="btn btn-success float-right">Export Rekap</a>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
@@ -80,7 +80,7 @@
 
                             <div class="form-group">
                                 <label for="">Tanggal</label>
-                                <input type="date" class="form-control" name="tanggal" id="tanggal" value="{{$item->tanggal->format('Y-m-d')}}">
+                                <input type="date" class="form-control" name="tanggal" id="tanggal">
                                 <span class="text-danger error-text tanggal_error"></span>
                             </div>
 
@@ -92,13 +92,13 @@
 
                             <div class="form-group">
                                 <label for="">Waktu Mulai Presensi</label>
-                                <input type="datetime-local" class="form-control" name="wmp" id="wmp" value="{{$item->waktu_mulai->toDatetimelocalString()}}">
+                                <input type="datetime-local" class="form-control" name="wmp" id="wmp">
                                 <span class="text-danger error-text wmp_error"></span>
                             </div>
 
                             <div class="form-group">
                                 <label for="">Waktu Akhir Presensi</label>
-                                <input type="datetime-local" class="form-control" name="wap" id="wap" value="{{$item->waktu_berakhir->toDatetimelocalString()}}">
+                                <input type="datetime-local" class="form-control" name="wap" id="wap">
                                 <span class="text-danger error-text wap_error"></span>
                             </div>
 

@@ -29,7 +29,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-   <script src="//cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
  
     
     <style>
@@ -597,6 +597,9 @@
               $('#id').val(res.id_wadah);
               $('#pertemuan').val(res.urutanpertemuan);
               $('#materi').val(res.keterangan);
+              $('#tanggal').val(moment(res.tanggal).format("YYYY-MM-DD"));
+              $('#wmp').val(moment(res.waktu_mulai).format("YYYY-MM-DDTkk:mm"));
+              $('#wap').val(moment(res.waktu_berakhir).format('YYYY-MM-DDTHH:mm'));
            }
         });
     });
@@ -724,6 +727,9 @@
               $('#id_pertemuan').val(res.id_pertemuan);
               $('#judul_tugas').val(res.judul_tugas);
               $('#deskripsi').val(res.deskripsi_tugas);
+              $('#wmp').val(moment(res.waktu_mulai).format("YYYY-MM-DDTkk:mm"));
+              $('#wap').val(moment(res.waktu_selesai).format('YYYY-MM-DDTHH:mm'));
+              $('#wcp').val(moment(res.waktu_cutoff).format('YYYY-MM-DDTHH:mm'));
 
            }
         });

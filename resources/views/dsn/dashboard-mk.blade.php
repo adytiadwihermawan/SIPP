@@ -180,7 +180,6 @@
 
 <script src="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.js')}}"></script>
 
-
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
 
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script> 
@@ -192,6 +191,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 
 <script>
@@ -362,58 +363,7 @@
      
    });
 
-   $(function () {
 
-     $.ajaxSetup({
-         headers: {
-           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-         }
-     });
-
-     @if ($absen->count() > 0) 
-       var table = $('#export').DataTable({
-         processing: true,
-         serverSide: true,
-         dom: 'Bflrtip',
-         ajax: {
-           url: "{{ route('export', [$mk[0]->nama_praktikum]) }}"
-         },
-         columnDefs: [
-                         {"className": "dt-center", "targets": [0, 2, 3]}
-                     ],
-         buttons : [
-           {
-             extend: 'excel',
-             text: '<span class="fa fa-file-excel-o"></span> Export Rekap Presensi',
-             messageTop: 'Pertemuan {{$absen[0]->urutanpertemuan}}',
-             title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$absen[0]->nama_praktikum}} ',
-             exportOptions: {
-                 columns: [ 0, 1, 2, 3 ],
-                 format: { 
-                       header: function ( data, columnDefs ) {
-                       return data.toUpperCase();
-                   }
-                 },
-               },
-             }
-           ],
-         columns: [
-             {
-               "data": null, "sortable": false,
-               render: function(data, type, row, meta){
-               return meta.row + meta.settings._iDisplayStart + 1
-                     }
-                 },
-               {data: 'nama', name: 'nama_user' },
-               {data: 'nim', name: 'username'},
-               {data: 'keterangan', name: 'keterangan'},
-         ]
-     });
-     @endif
-     
-   });
-
-   
     $(function(){
 
     $('#buat-pertemuan').on('submit', function(e){
@@ -705,6 +655,9 @@
               $('#id').val(res.id_wadah);
               $('#pertemuan').val(res.urutanpertemuan);
               $('#materi').val(res.keterangan);
+              $('#tanggal').val(moment(res.tanggal).format("YYYY-MM-DD"));
+              $('#wmp').val(moment(res.waktu_mulai).format("YYYY-MM-DDTkk:mm"));
+              $('#wap').val(moment(res.waktu_berakhir).format('YYYY-MM-DDTHH:mm'));
            }
         });
     });
@@ -764,6 +717,9 @@
               $('#id_pertemuan').val(res.id_pertemuan);
               $('#judul_tugas').val(res.judul_tugas);
               $('#deskripsi').val(res.deskripsi_tugas);
+              $('#wmp').val(moment(res.waktu_mulai).format("YYYY-MM-DDTkk:mm"));
+              $('#wap').val(moment(res.waktu_selesai).format('YYYY-MM-DDTHH:mm'));
+              $('#wcp').val(moment(res.waktu_cutoff).format('YYYY-MM-DDTHH:mm'));
            }
         });
     });
