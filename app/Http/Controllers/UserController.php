@@ -936,7 +936,7 @@ class UserController extends Controller
                     ->addColumn('komentar', function($row){
                             $nilai = Nilai::where('id_tugas', $row->id_tugas)->first();
 
-                            if($nilai->komentar){
+                            if($nilai->komentar != null){
                                 return $nilai->komentar;
                             }else{
                                 return "<p style='text-align:center'>-</p>";
@@ -1065,7 +1065,7 @@ class UserController extends Controller
                     ->addColumn('komentar', function($row){
                             $nilai = Nilai::where('id_tugas', $row->id_tugas)->first();
 
-                            if($nilai->komentar){
+                            if($nilai->komentar != null){
                                 return $nilai->komentar;
                             }else{
                                 return "<p style='text-align:center'>-</p>";
