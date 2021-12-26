@@ -933,10 +933,10 @@ class UserController extends Controller
                             return $btn;
                         }
                     })
-                    ->addColumn('komentar', function($row){
+                    ->addColumn('feedback', function($row){
                             $nilai = Nilai::where('id_tugas', $row->id_tugas)->first();
 
-                            if($nilai->komentar != null){
+                            if($nilai){
                                 return $nilai->komentar;
                             }else{
                                 return "<p style='text-align:center'>-</p>";
@@ -1008,7 +1008,7 @@ class UserController extends Controller
 
                             return $btn = " <a href='javascript:void(0)' class='editgrade btn  btn-success' data-id='" . $row->id_tugas . "' title='edit'><i class='fa fa-edit'>Edit</i></a>";
                     })
-                    ->rawColumns(['nama', 'nim','grade', 'komentar', 'file', 'waktu_submit', 'edit'])
+                    ->rawColumns(['nama', 'nim','grade', 'feedback', 'file', 'waktu_submit', 'edit'])
                     ->make(true);
             }
             $mk = Praktikum::join('pertemuan', 'praktikum.id_praktikum', '=', 'pertemuan.id_praktikum')
@@ -1065,7 +1065,7 @@ class UserController extends Controller
                     ->addColumn('komentar', function($row){
                             $nilai = Nilai::where('id_tugas', $row->id_tugas)->first();
 
-                            if($nilai->komentar != null){
+                            if($nilai){
                                 return $nilai->komentar;
                             }else{
                                 return "<p style='text-align:center'>-</p>";

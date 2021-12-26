@@ -3,7 +3,7 @@
 @section('Judul', 'Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat')
 
 @section('content')
-     
+
 <table class="table table-striped hover" id="grade">
   <div class="modal fade" id="nilai">
         <div class="modal-dialog modal-lg">
