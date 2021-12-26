@@ -266,7 +266,7 @@
               {data: 'nama', name: 'nama' },
               {data: 'nim', name: 'nim'},
               {data: 'grade', name: 'grade'},
-              {data: 'komentar', name: 'komentar'},
+              {data: 'feedback', name: 'feedback'},
               {data: 'file', name: 'file'},
               {data: 'waktu_submit', name: 'waktu_submit'},
               {data: 'edit', name: 'edit'}
