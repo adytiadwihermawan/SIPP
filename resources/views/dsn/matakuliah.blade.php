@@ -442,7 +442,7 @@
                         <i class="fa fa-trash"></i> Hapus Tugas
                     </a>
                 </div>
-            </div>
+            
             <div class="modal fade" id="edit-tugas">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -514,7 +514,7 @@
             @endif
             @if($datas->deskripsi_tugas != null)
             <div class="card-footer">
-                <p>{{$datas->deskripsi_tugas}}</p>
+                <p>{{$datas->deskripsi_tugas}} hahaha</p>
             </div>
             @endif
         </div>
