@@ -233,6 +233,7 @@
         $('#grade').DataTable({
             serverside: true,
             responsive: true,
+            dom: 'Bflrtip',
             rowGroup: [0],
             ajax: {
                 url: "{{ route('grade', [$course1[0]->id_wadahtugas]) }}"
