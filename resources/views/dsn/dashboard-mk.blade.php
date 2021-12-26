@@ -734,8 +734,9 @@
       var deskripsi = $('#deskripsi').val();
       var wmp = $('#wmp').val();
       var wap = $('#wap').val();
-      var wcp = $('#wcp').val()
-
+      var wcp = $('#wcp').val();
+      var size = $('input[name="size"]:checked').val();
+      
       $.ajax({
         url: "{{ url('updatetugas') }}",
         method: "POST",
@@ -746,7 +747,8 @@
           deskripsi: deskripsi,
           wmp: wmp,
           wap: wap,
-          wcp: wcp
+          wcp: wcp,
+          size: size
         },
         dataType: 'json',
         beforeSend: function(){

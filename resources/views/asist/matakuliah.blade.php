@@ -490,13 +490,27 @@
 
                                         <div class="form-group">
                                             <label for="">Waktu Cut-Off Pengumpulan</label>
-                                            @if (!empty($datas->waktu_cutoff))
-                                            <input type="datetime-local" class="form-control" name="wcp" id="wcp"
-                                                value="{{$datas->waktu_cutoff->toDatetimelocalString()}}">
-                                            @else
                                             <input type="datetime-local" class="form-control" name="wcp" id="wcp">
-                                            @endif
                                             <span class="text-danger error-text wcp_error"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">Ukuran File Kumpul Tugas </label>
+                                            <br>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="size" id="s25" value="25000">
+                                                <label class="form-check-label" for="25mb">25 MB</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="size" id="s50" value="50000">
+                                                <label class="form-check-label" for="50mb">50 MB</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="size" id="s100" value="100000">
+                                                <label class="form-check-label" for="100mb">100 MB</label>
+                                            </div>
+                                            <br>
+                                            <span class="text-danger error-text size_error"></span>
                                         </div>
 
                                         <input type="file" name="_file" id="_file" style="margin-bottom:15px;"

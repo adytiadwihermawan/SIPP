@@ -654,14 +654,16 @@ class UserController extends Controller
                 'deskripsi',
                 'wmp'=>'required|after:'. Carbon::now(),
                 'wap'=>'required|after:wmp',
-                'wcp'=>'nullable|after:wap'
+                'wcp'=>'nullable|after:wap',
+                'size'=>'required'
             ],[
                 'judul_tugas.required'=>"Judul tugas tidak boleh kosong",
                 'wmp.required'=>"Waktu mulai pengumpulan tidak boleh kosong",
                 'wmp.after'=>"Waktu pengumpulan tidak boleh melewati waktu kemarin",
                 'wap.required'=>"Waktu akhir pengumpulan tidak boleh kosong",
                 'wap.after'=>"Waktu akhir pengumpulan tidak boleh mendahului waktu mulai pengumpulan",
-                'wcp.after'=>"Waktu cut-offf tidak boleh mendahului waktu akhir pengumpulan"
+                'wcp.after'=>"Waktu cut-offf tidak boleh mendahului waktu akhir pengumpulan",
+                'size.required'=>"Ukuran Pengumpulan tugas tidak boleh kosong"
         ]);
         // dd($cek);
             
@@ -675,6 +677,7 @@ class UserController extends Controller
                                 'waktu_mulai'=>$request->input('wmp'),
                                 'waktu_selesai'=>$request->input('wap'),
                                 'waktu_cutoff'=>$request->input('wcp'),
+                                'size'=>$request->input('size')
                         ]);
 
             }else{
@@ -691,7 +694,8 @@ class UserController extends Controller
                                 'deskripsi_tugas'=>$request->input('deskripsi'),
                                 'waktu_mulai'=>$request->input('wmp'),
                                 'waktu_selesai'=>$request->input('wap'),
-                                'waktu_cutoff'=>$request->input('wcp')
+                                'waktu_cutoff'=>$request->input('wcp'),
+                                'size'=>$request->input('size')
                         ]);
             }
 

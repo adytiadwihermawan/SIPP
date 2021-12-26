@@ -730,7 +730,6 @@
               $('#wmp').val(moment(res.waktu_mulai).format("YYYY-MM-DDTkk:mm"));
               $('#wap').val(moment(res.waktu_selesai).format('YYYY-MM-DDTHH:mm'));
               $('#wcp').val(moment(res.waktu_cutoff).format('YYYY-MM-DDTHH:mm'));
-
            }
         });
     });
@@ -745,6 +744,7 @@
       var wmp = $('#wmp').val();
       var wap = $('#wap').val();
       var wcp = $('#wcp').val();
+      var size = $('input[name="size"]:checked').val();
 
       $.ajax({
         url: "{{ url('updatetugas') }}",
@@ -757,6 +757,7 @@
           wmp: wmp,
           wap: wap,
           wcp: wcp,
+          size: size
         },
         dataType: 'json',
         beforeSend: function(){
