@@ -514,7 +514,7 @@
             @endif
             @if($datas->deskripsi_tugas != null)
             <div class="card-footer">
-                <p>{{$datas->deskripsi_tugas}} hahaha</p>
+                <p>{{$datas->deskripsi_tugas}}</p>
             </div>
             @endif
         </div>
