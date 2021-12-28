@@ -2,14 +2,17 @@
 @section('title', "Data Presensi")
 @section('Judul', 'Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat')
 @section('content')
-<div class="card col-12 blue1">
+<div class="card col-12 blue1 overflow-auto">
         <div class="card-header">
             <h3 class="card-title">
                 <b>Data Presensi Praktikum {{$mk[0]->nama_praktikum}} </b>
             </h3>
         </div>
-    </div>
- <table class="table table-striped hover">
+</div>
+   
+
+        <div class="card col-12 overflow-auto">
+ <table class="table table-striped hover  ">
       <thead>
           <tr style="text-align: center">
               <th>NO</th>
@@ -51,4 +54,5 @@
               @endforeach
       </tbody>
   </table>
+  </div>
 @endsection
