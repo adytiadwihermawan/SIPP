@@ -149,9 +149,9 @@ Route::get('dsn/presensi/{id}', [UserController::class, 'rekapAbsen'])->name('ab
 
 Route::get('file-export', [UserController::class, 'fileExport'])->name('file-export');
 
-// Route::get('dsn/rekap-presensi/{id_praktikum}', [UserController::class, 'exportrekap'])->name('export');
-
 Route::get('export-rekap{id}', [UserController::class, 'exportRekap'])->name('exp');
+
+Route::get('dsn/export/{id}', [UserController::class, 'viewexportdsn'])->name('view-exp');
 
 
 // ----------------------------------------- Dashboard Asisten -------------------------------------------------------------------- \\
@@ -169,6 +169,8 @@ Route::get('asist/grade/{id}', [UserController::class, 'asistGrade'])->name('gra
 Route::get('asist/presensi/{id}', [UserController::class, 'rekapAsisten'])->name('asistenRekap');
 
 Route::get('asist/rekap/{id_praktikum}/{id}', [UserController::class, 'viewrekapasisten'])->name('dataPresensiAsisten');
+
+Route::get('asist/export/{id}', [UserController::class, 'viewexportasist'])->name('view-exp-asist');
 
 // -----------------------------------------  Dashboard Mahasiswa -------------------------------------------------------------------- \\
 

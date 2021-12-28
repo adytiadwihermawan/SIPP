@@ -1,4 +1,4 @@
-@extends('dsn.dashboard-mk')
+@extends('asist.dashboard-mk')
 @section('title', "Data Presensi")
 @section('Judul', 'Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat')
 @section('content')

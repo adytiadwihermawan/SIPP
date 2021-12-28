@@ -2,12 +2,17 @@
 
 namespace App\Exports;
 
-use App\Models\Presensi;
+use Illuminate\Contracts\View\View;
+use App\Models\Proses_praktikum;
+use App\Models\Praktikum;
 use App\Models\Wadahpresensi;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+use App\Models\Wadah_tugas;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class RekapExport implements FromCollection, WithHeadings
+class RekapExport implements FromView, ShouldAutoSize, WithColumnFormatting
 {
 
     protected $id;
@@ -19,60 +24,38 @@ class RekapExport implements FromCollection, WithHeadings
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function view(): View
     {
+        $absen = Wadahpresensi::select('wadahpresensi.id_praktikum', 'urutanpertemuan', 'wadahpresensi.id_wadah', 'id_user')
+                            ->join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
+                            ->leftjoin('presensi', 'wadahpresensi.id_wadah', 'presensi.id_wadah')
+                            ->where('wadahpresensi.id_praktikum', $this->id)
+                            ->get();
 
-        $cek = Wadahpresensi::Join('presensi', function($join){
-                        $join->on('presensi.id_wadah', '=', 'wadahpresensi.id_wadah');
-                        $join->where('wadahpresensi.id_praktikum', $this->id);
-                    })
-                    ->rightjoin('users', function($join){
-                        $join->on('users.id', '=', 'presensi.id_user');
-                    })
-                    ->Join('proses_praktikum', function($join){
-                        $join->on('proses_praktikum.id_user', '=', 'users.id');
-                        $join->where('proses_praktikum.id_praktikum', $this->id);
-                    })
-                    ->where('id_status', 4)
-                    ->get();
+        $mk = Praktikum::where('id_praktikum', $this->id)->get();
 
-        return $cek;
+        $pertemuan = Wadahpresensi::where('id_praktikum', $this->id)->select('urutanpertemuan')->get();
+
+        $peserta = Proses_praktikum::join('users', 'proses_praktikum.id_user', 'users.id')
+                                    ->select('nama_user', 'username', 'id_praktikum', 'id')
+                                    ->where('id_praktikum', $this->id)
+                                    ->where('id_status', 4)
+                                    ->get();
+
+        $course1 = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', 'pertemuan.id_pertemuan')
+                                ->where('id_praktikum', $this->id)
+                                ->get();
+
+        $cekid = Wadahpresensi::first();
+
+        return view('export', compact('absen', 'mk', 'pertemuan', 'peserta', 'course1', 'cekid'));
     }
 
-    public function headings(): array
+    public function columnFormats(): array
     {
-        $pertemuan = Wadahpresensi::where('id_praktikum', $this->id)->pluck('id_wadah');
-
-        //  $cek1 = "PERTEMUAN " .$pertemuan;
-        // foreach ($pertemuan as $value => $item) {
-        //     $cek = "PERTEMUAN " .$item->urutanpertemuan;
-        // }
         return [
-                'NO',
-                'NAMA',
-                'NIM',
-                'PERTEMUAN 1',
-                'PERTEMUAN 2',
-                'PERTEMUAN 3',
-                'PERTEMUAN 4',
-                'PERTEMUAN 5',
-                'PERTEMUAN 6',
-                'PERTEMUAN 7',
-                'PERTEMUAN 8',
-                'PERTEMUAN 9',
-                'PERTEMUAN 10',
-                'PERTEMUAN 11',
-                'PERTEMUAN 12',
-                'PERTEMUAN 13',
-                'PERTEMUAN 14',
-                'PERTEMUAN 15',
-                'PERTEMUAN 16',
-            ];
-        
-        // return [
-        //     'NO',
-        //     'NAMA',
-        //     $cek,
-        // ];
+            'C' => NumberFormat::FORMAT_NUMBER,
+        ];
     }
+
 }

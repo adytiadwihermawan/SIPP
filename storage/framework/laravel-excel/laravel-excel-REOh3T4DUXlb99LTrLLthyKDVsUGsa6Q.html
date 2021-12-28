@@ -4,21 +4,21 @@
   <meta charset="utf-8">
  
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>@yield('title')</title>
+  <meta name="csrf-token" content="tDYiwDy7d7TIHjgyKUaoh09Q0q18imZIAgt90tOa">
+  <title>Data Presensi</title>
 
    <!-- Font Awesome -->
-   <link rel="stylesheet" href="{{asset('template/plugins/fontawesome-free/css/all.min.css')}}">
+   <link rel="stylesheet" href="http://127.0.0.1:8000/template/plugins/fontawesome-free/css/all.min.css">
    <!-- Theme style -->
-   <link rel="stylesheet" href="{{asset('template/dist/css/adminlte.min.css')}}">
+   <link rel="stylesheet" href="http://127.0.0.1:8000/template/dist/css/adminlte.min.css">
    <!-- overlayScrollbars -->
-   <link rel="stylesheet" href="{{asset('template/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
+   <link rel="stylesheet" href="http://127.0.0.1:8000/template/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
    <!-- Google Font: Source Sans Pro -->
    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
-   <link rel="stylesheet" href="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.css')}}">
+   <link rel="stylesheet" href="http://127.0.0.1:8000/plugins/ijaboCropTool/ijaboCropTool.min.css">
    
-   <link rel="stylesheet" href="{{asset('assets/bootstrap/css/custom.css')}}">
+   <link rel="stylesheet" href="http://127.0.0.1:8000/assets/bootstrap/css/custom.css">
 
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -70,31 +70,27 @@
   <ul class="navbar-nav ml-auto">
     <div class="user-panel mt-0 pb-0 mb-0 d-flex" >
       <div class="image">
-        <img src="{{ Auth::user()->fotouser}}" class="img-circle elevation-2 user_picture" alt="User Image">
+        <img src="http://127.0.0.1:8000/users/images/User Image_2021121561b9488d9be1c.jpg" class="img-circle elevation-2 user_picture" alt="User Image">
       </div>
     </div>
-      @guest
-      @else
-    
+          
           <li class="nav-item dropdown">
               <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                  {{ Auth::user()->nama_user }}
+                  Andreyan Rizky Baskara, S.Kom., M.Kom
               </a>
 
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{{ route('logout') }}"
+                  <a class="dropdown-item" href="http://127.0.0.1:8000/logout"
                      onclick="event.preventDefault();
                                    document.getElementById('logout-form').submit();">
-                      {{ __('Logout') }}
+                      Logout
                   </a>
 
-                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                      @csrf
-                  </form>
+                  <form id="logout-form" action="http://127.0.0.1:8000/logout" method="POST" class="d-none">
+                      <input type="hidden" name="_token" value="tDYiwDy7d7TIHjgyKUaoh09Q0q18imZIAgt90tOa">                  </form>
               </div>
           </li>
-      @endguest
-  </ul>
+        </ul>
  
   </nav>
   <!-- /.navbar -->
@@ -104,7 +100,7 @@
         
           <!-- Brand Logo -->
           <a href="index3.html" class="brand-link">
-            <img src="{{asset('dist/img/logo.png')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <img src="http://127.0.0.1:8000/dist/img/logo.png" class="brand-image img-circle elevation-3" style="opacity: .8">
             <span class="brand-text font-weight-light">SIDP-TI</span>
           </a>
 
@@ -113,25 +109,103 @@
             <!-- Sidebar user panel (optional) -->
               <div class="user-panel mt-3 pb-3 mb-1 d-flex">
                 <div class="image">
-                  {{-- style="height: auto;
-                  width: 1rem;" --}}
+                  
                   <img  style="height: auto;
-                  width: 2.6rem;" src="{{Auth::user()->fotouser}}" class="img-circle elevation-2 user_picture" alt="User Image">
+                  width: 2.6rem;" src="http://127.0.0.1:8000/users/images/User Image_2021121561b9488d9be1c.jpg" class="img-circle elevation-2 user_picture" alt="User Image">
                 </div>
               <div class="info" style="white-space: normal;">
                 <a href="#" >
-                  {{Auth::user()->nama_user}}
+                  Andreyan Rizky Baskara, S.Kom., M.Kom
                 </a>
               <br>
                 <span class="badge badge-success" style="font-size: 12px;">
-                    {{-- nampilkan id user --}}
-                      {{ Auth::user()->username }}
+                    
+                      199307032019031011
                 </span>
               </div>
             </div>
           
     <!-- Sidebar Menu -->
-    @include('dsn.nav-mk')
+    <nav class="mt-4">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+                with font-awesome or any other icon font library -->
+        <li class="nav-item">
+            <a href="http://127.0.0.1:8000/dosen/dashboard"
+                class="nav-link">
+                <i class="nav-icon fas fa-home"></i>
+                <p>
+                    Dashboard
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="http://127.0.0.1:8000/dsn/matkul/Basis%20Data%20I"
+                class="nav-link">
+                <i class="nav-icon fas fa-book-open"></i>
+                <p> Basis Data I</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="http://127.0.0.1:8000/dsn/partisipan/Basis%20Data%20I"
+                class="nav-link">
+                <i class="nav-icon fas fa-user-graduate"></i>
+                <p>
+                     Participants
+                </p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="http://127.0.0.1:8000/dsn/presensi/Basis%20Data%20I"
+                class="nav-link">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>
+                     Presensi
+                </p>
+            </a>
+        </li>
+            <li class="nav-item">
+            <a href="http://127.0.0.1:8000/dsn/matkul/Basis%20Data%20I" class="nav-link">
+                <p>
+                    
+                <i class="nav-icon fas fa-book"></i> Grades
+                </p>
+            </a>
+            <ul>
+                                <li class="nav-item ml-3">
+                    <a href=" http://127.0.0.1:8000/dsn/grade/6 "
+                        class="nav-link">
+                        <p>
+                            * SIZE
+                        </p>
+                    </a>
+                </li>
+                                <li class="nav-item ml-3">
+                    <a href=" http://127.0.0.1:8000/dsn/grade/7 "
+                        class="nav-link">
+                        <p>
+                            * Tes
+                        </p>
+                    </a>
+                </li>
+                                <li class="nav-item ml-3">
+                    <a href=" http://127.0.0.1:8000/dsn/grade/16 "
+                        class="nav-link">
+                        <p>
+                            * LCek
+                        </p>
+                    </a>
+                </li>
+                            </ul>
+        </li>
+        </ul>
+</nav>
+<!-- /.sidebar-menu -->
+</div>
+<!-- /.sidebar -->
+</aside>
      <!-- /.sidebar-menu -->
 
 <!-- Content Wrapper. Contains page content -->
@@ -141,7 +215,7 @@
       <div class="container-fluid">
         <div class="row mb-1">
           <div class="col-sm-12 card pt-2 pb-2 tomato">
-            <h5 class="mx-auto">@yield('Judul')</h5>
+            <h5 class="mx-auto">Sistem Informasi Pendataan Praktikum Teknologi Informasi Universitas Lambung Mangkurat</h5>
           </div><!-- /.col -->
         
         </div><!-- /.row -->
@@ -151,7 +225,46 @@
 
     <!-- Main content -->
     <div class="container-fluid">
-    @yield('content')
+        <a href="http://127.0.0.1:8000/export-rekap1" class="btn blue4h float-left">Export Rekap</a>
+    <br><br>
+ <table class="table table-striped hover" style="width: 95%!important" id="export">
+      <thead>
+          <tr style="text-align: center">
+              <th>No</th>
+              <th>NAMA</th>
+              <th>NIM</th>
+                            <th>PERTEMUAN 1</th>
+                            <th>PERTEMUAN 2</th>
+                            <th>PERTEMUAN 3</th>
+                        </tr>
+      </thead>
+      <tbody>
+                        <tr>
+              <td style="text-align: center">1</td>
+              <td>Adytia Dwi Hermawan</td>
+              <td style="text-align: center">1810817210007</td>
+                                          <td style="text-align: center">Hadir</td>
+                                                        <td style="text-align: center">Hadir</td>
+                                                        <td style="text-align: center">Tanpa Keterangan</td>
+                                      </tr>
+                        <tr>
+              <td style="text-align: center">2</td>
+              <td>AINIYYAH</td>
+              <td style="text-align: center">1810817320001</td>
+                                          <td style="text-align: center">Tanpa Keterangan</td>
+                                                        <td style="text-align: center">Tanpa Keterangan</td>
+                                                        <td style="text-align: center">Tanpa Keterangan</td>
+                                      </tr>
+                        <tr>
+              <td style="text-align: center">3</td>
+              <td>Aji Sukma Ramadhan</td>
+              <td style="text-align: center">1810817210006</td>
+                                          <td style="text-align: center">Tanpa Keterangan</td>
+                                                        <td style="text-align: center">Tanpa Keterangan</td>
+                                                        <td style="text-align: center">Tanpa Keterangan</td>
+                                      </tr>
+                    </tbody>
+  </table>
     </div>
   </div>
 
@@ -164,21 +277,21 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="{{asset('template/plugins/jquery/jquery.min.js')}}"></script>
+<script src="http://127.0.0.1:8000/template/plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
-<script src="{{asset('template/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
+<script src="http://127.0.0.1:8000/template/plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button)
 </script>
 <!-- Bootstrap 4 -->
-<script src="{{asset('template/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="http://127.0.0.1:8000/template/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- overlayScrollbars -->
-<script src="{{asset('template/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
+<script src="http://127.0.0.1:8000/template/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
-<script src="{{asset('template/dist/js/adminlte.js')}}"></script>
+<script src="http://127.0.0.1:8000/template/dist/js/adminlte.js"></script>
 
-<script src="{{asset('plugins/ijaboCropTool/ijaboCropTool.min.js')}}"></script>
+<script src="http://127.0.0.1:8000/plugins/ijaboCropTool/ijaboCropTool.min.js"></script>
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
 
@@ -204,7 +317,7 @@
             serverside: true,
             responsive: true,
             ajax: {
-                url: "{{ route('data', [$mk[0]->nama_praktikum]) }}"
+                url: "http://127.0.0.1:8000/dsn/partisipan/Basis%20Data%20I"
             },
             columnDefs: [
                         {"className": "dt-center", "targets": [0]}
@@ -229,14 +342,13 @@
     })
    
     function datagrade() {
-      @if($course1->count() > 0)
-        $('#grade').DataTable({
+              $('#grade').DataTable({
             serverside: true,
             responsive: true,
             dom: 'Bflrtip',
             rowGroup: [0],
             ajax: {
-                url: "{{ route('grade', [$course1[0]->id_wadahtugas]) }}"
+                url: "http://127.0.0.1:8000/dsn/grade/6"
             },
             columnDefs: [
                         {"className": "dt-center", "targets": [0,2,3]}
@@ -245,8 +357,8 @@
           {
             extend: 'excel',
             text: '<span class="fa fa-file-excel-o"></span> Export Nilai',
-            messageTop: 'Tugas {{$course1[0]->nama_pertemuan}}',
-            title: 'Rekap Nilai untuk Praktikum {{$course1[0]->nama_praktikum}} ',
+            messageTop: 'Tugas Pertemuan 2',
+            title: 'Rekap Nilai untuk Praktikum  ',
             exportOptions: {
                 columns: [ 0, 1, 2, 3 ],
                 format: { 
@@ -273,8 +385,7 @@
               {data: 'edit', name: 'edit'}
             ]
         });
-      @endif
-    }
+          }
 
   
   $(function () {
@@ -289,7 +400,7 @@
          processing: true,
          serverSide: true,
          ajax: {
-           url: "{{ route('absen', [$mk[0]->nama_praktikum]) }}"
+           url: "http://127.0.0.1:8000/dsn/presensi/Basis%20Data%20I"
          },
          columnDefs: [
                          {"className": "dt-center", "targets": [0, 2, 3, 4, 5, 6, 7]}
@@ -321,16 +432,33 @@
          }
      });
 
-     @if ($absen->count() > 0) 
+      
        var table = $('#rekap').DataTable({
          processing: true,
          serverSide: true,
+         dom: 'Bflrtip',
          ajax: {
-           url: "{{ route('rekap', [$mk[0]->nama_praktikum, $cekid]) }}"
+           url: "http://127.0.0.1:8000/dsn/rekap/Basis%20Data%20I/4"
          },
          columnDefs: [
                          {"className": "dt-center", "targets": [0, 2, 3]}
                      ],
+         buttons : [
+           {
+             extend: 'excel',
+             text: '<span class="fa fa-file-excel-o"></span> Export Rekap Presensi',
+             messageTop: 'Pertemuan 1',
+             title: 'REKAP PRESENSI UNTUK PRAKTIKUM  ',
+             exportOptions: {
+                 columns: [ 0, 1, 2, 3 ],
+                 format: { 
+                       header: function ( data, columnDefs ) {
+                       return data.toUpperCase();
+                   }
+                 },
+               },
+             }
+           ],
          columns: [
              {
                "data": null, "sortable": false,
@@ -343,8 +471,7 @@
                {data: 'keterangan', name: 'keterangan'}
          ]
      });
-     @endif
-     
+          
    });
 
 
@@ -505,7 +632,7 @@
          
         $.ajax({
             type:"GET",
-            url: "{{ url('editgrade') }}",
+            url: "http://127.0.0.1:8000/editgrade",
             data: { id: id },
             dataType: 'json',
             success: function(res){
@@ -525,7 +652,7 @@
       var komentar = $('#komentar').val();
 
       $.ajax({
-        url: "{{ url('update-nilai') }}",
+        url: "http://127.0.0.1:8000/update-nilai",
         method: "POST",
         data: {
           id_tugas: id_tugas,
@@ -557,7 +684,7 @@
          
         $.ajax({
             type:"GET",
-            url: "{{ url('grade') }}",
+            url: "http://127.0.0.1:8000/grade",
             data: { id: id },
             dataType: 'json',
             success: function(res){
@@ -578,7 +705,7 @@
          
         $.ajax({
             type:"GET",
-            url: "{{ url('edit') }}",
+            url: "http://127.0.0.1:8000/edit",
             data: { id: id },
             dataType: 'json',
             success: function(res){
@@ -599,7 +726,7 @@
       var deskripsi = $('#deskripsi').val();
 
       $.ajax({
-        url: "{{ url('editpertemuan') }}",
+        url: "http://127.0.0.1:8000/editpertemuan",
         method: "POST",
         data: {
           id_pertemuan: id_pertemuan,
@@ -631,7 +758,7 @@
          
         $.ajax({
             type:"GET",
-            url: "{{ url('editabsen') }}",
+            url: "http://127.0.0.1:8000/editabsen",
             data: { id: id },
             dataType: 'json',
             success: function(res){
@@ -657,7 +784,7 @@
       var wap = $('#wap').val();
 
       $.ajax({
-        url: "{{ url('editpresensi') }}",
+        url: "http://127.0.0.1:8000/editpresensi",
         method: "POST",
         data: {
           id: id,
@@ -692,7 +819,7 @@
          
         $.ajax({
             type:"GET",
-            url: "{{ url('edittugas') }}",
+            url: "http://127.0.0.1:8000/edittugas",
             data: { id: id },
             dataType: 'json',
             success: function(res){
@@ -721,7 +848,7 @@
       var size = $('input[name="size"]:checked').val();
       
       $.ajax({
-        url: "{{ url('updatetugas') }}",
+        url: "http://127.0.0.1:8000/updatetugas",
         method: "POST",
         data: {
           id: id,
@@ -770,7 +897,7 @@
                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                 type:"POST",
-                url: "{{ url('deleteabsen')}} ",
+                url: "http://127.0.0.1:8000/deleteabsen ",
                 data: { id: id },
                 dataType: 'json',
                 success: function(params){

@@ -320,29 +320,12 @@
        var table = $('#rekap-asist').DataTable({
          processing: true,
          serverSide: true,
-         dom: 'Bflrtip',
          ajax: {
            url: "{{ route('dataPresensiAsisten', [$mk[0]->nama_praktikum, $cekid]) }}"
          },
          columnDefs: [
                          {"className": "dt-center", "targets": [0, 2, 3]}
                      ],
-         buttons : [
-           {
-             extend: 'excel',
-             text: '<span class="fa fa-file-excel-o"></span> Export Rekap Presensi',
-             messageTop: 'Pertemuan {{$absen[0]->urutanpertemuan}}',
-             title: 'REKAP PRESENSI UNTUK PRAKTIKUM {{$absen[0]->nama_praktikum}} ',
-             exportOptions: {
-                 columns: [ 0, 1, 2, 3 ],
-                 format: { 
-                       header: function ( data, columnDefs ) {
-                       return data.toUpperCase();
-                   }
-                 },
-               },
-             }
-           ],
          columns: [
              {
                "data": null, "sortable": false,
