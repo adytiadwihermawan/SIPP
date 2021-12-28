@@ -28,12 +28,18 @@
                 $count = 0;
                 $count2 = 0;
               ?>
-              @foreach ($absen as $cek)
-              @if ($user->id == $cek->id_user)
-              <td style="text-align: center">1<?php $count++; ?></td>
+              @foreach ($pertemuan as $cek)
+              <?php $hasil = App\Models\Presensi::where('id_wadah', $cek->id_wadah)->where('id_user', $user->id)->first(); ?>
+              @if (!empty($hasil))
+                @if ($hasil->id_wadah == $cek->id_wadah)
+                    <td style="text-align: center">1</td>
+                    <?php $count++; ?>
+                @endif
               @else
-              <td style="text-align: center">0<?php $count2++; ?></td>   
+                <td style="text-align: center">0</td>
+                <?php $count2++; ?>
               @endif
+                
               @endforeach
               <td style="text-align: center">{{$count}}</td>
               <td style="text-align: center">{{$count2}}</td>

@@ -45,10 +45,8 @@
 				<thead>
 					<tr style="text-align: center;">
 					<th>No</th>
-                    <th>Hari</th>
-                    <th>Jam</th>
-                    <th>Pertemuan</th>
 					<th>Tanggal</th>
+                    <th>Pertemuan</th>
                     <th>Pokok Bahasan</th>
                     <th>Waktu Presensi</th>
                     <th>Aksi</th>

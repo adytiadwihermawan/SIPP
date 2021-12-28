@@ -30,7 +30,7 @@ class Wadahpresensi extends Model
     protected  $primaryKey = 'id_wadah';
     
     public function wadahpresensi(){
-    	return $this->hasMany(Presensi::class);
+    	return $this->hasMany(Presensi::class, 'id_wadah', 'id_wadah');
     }
 
 

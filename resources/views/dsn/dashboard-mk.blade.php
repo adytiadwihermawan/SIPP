@@ -292,7 +292,7 @@
            url: "{{ route('absen', [$mk[0]->nama_praktikum]) }}"
          },
          columnDefs: [
-                         {"className": "dt-center", "targets": [0, 2, 3, 4, 5, 6, 7]}
+                         {"className": "dt-center", "targets": [0, 1, 2, 3, 4, 5]}
                      ],
          columns: [
              {
@@ -301,10 +301,8 @@
                return meta.row + meta.settings._iDisplayStart + 1
                      }
                  },
-               {data: 'hari', name: 'hari' },
-               {data: 'jam', name: 'jam' },
-               {data: 'pertemuan', name: 'pertemuan' },
                {data: 'tanggal', name: 'tanggal' },
+               {data: 'pertemuan', name: 'pertemuan' },
                {data: 'materi', name: 'materi' },
                {data: 'waktu', name: 'waktu' },
                {data: 'action', name: 'action' }

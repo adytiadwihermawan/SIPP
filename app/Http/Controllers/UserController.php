@@ -119,13 +119,6 @@ class UserController extends Controller
         return view('asist.home', $datas);
     }
 
-    public function asistPresensi()
-    {
-       $course = Proses_praktikum::leftJoin('praktikum', 'roles.id_praktikum', '=', 'praktikum.id_praktikum')->where('id_user', Auth::user()->id)->get();
-
-        return view('asist.presensi', compact('course'));
-    }
-
    public function matkulAsisten($nama_praktikum)
     {
         $cek = Praktikum::where("nama_praktikum", "like", "%".$nama_praktikum."%")->first();
@@ -1382,21 +1375,6 @@ class UserController extends Controller
          if ($request->ajax()) {
             return Datatables::of($absen)
                     ->addIndexColumn()
-                    ->addColumn('hari', function($row){
-                            if(empty($row->hari_praktikum)){
-                                return "-";
-                            }else{
-                                return $row->hari_praktikum;
-                            }
-                        
-                    })
-                    ->addColumn('jam', function($row){
-                            if(empty($row->jam_praktikum)){
-                                return "-";
-                            }else{
-                                return date('H:i', strtotime($row->jam_praktikum));
-                            }
-                    })
                     ->addColumn('pertemuan', function($row){
                             return $row->urutanpertemuan;
                     })
@@ -1431,7 +1409,7 @@ class UserController extends Controller
                             return $btn;
                         
                     })
-                    ->rawColumns(['hari', 'jam', 'pertemuan', 'tanggal', 'materi', 'waktu', 'action'])
+                    ->rawColumns(['pertemuan', 'tanggal', 'materi', 'waktu', 'action'])
                     ->make(true);
         }
 
@@ -1445,12 +1423,13 @@ class UserController extends Controller
         $cekid = Wadahpresensi::first();
 
         $absen = Wadahpresensi::select('wadahpresensi.id_praktikum', 'urutanpertemuan', 'wadahpresensi.id_wadah', 'id_user')
-                            ->join('praktikum', 'wadahpresensi.id_praktikum', 'praktikum.id_praktikum')
                             ->leftjoin('presensi', 'wadahpresensi.id_wadah', 'presensi.id_wadah')
                             ->where('wadahpresensi.id_praktikum', $cek->id_praktikum)
                             ->get();
 
-        $presensi = Presensi::get();
+        $presensi = Presensi::join('wadahpresensi', 'presensi.id_wadah', 'wadahpresensi.id_wadah')
+                            ->where('id_praktikum', $cek->id_praktikum)
+                            ->get();
 
         $course1 = Wadah_tugas::join('pertemuan', 'wadah_tugas.id_pertemuan', 'pertemuan.id_pertemuan')
                                 ->where('id_praktikum', $cek->id_praktikum)
@@ -1462,14 +1441,15 @@ class UserController extends Controller
 
         $mk = Praktikum::where('id_praktikum', $cek->id_praktikum)->get();
 
-        $pertemuan = Wadahpresensi::where('id_praktikum', $cek->id_praktikum)->select('urutanpertemuan')->get();
+        $pertemuan = Wadahpresensi::where('id_praktikum', $cek->id_praktikum)
+                                // ->groupBy('id_presensi')
+                                ->get();
 
         $peserta = Proses_praktikum::join('users', 'proses_praktikum.id_user', 'users.id')
                                     ->select('nama_user', 'username', 'id_praktikum', 'id')
                                     ->where('id_praktikum', $cek->id_praktikum)
                                     ->where('id_status', 4)
                                     ->get();
-        // dd($absen);
 
         return view('dsn.export', compact(['presensi', 'absen', 'course', 'course1', 'mk', 'cekid', 'pertemuan', 'peserta']));
     }
@@ -1532,21 +1512,6 @@ class UserController extends Controller
          if ($request->ajax()) {
             return Datatables::of($absen)
                     ->addIndexColumn()
-                    ->addColumn('hari', function($row){
-                            if(empty($row->hari_praktikum)){
-                                return "-";
-                            }else{
-                                return $row->hari_praktikum;
-                            }
-                        
-                    })
-                    ->addColumn('jam', function($row){
-                            if(empty($row->jam_praktikum)){
-                                return "-";
-                            }else{
-                                return date('H:i', strtotime($row->jam_praktikum));
-                            }
-                    })
                     ->addColumn('pertemuan', function($row){
                             return $row->urutanpertemuan;
                     })
@@ -1581,7 +1546,7 @@ class UserController extends Controller
                             return $btn;
                         
                     })
-                    ->rawColumns(['hari', 'jam', 'pertemuan', 'tanggal', 'materi', 'waktu', 'action'])
+                    ->rawColumns(['pertemuan', 'tanggal', 'materi', 'waktu', 'action'])
                     ->make(true);
         }
         

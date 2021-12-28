@@ -34,7 +34,7 @@ class RekapExport implements FromView, ShouldAutoSize, WithColumnFormatting
 
         $mk = Praktikum::where('id_praktikum', $this->id)->get();
 
-        $pertemuan = Wadahpresensi::where('id_praktikum', $this->id)->select('urutanpertemuan')->get();
+        $pertemuan = Wadahpresensi::where('id_praktikum', $this->id)->get();
 
         $peserta = Proses_praktikum::join('users', 'proses_praktikum.id_user', 'users.id')
                                     ->select('nama_user', 'username', 'id_praktikum', 'id')
