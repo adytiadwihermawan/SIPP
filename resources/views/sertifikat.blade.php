@@ -12,7 +12,7 @@
            
             }
             .container {
-                background-image: url("dist/img/Sertifikatbg.jpg");
+                background-image: url("dist/img/bg2.png");
                 background-size: cover;
                 width: 29.7cm;
                 height: 20.5cm;

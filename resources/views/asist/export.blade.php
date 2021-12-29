@@ -9,6 +9,8 @@
             </h3>
         </div>
     </div>
+</div>
+    <div class="card col-12 ml-2 overflow-auto">
  <table class="table table-striped hover">
       <thead>
           <tr style="text-align: center">
@@ -51,4 +53,5 @@
               @endforeach
       </tbody>
   </table>
+</div>
 @endsection
